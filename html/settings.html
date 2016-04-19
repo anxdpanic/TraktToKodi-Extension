@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="../css/tabs.css" type="text/css">
+        <link rel="stylesheet" href="../css/settings.css" type="text/css">
+        <!-- /stylesheets -->
+    </head>
+
+    <body class="settings">
+        <div class="main">
+            <input id="tab1" type="radio" name="tabs" checked>
+            <label for="tab1" data-i18n="tab_1"></label>
+
+            <input id="tab2" type="radio" name="tabs">
+            <label for="tab2" data-i18n="tab_2"></label>
+
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3" data-i18n="tab_3"></label>
+            <div class="content">
+                <div id="content1">
+                    <div id="settings-h4-1" class="header">
+                        <h4 id="settings-kodi-remote-header" class="settings header" data-i18n="settings_kodi_remote_header"></h4>
+                    </div>
+                    <div id="kodi-http-settings" class="textboxes">
+                        <p>
+                        <label for="input-ip" class="settings label" data-i18n="ipaddress_input"></label>
+                        </p>
+                        <p>
+                        <input type="text" id="input-ip" class="settings text" />
+                        </p>
+                        <p>
+                        <label for="input-port" class="settings label" data-i18n="port_input"></label>
+                        </p>
+                        <p>
+                        <input type="number" id="input-port" class="settings text" min="0" max="65535"/>
+                        </p>
+                        <p>
+                        <label for="input-addonid" class="settings label" data-i18n="addonid_input"></label>
+                        </p>
+                        <p>
+                        <input type="text" id="input-addonid" class="settings text" />
+                        </p>
+                    </div>
+
+                    <div id="kodi-settings-buttons" class="buttons">
+                        <button id="button-clear" class="settings button" data-i18n="clear"></button>
+                        <button id="button-save" class="settings button" data-i18n="save"></button>
+                    </div>
+                </div>
+                <div id="content2">                    
+                    <div id="settings-h4-2" class="header">
+                        <h4 id="settings-movie-header" class="settings header" data-i18n="settings_movie_header"></h4>
+                    </div>
+                    <div id="movie-content-settings" class="checkboxes">
+                        <p>                            
+                        <input type="checkbox" id="input-movie-show-play" class="settings checkbox" />
+                        <label for="input-movie-show-play" class="settings label" data-i18n="movie_show_play_input"></label>
+                        </p>
+                    </div>
+                    <div id="settings-h4-3" class="header">
+                        <h4 id="settings-episode-header" class="settings header" data-i18n="settings_episode_header"></h4>
+                    </div>
+                    <div id="episode-content-settings" class="checkboxes">
+                        <p>
+                        <input type="checkbox" id="input-episode-open-season" class="settings checkbox" />
+                        <label for="input-episode-open-season" class="settings label" data-i18n="episode_open_season_input"></label> 
+                        </p>
+                        <p>
+                        <input type="checkbox" id="input-episode-show-play" class="settings checkbox" />
+                        <label for="input-episode-show-play" class="settings label" data-i18n="episode_show_play_input"></label>
+                        </p>
+                    </div>
+                </div>
+                <div id="content3"> 
+                    <div id="output-format-settings" class="radios">
+                        <p>
+                        <input id="input-output-format-1" type="radio" class="settings radio" name="formats" value='1'>
+                        <label for="input-output-format-1" class="settings label" data-i18n="input_output_format_1"></label>
+                        </p>
+                        <p>
+                        <input id="input-output-format-2" type="radio" class="settings radio" name="formats" value='2'>
+                        <label for="input-output-format-2" class="settings label" data-i18n="input_output_format_2"></label>
+                        </p>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- scripts -->
+        <script src="../js/settings.js"></script>
+        <script src="../js/i18n.js"></script>
+        <!-- /scripts -->
+    </body>
+</html>

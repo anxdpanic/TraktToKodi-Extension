@@ -1,0 +1,88 @@
+@charset "UTF-8"
+
+@font-face {
+  font-family:'trakt';
+  src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug);
+  src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug#iefix) format("embedded-opentype"),
+  url(/assets/trakt-57243f9aac73da4a24d1ef13350da272.woff?h16cug) format("woff"),
+  url(/assets/trakt-1ac730dd1dc3d1ea758e27da06a3263f.ttf?h16cug) format("truetype"),
+  url(/assets/trakt-10890dee02f1a21a74dc25aa5e5fc46e.svg?h16cug#trakt) format("svg");
+  font-weight:normal;
+  font-style:normal
+}
+
+.quick-icons .actions a [class^="trakt-icon-t2ka"], 
+.quick-icons .actions a [class*=" trakt-icon-t2ka"] {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    line-height: inherit;
+    width: 100%;
+}
+
+[class^="trakt-icon-t2ka"],
+[class*=" trakt-icon-t2ka"] 
+{
+  font-family:'trakt';
+  speak:none;
+  font-style:normal;
+  font-weight:normal;
+  font-variant:normal;
+  text-transform:none;
+  text-rendering:auto;
+  line-height:1;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  vertical-align:middle;
+  display:inline-block
+}
+
+.trakt-icon-t2ka-open-thick:before
+{
+  content:"\e619"
+}
+
+.trakt-icon-t2ka-play-thick:before
+{
+  content:"\e640"
+}
+
+.quick-icons .actions a.t2ka_open 
+{
+  color:#747399
+}
+
+.quick-icons .actions a.t2ka_open:hover,
+.quick-icons .actions a.t2ka_open.selected
+{
+  color:#fff
+}
+
+.quick-icons .actions a.t2ka_open:hover .base, 
+.quick-icons .actions a.t2ka_open.selected .base
+{
+  background-color:#747399
+}
+
+.quick-icons .actions a.t2ka_play 
+{
+  color:#990000
+}
+
+.quick-icons .actions a.t2ka_play:hover,
+.quick-icons .actions a.t2ka_play.selected
+{
+  color:#fff
+}
+
+.quick-icons .actions a.t2ka_play:hover .base, 
+.quick-icons .actions a.t2ka_play.selected .base
+{
+  background-color:#990000
+}
+
+.trakt-icon-t2ka-open-thick,
+.trakt-icon-t2ka-play-thick
+{
+  vertical-align:top;
+}
