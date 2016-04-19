@@ -1,1 +1,3 @@
-# Trakt2KodiAddon-Extension
+Browser extension Trakt2KodiAddon
+
+*See branches*
