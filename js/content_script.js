@@ -30,7 +30,7 @@ var add_quick_icons = function () {
     quick_icons = grid_items[i].getElementsByClassName('quick-icons')[0];
     if (quick_icons) {
       data_type = grid_items[i].getAttribute('data-type');
-      if (data_type) {
+      if ((data_type == 'movie') || (data_type == 'show') || (data_type == 'season') || (data_type == 'episode')) {
         action_added = false;
         open_item = grid_items[i].getElementsByClassName('t2ka_open')[0];
         play_item = grid_items[i].getElementsByClassName('t2ka_play')[0];        
@@ -109,25 +109,22 @@ function get_trakt_id (grid_item, video_type) {
 
 
 function get_year (grid_item) {
-    var year = grid_item.getElementsByClassName('year')[0];
-    if (year) {
-      return year.innerHTML;
-    }
-    else {
-      year = grid_item.getElementsByClassName('titles')[0].getElementsByTagName('meta')[2].getAttribute('content').split('T')[0].split(' ')[0].split('-')[0];
-      if (year) {
-        return year; 
-      }
-      else {
-        return '';
-      }
-    }
+  var value = grid_item.getElementsByClassName('year')[0];
+  if (value) {
+    return value.innerHTML.split('T')[0].split(' ')[0].split('-')[0];
+  }
+  else {
+    return get_airdate(grid_item).split('T')[0].split(' ')[0].split('-')[0];
+  }
 }
 
 
 function get_season (grid_item) {
   var season = grid_item.getAttribute('data-season-number');
-  if (!season) {
+  if (season) {
+    return season;
+  }
+  else {
     season = grid_item.getElementsByClassName('main-title-sxe')[0];
     if (season) {
       if (season.innerHTML.indexOf('Special') > -1) {
@@ -136,10 +133,70 @@ function get_season (grid_item) {
       else {
         season = season.innerHTML.split('x')[0]; 
       }
+      return season;
+    }
+    else {
+      return '';      
     }
   }
-  if (season) {
-    return season;
+}
+
+
+function get_item_title (grid_item) {
+  var value = get_itemprop(grid_item, 'meta', 'name', false, 0);
+  if (value !== get_series_title(grid_item)) {
+    return value;
+  }  
+  else {
+    value = get_itemprop(grid_item, 'meta', 'name', false, 1);
+    if (value) {
+      return value;
+    }
+    else {
+      return '';
+    }
+  }
+}
+
+
+function get_series_title (grid_item) {
+  var value = get_parent_title(grid_item);
+  if (value) {
+    return value;
+  }
+  else {
+    value = get_parent_title(document);
+    return value;
+  }
+}
+
+
+function get_episode (grid_item) {
+  var value = get_itemprop(grid_item, 'meta', 'episodeNumber', false, 0);
+  if (value) {
+    return value;
+  }
+  else {
+    return '';  
+  }
+}
+
+
+function get_airdate (grid_item) {
+  var value = get_itemprop(grid_item, 'meta', 'datePublished', false, 0);
+  if (value) {
+    return value.split('T')[0].split(' ')[0];
+  }
+  else {
+    return '';  
+  }
+}
+
+
+function get_art (grid_item) {
+  var value = get_itemprop(grid_item, 'meta', 'image', false, 0);
+  if (value){
+    return value;
   }
   else {
     return '';
@@ -147,50 +204,38 @@ function get_season (grid_item) {
 }
 
 
-function get_item_title (grid_item) {
-  return grid_item.getElementsByClassName('titles')[0].getElementsByTagName('meta')[0].getAttribute('content');
+function get_parent_title(grid_item) {
+  var value = get_itemprop(grid_item, 'span', 'partOfSeries', true, 0);
+  if (value) {
+    value = get_itemprop(value, 'meta', 'name', false, 0);
+    if (value) {
+      return value;
+    }
+  }
+  return '';
 }
 
 
-function get_parent_title (grid_item) {
-  var title = grid_item.getElementsByClassName('titles')[0];
-  if (title) {
-    title = title.getElementsByTagName('span')[1];
-    if (title) {
-      title = title.getElementsByTagName('meta')[0];
-      if (title) {
-        title = title.getAttribute('content');
+function get_itemprop(grid_item, tag_name, prop_name, return_DOM, index) {
+  var count = 0;
+  var elements = grid_item.getElementsByTagName(tag_name);  
+  for (var i = 0; i < elements.length; i++) {
+    if (elements[i].getAttribute('itemprop') === prop_name) {
+      if (index === count) {
+        if (return_DOM === true) {
+          return elements[i] 
+        }
+        if (elements[i].getAttribute('content')) {
+          return elements[i].getAttribute('content');
+        }
+        else {
+          return null;
+        }
       }
+      count++
     }
   }
-  if (!title) {
-    title = document.getElementById('level-up-link');
-    if (title) {
-      title = title.innerHTML;
-    }
-    else {
-      title = document.body.getElementsByTagName('meta')[0].getAttribute('content');
-    }
-  }
-  if (!title) {
-    title = '';
-  }
-  return title;
-}
-
-
-function get_episode (grid_item) {
-  return grid_item.getElementsByClassName('titles')[0].getElementsByTagName('meta')[1].getAttribute('content');
-}
-
-
-function get_airdate (grid_item) {
-  return grid_item.getElementsByClassName('titles')[0].getElementsByTagName('meta')[2].getAttribute('content').split('T')[0].split(' ')[0];
-}
-
-
-function get_fanart (grid_item) {
-  return grid_item.getElementsByClassName('fanart')[0].getElementsByTagName('meta')[0].getAttribute('content');
+  return null;
 }
 
 
@@ -252,7 +297,7 @@ function output_params (action, format, grid_item) {
     case 'open_show':
       var video_type = 'Show';
       var year = get_year(grid_item);
-      var fanart = get_fanart(grid_item);
+      var fanart = get_art(grid_item);
       var title = get_item_title(grid_item);
       var trakt_id = get_trakt_id(grid_item, video_type);  
 
@@ -309,7 +354,7 @@ function output_params (action, format, grid_item) {
       var ep_title = get_item_title(grid_item);
       var ep_airdate = get_airdate(grid_item);
       var year = get_year(grid_item);
-      var title = get_parent_title(grid_item);
+      var title = get_series_title(grid_item);
       var trakt_id = get_trakt_id(grid_item, video_type);  
       var trakt_id_show = get_trakt_id(grid_item, 'Show');  
 
@@ -348,7 +393,7 @@ function output_params (action, format, grid_item) {
       var ep_title = get_item_title(grid_item);
       var ep_airdate = get_airdate(grid_item);
       var year = get_year(grid_item);
-      var title = get_parent_title(grid_item);
+      var title = get_series_title(grid_item);
       var trakt_id = get_trakt_id(grid_item, video_type);  
       var trakt_id_show = get_trakt_id(grid_item, 'Show');  
           

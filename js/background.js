@@ -26,14 +26,16 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 
-chrome.webNavigation.onHistoryStateUpdated.addListener(function () {
-    if ((settings.input_ip) && (settings.input_port) && (settings.input_addonid)) {
-        chrome.tabs.executeScript(null, {
-          file: 'js/content_script.js'
-        });
-        chrome.tabs.insertCSS(null, {
-          file: 'css/trakt.css'
-        });
+chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
+    if (details.url.indexOf('://trakt.tv/') > -1) {
+        if ((settings.input_ip) && (settings.input_port) && (settings.input_addonid)) {
+            chrome.tabs.executeScript(null, {
+              file: 'js/content_script.js'
+            });
+            chrome.tabs.insertCSS(null, {
+              file: 'css/trakt.css'
+            });
+        }
     }
 });
 
@@ -98,9 +100,4 @@ function executeaddon_json(params) {
         }
     };
     return JSON.stringify(jrpc);
-}
-
-
-function i18n(data_i18n) {
-    return chrome.i18n.getMessage(data_i18n);
 }
