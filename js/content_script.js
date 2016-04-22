@@ -30,7 +30,7 @@ var add_quick_icons = function () {
     quick_icons = grid_items[i].getElementsByClassName('quick-icons')[0];
     if (quick_icons) {
       data_type = grid_items[i].getAttribute('data-type');
-      if ((data_type == 'movie') || (data_type == 'show') || (data_type == 'season') || (data_type == 'episode')) {
+      if ((data_type === 'movie') || (data_type === 'show') || (data_type === 'season') || (data_type === 'episode')) {
         action_added = false;
         open_item = grid_items[i].getElementsByClassName('t2ka_open')[0];
         play_item = grid_items[i].getElementsByClassName('t2ka_play')[0];        
@@ -51,45 +51,62 @@ var add_quick_icons = function () {
           }
         }
         if (action_added) {
-          open_item = grid_items[i].getElementsByClassName('t2ka_open')[0];
-          play_item = grid_items[i].getElementsByClassName('t2ka_play')[0];
-          switch (data_type) {
-            case 'movie':
-              if (open_item) {
-                open_item.addEventListener("click", open_movie);                
-              }
-              if (play_item) {
-                if (settings.input_movie_show_play === true) {
-                  play_item.addEventListener("click", play_movie); 
-                }
-              }
-              break;
-            case 'show':
-              if (open_item) {            
-                open_item.addEventListener("click", open_show);
-              }
-              break;
-            case 'season':
-              if (open_item) {                        
-                open_item.addEventListener("click", open_season);                            
-              }
-              break;    
-            case 'episode':
-              if (open_item) {                        
-                open_item.addEventListener("click", open_episode);
-              }
-              if (play_item) {                          
-                if (settings.input_episode_show_play === true) {
-                  play_item.addEventListener("click", play_episode);
-                }
-              }
-              break;
-            default:
-              break;
-          }
+          add_listener(grid_items[i], data_type);
         }
       }
     }
+  }
+}
+
+
+function add_listener(grid_item, data_type) {
+  open_item = grid_item.getElementsByClassName('t2ka_open')[0];
+  play_item = grid_item.getElementsByClassName('t2ka_play')[0];
+  switch (data_type) {
+    case 'movie':
+      if (open_item) {
+        open_item.addEventListener("click", function () {
+          kodi_execute(this, 'open_movie');
+        });                
+      }
+      if (play_item) {
+        if (settings.input_movie_show_play === true) {
+          play_item.addEventListener("click", function () {
+            kodi_execute(this, 'play_movie');
+          });                 
+        }
+      }
+      break;
+    case 'show':
+      if (open_item) {            
+        open_item.addEventListener("click", function () {
+          kodi_execute(this, 'open_show');
+        });                
+      }
+      break;
+    case 'season':
+      if (open_item) {                        
+        open_item.addEventListener("click", function () {
+          kodi_execute(this, 'open_season');
+        });                                            
+      }
+      break;    
+    case 'episode':
+      if (open_item) {                        
+        open_item.addEventListener("click", function () {
+          kodi_execute(this, 'open_episode');
+        });                
+      }
+      if (play_item) {                          
+        if (settings.input_episode_show_play === true) {
+          play_item.addEventListener("click", function () {
+            kodi_execute(this, 'play_episode');
+          });                
+        }
+      }
+      break;
+    default:
+      break;
   }
 }
 
@@ -114,7 +131,23 @@ function get_year (grid_item) {
     return value.innerHTML.split('T')[0].split(' ')[0].split('-')[0];
   }
   else {
-    return get_airdate(grid_item).split('T')[0].split(' ')[0].split('-')[0];
+    value = get_airdate(grid_item);
+    if (value) {
+      return value.split('T')[0].split(' ')[0].split('-')[0];
+    }
+    else {
+      value = get_item_title(grid_item, false);
+      if (value) {
+        var year_regx = new RegExp(/^.*([0-9]{4}).*$/);
+        value = year_regx.exec(value);
+        if (value) {
+          if (value.length === 2) {
+            return value[1];
+          }
+        }
+      }
+      return '';
+    }
   }
 }
 
@@ -128,12 +161,11 @@ function get_season (grid_item) {
     season = grid_item.getElementsByClassName('main-title-sxe')[0];
     if (season) {
       if (season.innerHTML.indexOf('Special') > -1) {
-        season = '0';
+        return '0';
       }
       else {
-        season = season.innerHTML.split('x')[0]; 
+        return season.innerHTML.split('x')[0]; 
       }
-      return season;
     }
     else {
       return '';      
@@ -142,14 +174,35 @@ function get_season (grid_item) {
 }
 
 
-function get_item_title (grid_item) {
+function _strip_year (title) {
+  var year = new RegExp(/^(.+)\([0-9]{4}\).*$/);
+  var value = year.exec(title);
+  if (!value) {
+    return title;
+  }
+  else if (value.length === 2) {
+    return value[1].trim();
+  }
+  else {
+    return title;
+  }
+}
+
+
+function get_item_title (grid_item, strip_year) {
   var value = get_itemprop(grid_item, 'meta', 'name', false, 0);
   if (value !== get_series_title(grid_item)) {
+    if (strip_year) {
+      value = _strip_year(value);
+    }
     return value;
   }  
   else {
     value = get_itemprop(grid_item, 'meta', 'name', false, 1);
     if (value) {
+      if (strip_year) {
+        value = _strip_year(value);
+      }      
       return value;
     }
     else {
@@ -165,8 +218,7 @@ function get_series_title (grid_item) {
     return value;
   }
   else {
-    value = get_parent_title(document);
-    return value;
+    return get_parent_title(document);
   }
 }
 
@@ -245,7 +297,7 @@ function output_params (action, format, grid_item) {
     case 'open_movie':
       var video_type = 'Movie';
       var year = get_year(grid_item);
-      var title = get_item_title(grid_item);
+      var title = get_item_title(grid_item, true);
       var trakt_id = get_trakt_id(grid_item, video_type);
       switch (format) {
         case '1':
@@ -271,7 +323,7 @@ function output_params (action, format, grid_item) {
     case 'play_movie':
       var video_type = 'Movie';     
       var year = get_year(grid_item);
-      var title = get_item_title(grid_item);
+      var title = get_item_title(grid_item, true);
       var trakt_id = get_trakt_id(grid_item, video_type);     
       switch (format) {
         case '1':
@@ -298,7 +350,7 @@ function output_params (action, format, grid_item) {
       var video_type = 'Show';
       var year = get_year(grid_item);
       var fanart = get_art(grid_item);
-      var title = get_item_title(grid_item);
+      var title = get_item_title(grid_item, true);
       var trakt_id = get_trakt_id(grid_item, video_type);  
 
       switch (format) {
@@ -351,7 +403,7 @@ function output_params (action, format, grid_item) {
       var video_type = 'Episode';
       var season = get_season(grid_item);
       var episode = get_episode(grid_item);
-      var ep_title = get_item_title(grid_item);
+      var ep_title = get_item_title(grid_item, true);
       var ep_airdate = get_airdate(grid_item);
       var year = get_year(grid_item);
       var title = get_series_title(grid_item);
@@ -390,7 +442,7 @@ function output_params (action, format, grid_item) {
       var video_type = 'Episode';
       var season = get_season(grid_item);
       var episode = get_episode(grid_item);
-      var ep_title = get_item_title(grid_item);
+      var ep_title = get_item_title(grid_item, true);
       var ep_airdate = get_airdate(grid_item);
       var year = get_year(grid_item);
       var title = get_series_title(grid_item);
@@ -432,84 +484,28 @@ function output_params (action, format, grid_item) {
 }
 
 
-var open_movie = function () {
-  var ele = this;
-  run(function () {
-    var grid_item = ele.parentElement.parentElement.parentElement;
-    var params = output_params('open_movie', settings.input_output_format, grid_item);
-    if (params) {
-      kodi_execute(params);
-    }
-  });  
-};
+function _kodi_execute(params) {
+  if (params) {
+    t2ka_port.postMessage({ 
+      action: 'execute_addon', 
+      params: params
+    });
+  }
+}
 
 
-var play_movie = function () {
-  var ele = this; 
-  run(function () {  
-    var grid_item = ele.parentElement.parentElement.parentElement;
-    var params = output_params('play_movie', settings.input_output_format, grid_item);
-    if (params) {
-      kodi_execute(params);
-    }
-  });    
-};
+function kodi_execute (event_element, action) {
+  with_settings(function () {
+    var grid_item = event_element.parentElement.parentElement.parentElement;
+    if ((action === 'open_episode') && (settings.input_episode_open_season === true)) {
+      action = 'open_season';
+    } 
+    _kodi_execute(output_params(action, settings.input_output_format, grid_item));
+  });
+}
 
 
-var open_show = function () {
-  var ele = this; 
-  run(function () {
-    var grid_item = ele.parentElement.parentElement.parentElement;
-    var params = output_params('open_show', settings.input_output_format, grid_item);
-    if (params) {
-      kodi_execute(params);
-    }
-  });    
-};
-
-
-var open_season = function () {
-  var ele = this;
-  run(function () {  
-    var grid_item = ele.parentElement.parentElement.parentElement;
-    var params = output_params('open_season', settings.input_output_format, grid_item);
-    if (params) {
-      kodi_execute(params);
-    }
-  });    
-};
-
-
-var open_episode = function () {
-  var ele = this;
-  run(function () {  
-    var grid_item = ele.parentElement.parentElement.parentElement;
-    if (settings.input_episode_open_season === true) {
-      var params = output_params('open_season', settings.input_output_format, grid_item);    
-    }
-    else {
-      var params = output_params('open_episode', settings.input_output_format, grid_item);     
-    }
-    if (params) {
-      kodi_execute(params);
-    }
-  });    
-};
-
-
-var play_episode = function () {
-  var ele = this;
-  run(function () {  
-    var grid_item = ele.parentElement.parentElement.parentElement;
-    var params = output_params('play_episode', settings.input_output_format, grid_item);
-    if (params) {
-      kodi_execute(params);
-    }
-  });    
-};
-
-
-function run (callback) {
+function with_settings (callback) {
   chrome.storage.sync.get({
       input_ip: '',
       input_port: '9090',
@@ -528,17 +524,9 @@ function run (callback) {
 }
 
 
-function kodi_execute(params) {
-  t2ka_port.postMessage({ 
-    action: 'execute_addon', 
-    params: params
-  });
-}
-
-
 function _i18n(data_i18n) {
-    return chrome.i18n.getMessage(data_i18n);
+  return chrome.i18n.getMessage(data_i18n);
 }
 
 
-run(add_quick_icons);      
+with_settings(add_quick_icons);      

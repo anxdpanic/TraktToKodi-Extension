@@ -1,17 +1,19 @@
 var settings = null;
 
-run();
+
+load_settings();
+
 
 chrome.runtime.onConnect.addListener(function (port) {
     console.assert(port.name == 'T2KASocket');
     port.onMessage.addListener(function (msg) {
         switch (msg.action) {
             case 'load_settings':
-                run();
+                load_settings();
                 break;        
             case 'execute_addon':
                 if (msg.params) {
-                    run(function () {
+                    load_settings(function () {
                         execute_rpc(msg.action, msg.params)
                     });
                 }
@@ -40,7 +42,7 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
 });
 
 
-function run (callback) {
+function load_settings (callback) {
   chrome.storage.sync.get({
         input_ip: '',
         input_port: '9090',

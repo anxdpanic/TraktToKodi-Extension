@@ -4,7 +4,7 @@
   "name": "Trakt2KodiAddon",
   "short_name": "Trakt2KodiAddon",
   "description": "Open/Play trakt.tv items in a Kodi Addon",
-  "version": "0.0.0.7",
+  "version": "0.0.0.8",
   "default_locale": "en",
   "options_page": "html/settings.html",
 

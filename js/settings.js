@@ -1,7 +1,7 @@
 var settings_port = chrome.runtime.connect({ name: 'T2KASocket' });
 
 
-function load_settings() {
+function load_settings(callback) {
     chrome.storage.sync.get({
         input_ip: '',
         input_port: '9090',
@@ -12,20 +12,27 @@ function load_settings() {
         input_output_format: '1'
 
     }, function (items) {
-        document.getElementById('input-ip').value = items.input_ip;
-        document.getElementById('input-port').value = items.input_port;
-        document.getElementById('input-addonid').value = items.input_addonid;
-        document.getElementById('input-movie-show-play').checked = items.input_movie_show_play;
-        document.getElementById('input-episode-show-play').checked = items.input_episode_show_play;
-        document.getElementById('input-episode-open-season').checked = items.input_episode_open_season;        
-        var rads = document.getElementsByClassName('settings radio');
-        for (var i = 0; i < rads.length; i++) {
-            if (rads[i].value === items.input_output_format) {
-                rads[i].checked = true;
-                break;
-            }
+        if (callback) {
+            callback(items);
         }
     });
+}
+
+
+var update_settings = function (items) {
+    document.getElementById('input-ip').value = items.input_ip;
+    document.getElementById('input-port').value = items.input_port;
+    document.getElementById('input-addonid').value = items.input_addonid;
+    document.getElementById('input-movie-show-play').checked = items.input_movie_show_play;
+    document.getElementById('input-episode-show-play').checked = items.input_episode_show_play;
+    document.getElementById('input-episode-open-season').checked = items.input_episode_open_season;        
+    var rads = document.getElementsByClassName('settings radio');
+    for (var i = 0; i < rads.length; i++) {
+        if (rads[i].value === items.input_output_format) {
+            rads[i].checked = true;
+            break;
+        }
+    }    
 }
 
 
@@ -72,7 +79,7 @@ function clear_settings() {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    load_settings();
+    load_settings(update_settings);
 });
 
 
