@@ -2,7 +2,7 @@ var settings = null;
 var t2ka_port = chrome.runtime.connect({ name: 'T2KASocket' });
 
 
-function icon_element (name, data_type) {
+function action_icon (name, data_type) {
   var icon_element = document.createElement('a');
   icon_element.setAttribute('class', 't2ka_' + name);
   icon_element.setAttribute('title', _i18n(name) + ' ' + _i18n(data_type)); 
@@ -16,7 +16,28 @@ function icon_element (name, data_type) {
 }
 
 
-var add_quick_icons = function () {
+function action_button (name, data_type) {
+  var button_element = document.createElement('a');
+  button_element.setAttribute('class', 'btn btn-block btn-summary btn-t2ka-' + name);
+  var text_div = document.createElement('div');
+  text_div.setAttribute('class', 'text');
+  var main_info_div = document.createElement('div');
+  main_info_div.setAttribute('class', 'main-info');
+  main_info_div.innerHTML = _i18n(name);
+  var under_info_div = document.createElement('div');
+  under_info_div.setAttribute('class', 'under-info');
+  under_info_div.innerHTML = _i18n(data_type);  
+  var icon_trakt = document.createElement('div');
+  icon_trakt.setAttribute('class', 'fa fa-fw trakt-icon-t2ka-' + name);
+  text_div.appendChild(main_info_div);
+  text_div.appendChild(under_info_div);
+  button_element.appendChild(icon_trakt);
+  button_element.appendChild(text_div);
+  return button_element;
+}
+
+
+function add_quick_icons () {
   var quick_icons = '';
   var data_type = '';
   var action_added = false;
@@ -40,18 +61,18 @@ var add_quick_icons = function () {
           if ((settings.input_episode_open_season === true) && (data_type === 'episode')) {
             element_data_type = 'season';
           }
-          quick_icons.getElementsByClassName('actions')[0].appendChild(icon_element('open', element_data_type));
+          quick_icons.getElementsByClassName('actions')[0].appendChild(action_icon('open', element_data_type));
         }
         if (!play_item) {
           if ((data_type !== 'show') && (data_type !== 'season')) {
             if (((data_type === 'movie') && (settings.input_movie_show_play === true)) || ((data_type === 'episode') && (settings.input_episode_show_play === true))) {
               action_added = true;
-              quick_icons.getElementsByClassName('actions')[0].appendChild(icon_element('play', data_type));
+              quick_icons.getElementsByClassName('actions')[0].appendChild(action_icon('play', data_type));
             }
           }
         }
         if (action_added) {
-          add_listener(grid_items[i], data_type);
+          add_listener(grid_items[i], data_type, 'icon');
         }
       }
     }
@@ -59,20 +80,64 @@ var add_quick_icons = function () {
 }
 
 
-function add_listener(grid_item, data_type) {
-  open_item = grid_item.getElementsByClassName('t2ka_open')[0];
-  play_item = grid_item.getElementsByClassName('t2ka_play')[0];
+function add_action_buttons () {
+  var action_added = false;
+  var action_buttons = document.getElementsByClassName('action-buttons')[0];
+  if (action_buttons) {
+    data_type = action_buttons.getElementsByClassName('btn-watch')[0]
+    if (data_type) {
+      data_type = data_type.getAttribute('data-type');
+      if ((data_type === 'movie') || (data_type === 'show') || (data_type === 'season') || (data_type === 'episode')) {
+        action_added = false;
+        var open_item = action_buttons.getElementsByClassName('btn-t2ka-open')[0];
+        var play_item = action_buttons.getElementsByClassName('btn-t2ka-play')[0];         
+        if (!open_item) {
+          action_added = true;
+          element_data_type = data_type;
+          if ((settings.input_episode_open_season === true) && (data_type === 'episode')) {
+            element_data_type = 'season';
+          }
+          action_buttons.appendChild(action_button('open', element_data_type))
+        }
+        if (!play_item) {
+          if ((data_type !== 'show') && (data_type !== 'season')) {
+            if (((data_type === 'movie') && (settings.input_movie_show_play === true)) || ((data_type === 'episode') && (settings.input_episode_show_play === true))) {
+              action_added = true;
+              action_buttons.appendChild(action_button('play', data_type))
+            }
+          }
+        }
+        if (action_added) {
+          add_listener(action_buttons, data_type, 'button');
+        }
+      }
+    }
+  }
+}
+
+
+function add_listener(l_elements, data_type, item_type) {
+  var open_item = '';
+  var play_item = '';
+  if (item_type === 'icon') {
+    open_item = l_elements.getElementsByClassName('t2ka_open')[0];
+    play_item = l_elements.getElementsByClassName('t2ka_play')[0];
+  }
+  else if (item_type === 'button') {
+    open_item = l_elements.getElementsByClassName('btn-t2ka-open')[0];
+    play_item = l_elements.getElementsByClassName('btn-t2ka-play')[0];
+  }
   switch (data_type) {
     case 'movie':
       if (open_item) {
         open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_movie');
+          kodi_execute(this, 'open_movie', item_type);
         });                
       }
       if (play_item) {
         if (settings.input_movie_show_play === true) {
           play_item.addEventListener("click", function () {
-            kodi_execute(this, 'play_movie');
+            kodi_execute(this, 'play_movie', item_type);
           });                 
         }
       }
@@ -80,27 +145,27 @@ function add_listener(grid_item, data_type) {
     case 'show':
       if (open_item) {            
         open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_show');
+          kodi_execute(this, 'open_show', item_type);
         });                
       }
       break;
     case 'season':
       if (open_item) {                        
         open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_season');
+          kodi_execute(this, 'open_season', item_type);
         });                                            
       }
       break;    
     case 'episode':
       if (open_item) {                        
         open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_episode');
+          kodi_execute(this, 'open_episode', item_type);
         });                
       }
       if (play_item) {                          
         if (settings.input_episode_show_play === true) {
           play_item.addEventListener("click", function () {
-            kodi_execute(this, 'play_episode');
+            kodi_execute(this, 'play_episode', item_type);
           });                
         }
       }
@@ -111,32 +176,34 @@ function add_listener(grid_item, data_type) {
 }
 
 
-function get_trakt_id (grid_item, video_type) {
-  switch (video_type) {
-    case 'Movie':
-      return grid_item.getAttribute('data-movie-id');
-    case 'Show':
-      return grid_item.getAttribute('data-show-id');
-    case 'Episode':
-      return grid_item.getAttribute('data-episode-id'); 
-    default:
-      return '';     
-  }
+function get_trakt_id(grid_item, video_type) {
+    var value = '';
+    value = grid_item.getAttribute('data-'+ video_type.toLowerCase() +'-id');
+    if (!value) {
+      grid_item = grid_item.getElementsByClassName('btn-watch')[0];
+      if (grid_item) {
+        value = grid_item.getAttribute('data-'+ video_type.toLowerCase() +'-id');
+      }
+    }
+    return value;
 }
 
 
 function get_year (grid_item) {
   var value = grid_item.getElementsByClassName('year')[0];
   if (value) {
-    return value.innerHTML.split('T')[0].split(' ')[0].split('-')[0];
+    value = value.innerHTML;
+    if (value) {
+      return value.split('T')[0].split(' ')[0].split('-')[0];
+    }
   }
-  else {
+  if (!value) {
     value = get_airdate(grid_item);
     if (value) {
       return value.split('T')[0].split(' ')[0].split('-')[0];
     }
     else {
-      value = get_item_title(grid_item, false);
+      value = get_item_title(grid_item, false, false);
       if (value) {
         var year_regx = new RegExp(/^.*([0-9]{4}).*$/);
         value = year_regx.exec(value);
@@ -168,7 +235,13 @@ function get_season (grid_item) {
       }
     }
     else {
-      return '';      
+      season = grid_item.getElementsByClassName('btn-watch')[0];      
+      if (season) {
+        return season.getAttribute('data-season-number');
+      }
+      else {
+        return '';
+      }
     }
   }
 }
@@ -189,19 +262,34 @@ function _strip_year (title) {
 }
 
 
-function get_item_title (grid_item, strip_year) {
+function get_item_title (grid_item, strip_year, allow_match) {
+  var grid_items = document.getElementsByClassName('grid-item')[0];
+  if (!grid_items) {
+    grid_item = document;
+  }
   var value = get_itemprop(grid_item, 'meta', 'name', false, 0);
-  if (value !== get_series_title(grid_item)) {
-    if (strip_year) {
-      value = _strip_year(value);
+  if (value) {
+    if (!allow_match) {
+      if (value !== get_series_title(grid_item)) {
+        if (strip_year) {
+          return _strip_year(value);
+        }
+        return value; 
+      }
+      value = null;
     }
-    return value;
+    else {
+      if (strip_year) {
+        return _strip_year(value);
+      }
+      return value;     
+    }
   }  
-  else {
+  if (!value) {
     value = get_itemprop(grid_item, 'meta', 'name', false, 1);
     if (value) {
       if (strip_year) {
-        value = _strip_year(value);
+        return _strip_year(value);
       }      
       return value;
     }
@@ -218,7 +306,13 @@ function get_series_title (grid_item) {
     return value;
   }
   else {
-    return get_parent_title(document);
+    value = get_parent_title(document);
+    if (value) {
+      return value;
+    }
+    else {
+      return '';
+    }
   }
 }
 
@@ -229,18 +323,34 @@ function get_episode (grid_item) {
     return value;
   }
   else {
-    return '';  
+    value = get_itemprop(document, 'meta', 'episodeNumber', false, 0);
+    if (value) {
+      return value;
+    }  
+    else {
+      return '';  
+    }
   }
 }
 
 
 function get_airdate (grid_item) {
+  var grid_items = document.getElementsByClassName('grid-item')[0];
+  if (!grid_items) {
+    grid_item = document;
+  }  
   var value = get_itemprop(grid_item, 'meta', 'datePublished', false, 0);
   if (value) {
     return value.split('T')[0].split(' ')[0];
   }
   else {
-    return '';  
+    value = get_itemprop(grid_item, 'meta', 'startDate', false, 0);
+    if (value) {
+      return value.split('T')[0].split(' ')[0];
+    }
+    else {    
+      return '';  
+    }
   }
 }
 
@@ -297,7 +407,7 @@ function output_params (action, format, grid_item) {
     case 'open_movie':
       var video_type = 'Movie';
       var year = get_year(grid_item);
-      var title = get_item_title(grid_item, true);
+      var title = get_item_title(grid_item, true, false);
       var trakt_id = get_trakt_id(grid_item, video_type);
       switch (format) {
         case '1':
@@ -323,7 +433,7 @@ function output_params (action, format, grid_item) {
     case 'play_movie':
       var video_type = 'Movie';     
       var year = get_year(grid_item);
-      var title = get_item_title(grid_item, true);
+      var title = get_item_title(grid_item, true, false);
       var trakt_id = get_trakt_id(grid_item, video_type);     
       switch (format) {
         case '1':
@@ -350,7 +460,7 @@ function output_params (action, format, grid_item) {
       var video_type = 'Show';
       var year = get_year(grid_item);
       var fanart = get_art(grid_item);
-      var title = get_item_title(grid_item, true);
+      var title = get_item_title(grid_item, true, true);
       var trakt_id = get_trakt_id(grid_item, video_type);  
 
       switch (format) {
@@ -403,13 +513,13 @@ function output_params (action, format, grid_item) {
       var video_type = 'Episode';
       var season = get_season(grid_item);
       var episode = get_episode(grid_item);
-      var ep_title = get_item_title(grid_item, true);
+      var ep_title = get_item_title(grid_item, true, false);
       var ep_airdate = get_airdate(grid_item);
       var year = get_year(grid_item);
       var title = get_series_title(grid_item);
       var trakt_id = get_trakt_id(grid_item, video_type);  
       var trakt_id_show = get_trakt_id(grid_item, 'Show');  
-
+      
       switch (format) {
         case '1':
           params = {
@@ -442,7 +552,7 @@ function output_params (action, format, grid_item) {
       var video_type = 'Episode';
       var season = get_season(grid_item);
       var episode = get_episode(grid_item);
-      var ep_title = get_item_title(grid_item, true);
+      var ep_title = get_item_title(grid_item, true, false);
       var ep_airdate = get_airdate(grid_item);
       var year = get_year(grid_item);
       var title = get_series_title(grid_item);
@@ -494,13 +604,16 @@ function _kodi_execute(params) {
 }
 
 
-function kodi_execute (event_element, action) {
+function kodi_execute (event_element, action, item_type) {
   with_settings(function () {
-    var grid_item = event_element.parentElement.parentElement.parentElement;
+    var item = event_element.parentElement.parentElement.parentElement;
+    if (item_type === 'button') {
+      item = document.getElementsByTagName('html')[0];
+    }
     if ((action === 'open_episode') && (settings.input_episode_open_season === true)) {
       action = 'open_season';
     } 
-    _kodi_execute(output_params(action, settings.input_output_format, grid_item));
+    _kodi_execute(output_params(action, settings.input_output_format, item));
   });
 }
 
@@ -529,4 +642,7 @@ function _i18n(data_i18n) {
 }
 
 
-with_settings(add_quick_icons);      
+with_settings(function () {
+  add_quick_icons();
+  add_action_buttons();
+});      

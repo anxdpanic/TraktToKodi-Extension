@@ -11,8 +11,8 @@
   font-style:normal
 }
 
-.quick-icons .actions a [class^="trakt-icon-t2ka"], 
-.quick-icons .actions a [class*=" trakt-icon-t2ka"] {
+.quick-icons .actions a [class^="trakt-icon-t2ka-"], 
+.quick-icons .actions a [class*=" trakt-icon-t2ka-"] {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -20,8 +20,8 @@
     width: 100%;
 }
 
-[class^="trakt-icon-t2ka"],
-[class*=" trakt-icon-t2ka"] 
+[class^="trakt-icon-t2ka-"],
+[class*=" trakt-icon-t2ka-"] 
 {
   font-family:'trakt';
   speak:none;
@@ -37,12 +37,14 @@
   display:inline-block
 }
 
-.trakt-icon-t2ka-open-thick:before
+.trakt-icon-t2ka-open-thick:before,
+.trakt-icon-t2ka-open:before
 {
   content:"\e619"
 }
 
-.trakt-icon-t2ka-play-thick:before
+.trakt-icon-t2ka-play-thick:before,
+.trakt-icon-t2ka-play:before
 {
   content:"\e640"
 }
@@ -85,4 +87,63 @@
 .trakt-icon-t2ka-play-thick
 {
   vertical-align:top;
+}
+
+.btn-t2ka-open .text .main-info,
+.btn-t2ka-play .text .main-info {
+  line-height: normal !important;
+}
+
+.btn-t2ka-open .text .under-info,
+.btn-t2ka-play .text .under-info {
+  display: block !important;
+  font-size: 11px !important;
+}
+
+.btn-t2ka-open {
+  margin-top: 5px !important;
+  color: #747399 !important;
+  background-color: white !important;
+  border-color: #747399 !important;
+  border: solid 1px #747399 !important;
+  transition: all .5s !important
+}
+
+.btn-t2ka-open:hover, .btn-t2ka-open:focus {
+  color: white !important;
+  background-color: #747399 !important;
+  border-color: #48475e !important
+}
+
+.btn-t2ka-open:hover {
+  background-color: #747399 !important;
+  color: white !important
+}
+
+.btn-t2ka-open:hover .btn {
+  color: white !important
+}
+
+.btn-t2ka-play {
+  margin-top: 5px !important;
+  color: #990000 !important;
+  background-color: white !important;
+  border-color: #990000 !important;
+  border: solid 1px #990000 !important;
+  transition: all .5s !important
+}
+
+.btn-t2ka-play:hover, .btn-t2ka-play:focus {
+  color: white !important;
+  background-color: #990000 !important;
+  border-color: #5e0000 !important
+}
+
+.btn-t2ka-play:hover {
+  background-color: #990000 !important;
+  color: white !important
+}
+
+.btn-t2ka-play:hover .btn {
+  color: white !important
 }
