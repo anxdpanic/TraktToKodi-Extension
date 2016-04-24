@@ -3,12 +3,12 @@
 
   "name": "Trakt2KodiAddon",
   "description": "Open/Play trakt.tv items in a Kodi Addon",
-  "version": "0.0.0.8",
+  "version": "0.0.0.10",
   "default_locale": "en",
   "applications": {
     "gecko": {
       "id": "trakt2kodiaddon@anxdpanic",
-      "strict_min_version": "47.*"
+      "strict_min_version": "47.0a2"
     }
   },
 
