@@ -1,34 +1,50 @@
+var settings = null;
 var settings_port = chrome.runtime.connect({ name: 'T2KASocket' });
 
 
-function load_settings(callback) {
-    chrome.storage.sync.get({
-        input_ip: '',
-        input_port: '9090',
-        input_addonid: '',
-        input_movie_show_play: false,
-        input_episode_show_play: false,
-        input_episode_open_season: false,
-        input_output_format: '1'
-
-    }, function (items) {
-        if (callback) {
-            callback(items);
+settings_port.onMessage.addListener(function(msg) {
+  switch (msg.action) {
+    case 'with_settings':
+      if ((msg.cb_functions) && (msg.settings)) {
+        settings = msg.settings;
+        var funcs = msg.cb_functions;
+        if (funcs) {
+            for (var i = 0; i < funcs.length; i++) {
+                switch(funcs[i]) {
+                    case 'update_settings':
+                        update_settings();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-    });
+      }
+      break;
+    default:
+      break;
+  }
+});
+
+
+function with_settings (callback_array) {
+    settings_port.postMessage({ 
+        action: 'with_settings', 
+        cb_functions: callback_array
+    });  
 }
 
 
-var update_settings = function (items) {
-    document.getElementById('input-ip').value = items.input_ip;
-    document.getElementById('input-port').value = items.input_port;
-    document.getElementById('input-addonid').value = items.input_addonid;
-    document.getElementById('input-movie-show-play').checked = items.input_movie_show_play;
-    document.getElementById('input-episode-show-play').checked = items.input_episode_show_play;
-    document.getElementById('input-episode-open-season').checked = items.input_episode_open_season;        
+var update_settings = function () {
+    document.getElementById('input-ip').value = settings.input_ip;
+    document.getElementById('input-port').value = settings.input_port;
+    document.getElementById('input-addonid').value = settings.input_addonid;
+    document.getElementById('input-movie-show-play').checked = settings.input_movie_show_play;
+    document.getElementById('input-episode-show-play').checked = settings.input_episode_show_play;
+    document.getElementById('input-episode-open-season').checked = settings.input_episode_open_season;        
     var rads = document.getElementsByClassName('settings radio');
     for (var i = 0; i < rads.length; i++) {
-        if (rads[i].value === items.input_output_format) {
+        if (rads[i].value === settings.input_output_format) {
             rads[i].checked = true;
             break;
         }
@@ -51,7 +67,7 @@ function save_settings() {
             break;
         }
     }
-    chrome.storage.sync.set({
+    var new_settings = {
         input_ip: input_ip.value,
         input_port: input_port.value,
         input_addonid: input_addonid.value,
@@ -59,9 +75,8 @@ function save_settings() {
         input_episode_show_play: input_episode_show_play.checked,
         input_episode_open_season: input_episode_open_season.checked,
         input_output_format: input_output_format        
-    }, function () {
-        settings_port.postMessage({ action: 'load_settings' });        
-    });
+    }
+    settings_port.postMessage({ action: 'save_settings', settings: new_settings });        
 }
 
 
@@ -92,7 +107,7 @@ function load_version () {
 
 document.addEventListener('DOMContentLoaded', function () {
     load_version();
-    load_settings(update_settings);
+    with_settings(['update_settings']);
 });
 
 
@@ -115,7 +130,7 @@ for (var i = 0; i < checkboxes.length; i++) {
 
 var radios = document.getElementsByClassName('settings radio');
 for (var i = 0; i < radios.length; i++) {
-    radios[i].addEventListener('change', function () {
+    radios[i].addEventListener('click', function () {
         save_settings();
     });    
 }

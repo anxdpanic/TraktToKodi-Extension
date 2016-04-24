@@ -8,8 +8,13 @@ chrome.runtime.onConnect.addListener(function (port) {
     console.assert(port.name == 'T2KASocket');
     port.onMessage.addListener(function (msg) {
         switch (msg.action) {
-            case 'load_settings':
-                load_settings();
+            case 'save_settings':
+                if (msg.settings) {
+                    save_settings(msg.settings);
+                }
+                else {
+                  console.log('T2KASocket |save_settings| missing |settings|');
+                }                
                 break;        
             case 'execute_addon':
                 if (msg.params) {
@@ -18,9 +23,23 @@ chrome.runtime.onConnect.addListener(function (port) {
                     });
                 }
                 else {
-                  console.log('T2KASocket |execute_addon| missing params');
+                  console.log('T2KASocket |execute_addon| missing |params|');
                 }
-                break;              
+                break;
+            case 'with_settings':
+                if (msg.cb_functions) {
+                    load_settings(function() {
+                        port.postMessage({ 
+                          action: 'with_settings', 
+                          settings: settings,
+                          cb_functions: msg.cb_functions
+                        });                        
+                    });
+                }
+                else {
+                  console.log('T2KASocket |with_settings| missing |cb_functions|');
+                }
+                break;            
             default:
                 console.log('T2KASocket |No valid action provided|');
         }
@@ -40,6 +59,16 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
         }
     }
 });
+
+
+function save_settings(new_settings) {
+    chrome.storage.sync.set(
+        new_settings, 
+        function () {
+            settings = new_settings;
+        }
+    );    
+}
 
 
 function load_settings (callback) {
