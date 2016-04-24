@@ -50,10 +50,10 @@ chrome.runtime.onConnect.addListener(function (port) {
 chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
     if (details.url.indexOf('://trakt.tv/') > -1) {
         if ((settings.input_ip) && (settings.input_port) && (settings.input_addonid)) {
-            chrome.tabs.executeScript(null, {
+            chrome.tabs.executeScript(details.tabId, {
               file: '/js/content_script.js'
             });
-            chrome.tabs.insertCSS(null, {
+            chrome.tabs.insertCSS(details.tabId, {
               file: '/css/trakt.css'
             });
         }

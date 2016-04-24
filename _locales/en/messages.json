@@ -58,7 +58,11 @@
   "tab_3": {
     "description": "English: Output",
     "message": "Output"
-  },
+  },  
+  "settings_format_header": {
+    "description": "English: Formats",
+    "message": "Formats"
+  }, 
   "input_output_format_1": {
     "description": "English: Format 1",
     "message": "Format 1"

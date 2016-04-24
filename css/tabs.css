@@ -20,6 +20,8 @@ button {
 .content {
   background: #FFF; 
   color: #373737;
+  min-height: 321px;
+  max-height: 321px;
 }
 
 div[id^="content"] {
