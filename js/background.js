@@ -62,31 +62,55 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
 
 
 function save_settings(new_settings) {
-    chrome.storage.sync.set(
-        new_settings, 
-        function () {
-            settings = new_settings;
-        }
-    );    
+    if (chrome.storage.sync) {
+        chrome.storage.sync.set(
+            new_settings, 
+            function () {
+                settings = new_settings;
+            }
+        );    
+    }
+    else {
+        chrome.storage.local.set(
+            new_settings, 
+            function () {
+                settings = new_settings;
+            }
+        );          
+    }    
 }
 
 
 function load_settings (callback) {
-  chrome.storage.sync.get({
-        input_ip: '',
-        input_port: '9090',
-        input_addonid: '',
-        input_movie_show_play: false,
-        input_episode_show_play: false,
-        input_episode_open_season: false,
-        input_output_format: '1'      
-
-  }, function (items) {
-        settings = items;
-        if (callback) {
-            callback();
-        }
-  });
+    var default_settings = {
+            input_ip: '',
+            input_port: '9090',
+            input_addonid: '',
+            input_movie_show_play: false,
+            input_episode_show_play: false,
+            input_episode_open_season: false,
+            input_output_format: '1'      
+    }   
+    if (chrome.storage.sync) {
+        chrome.storage.sync.get(
+            default_settings, 
+            function (items) {
+                settings = items;
+                if (callback) {
+                    callback();
+                }
+        });
+    }
+    else {
+        chrome.storage.local.get(
+            default_settings, 
+            function (items) {
+                settings = items;
+                if (callback) {
+                    callback();
+                }
+        });            
+    }
 }
 
 
