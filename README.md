@@ -1,7 +1,8 @@
-#### Google Chrome extension: Trakt2KodiAddon
+#### Firefox extension: Trakt2KodiAddon
 
 **Requirements:**
 
+* Firefox 45.0+
 * A Kodi addon that supports this extensions Kodi JSON-RPC requests
 * Kodi setting: _Settings -> Services -> Remote Control -> Allow remote control by programs on other systems_
 
@@ -11,4 +12,4 @@ Uses Kodi JSON-RPC over websockets to remotely execute the provided addon id wit
 
 Special thanks to @konsumer420 for the icons/artwork
 
-[**Trakt2KodiAddon on Chrome Web Store**](https://chrome.google.com/webstore/detail/trakt2kodiaddon/ibhhcpgcnpddmbpnidenoncilcjognga)
+

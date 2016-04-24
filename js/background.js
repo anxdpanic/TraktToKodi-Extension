@@ -32,10 +32,10 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
     if (details.url.indexOf('://trakt.tv/') > -1) {
         if ((settings.input_ip) && (settings.input_port) && (settings.input_addonid)) {
             chrome.tabs.executeScript(null, {
-              file: 'js/content_script.js'
+              file: '/js/content_script.js'
             });
             chrome.tabs.insertCSS(null, {
-              file: 'css/trakt.css'
+              file: '/css/trakt.css'
             });
         }
     }
