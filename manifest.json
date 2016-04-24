@@ -8,12 +8,8 @@
   "applications": {
     "gecko": {
       "id": "trakt2kodiaddon@anxdpanic",
-      "strict_min_version": "45.0"
+      "strict_min_version": "47.*"
     }
-  },
-  
-  "options_ui": {
-    "page": "/html/settings.html"
   },
 
   "icons": {

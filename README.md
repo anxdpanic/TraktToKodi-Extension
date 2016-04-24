@@ -2,7 +2,7 @@
 
 **Requirements:**
 
-* Firefox 45.0+
+* Firefox 47.0+
 * A Kodi addon that supports this extensions Kodi JSON-RPC requests
 * Kodi setting: _Settings -> Services -> Remote Control -> Allow remote control by programs on other systems_
 
