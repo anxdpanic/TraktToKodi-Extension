@@ -2,6 +2,34 @@ var settings = null;
 var t2ka_port = chrome.runtime.connect({ name: 'T2KASocket' });
 
 
+t2ka_port.onMessage.addListener(function(msg) {
+  switch (msg.action) {
+    case 'with_settings':
+      if ((msg.cb_functions) && (msg.settings)) {
+        settings = msg.settings;
+        var funcs = msg.cb_functions;
+        if (funcs) {
+          for (var i = 0; i < funcs.length; i++) {
+            switch(funcs[i]) {
+              case 'add_quick_icons':
+                add_quick_icons();
+                break;
+              case 'add_action_buttons':
+                add_action_buttons();
+                break;
+              default:
+                break;                                
+            }
+          }
+        }
+      }
+      break;
+    default:
+      break;
+  }
+});
+
+
 function action_icon (name, data_type) {
   var icon_element = document.createElement('a');
   icon_element.setAttribute('class', 't2ka_' + name);
@@ -37,7 +65,7 @@ function action_button (name, data_type) {
 }
 
 
-function add_quick_icons () {
+var add_quick_icons = function () {
   var quick_icons = '';
   var data_type = '';
   var action_added = false;
@@ -80,7 +108,7 @@ function add_quick_icons () {
 }
 
 
-function add_action_buttons () {
+var add_action_buttons = function () {
   var action_added = false;
   var action_buttons = document.getElementsByClassName('action-buttons')[0];
   if (action_buttons) {
@@ -614,35 +642,14 @@ function _kodi_execute(params) {
 
 
 function kodi_execute (event_element, action, item_type) {
-  with_settings(function () {
-    var item = event_element.parentElement.parentElement.parentElement;
-    if (item_type === 'button') {
-      item = document.getElementsByTagName('html')[0];
-    }
-    if ((action === 'open_episode') && (settings.input_episode_open_season === true)) {
-      action = 'open_season';
-    } 
-    _kodi_execute(output_params(action, settings.input_output_format, item));
-  });
-}
-
-
-function with_settings (callback) {
-  chrome.storage.sync.get({
-      input_ip: '',
-      input_port: '9090',
-      input_addonid: '',
-      input_movie_show_play: false,
-      input_episode_show_play: false,
-      input_episode_open_season: false,
-      input_output_format: '1'      
-
-  }, function (items) {
-      settings = items;
-      if (callback) {
-        callback();
-      }
-  });
+  var item = event_element.parentElement.parentElement.parentElement;
+  if (item_type === 'button') {
+    item = document.getElementsByTagName('html')[0];
+  }
+  if ((action === 'open_episode') && (settings.input_episode_open_season === true)) {
+    action = 'open_season';
+  } 
+  _kodi_execute(output_params(action, settings.input_output_format, item));
 }
 
 
@@ -651,7 +658,12 @@ function _i18n(data_i18n) {
 }
 
 
-with_settings(function () {
-  add_quick_icons();
-  add_action_buttons();
-});      
+function with_settings (callback_array) {
+  t2ka_port.postMessage({ 
+    action: 'with_settings', 
+    cb_functions: callback_array
+  });  
+}
+
+
+with_settings(['add_quick_icons', 'add_action_buttons']);
