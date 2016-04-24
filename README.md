@@ -11,4 +11,4 @@ Uses Kodi JSON-RPC over websockets to remotely execute the provided addon id wit
 
 Special thanks to @konsumer420 for the icons/artwork
 
-[**Trakt2KodiAddon on Chrome Web Store**](https://chrome.google.com/webstore/detail/trakt2kodiaddon/ibhhcpgcnpddmbpnidenoncilcjognga)
+
