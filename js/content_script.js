@@ -176,7 +176,7 @@ function add_listener(l_elements, data_type, item_type) {
 }
 
 
-function get_trakt_id(grid_item, video_type) {
+function get_trakt_id (grid_item, video_type) {
     var value = '';
     value = grid_item.getAttribute('data-'+ video_type.toLowerCase() +'-id');
     if (!value) {
@@ -306,6 +306,15 @@ function get_series_title (grid_item) {
     return value;
   }
   else {
+    var is_fake = grid_item.getAttribute('class');
+    if (is_fake) {
+      if (is_fake.indexOf('fake') > -1) {
+        value = grid_item.getElementsByTagName('h5')[0];
+        if (value) {
+          return value.innerHTML.trim();
+        }
+      }
+    }
     value = get_parent_title(document);
     if (value) {
       return value;
@@ -347,7 +356,7 @@ function get_airdate (grid_item) {
     value = get_itemprop(grid_item, 'meta', 'startDate', false, 0);
     if (value) {
       return value.split('T')[0].split(' ')[0];
-    }
+    }  
     else {    
       return '';  
     }
