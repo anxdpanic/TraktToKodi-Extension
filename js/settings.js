@@ -78,7 +78,20 @@ function clear_settings() {
 }
 
 
+function get_version () {
+    var manifest = chrome.runtime.getManifest();
+    return manifest.version;
+}
+
+
+function load_version () {
+    var version_element = document.getElementById('extension_version');
+    version_element.innerHTML = chrome.i18n.getMessage('version') + ': ' + get_version();    
+}
+
+
 document.addEventListener('DOMContentLoaded', function () {
+    load_version();
     load_settings(update_settings);
 });
 

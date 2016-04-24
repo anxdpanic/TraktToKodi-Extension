@@ -98,5 +98,9 @@
   "episode": {
     "description": "English: episode",
     "message": "episode"
+  },
+  "version": {
+    "description": "English: version",
+    "message": "version"
   }
 }
