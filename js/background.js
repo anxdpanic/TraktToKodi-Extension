@@ -59,47 +59,66 @@ var settings = {
 };
 
 
-function execute_rpc(action, params) {
-    var ip = settings.get.input_ip;  
-    var port = settings.get.input_port;
-    var ws_url = 'ws://' + ip + ':' + port + '/jsonrpc';
-    var log_lead = 'execute_rpc\r\n|url| ' + ws_url + '\r\n';
-    switch (action) {
-        case 'execute_addon':
-            if (params) {
-                var kodi_socket = new WebSocket(ws_url);
-                var jrpc = executeaddon_json(params);
-                kodi_socket.onopen = function (event) {
-                    console.log(log_lead + '|request| ' + jrpc);
-                    kodi_socket.send(jrpc);
-                };
-                kodi_socket.onmessage = function (event) {
-                    console.log(log_lead + '|response| ' + event.data);
-                    kodi_socket.close();
-                };
-            }
-            else {
-                console.log('execute_rpc |execute_addon| missing params');
-            }
-            break;
-        default:
-            console.log('execute_rpc |No action provided|');
-    }
-}
-
-
-function executeaddon_json(params) {
-    var jrpc = {
-        jsonrpc: '2.0',
-        id: 1,
-        method: 'Addons.ExecuteAddon',
-        params: {
-            wait: false,
-            addonid: settings.get.input_addonid,
-            params: params
+var rpc = {
+    can_connect: function () {
+        if ((settings.get.input_ip !== '') && (settings.get.input_port) && (settings.get.input_addonid !== '')) {
+            return true;
         }
-    };
-    return JSON.stringify(jrpc);
+        else {
+            return false;
+        }
+    },
+    connection: function () {
+        this.url = 'ws://' + settings.get.input_ip + ':' + settings.get.input_port + '/jsonrpc';
+        this.socket = new WebSocket(this.url);
+    },
+    execute: function (action, params){
+        if (rpc.can_connect() !== true) {
+            console.log('rpc.execute(): Connection information missing/incomplete');
+            return;
+        }
+        var conn = new rpc.connection();
+        var log_lead = 'rpc.execute(\'' + action + '\'):\r\n|url| ' + conn.url + '\r\n';
+        switch (action) {
+            case 'execute_addon':
+                if (params) {
+                    var rpc_request = rpc.stringify.execute_addon(params);
+                    conn.socket.onopen = function (event) {
+                        console.log(log_lead + '|request| ' + rpc_request);
+                        conn.socket.send(rpc_request);
+                    };
+                    conn.socket.onmessage = function (event) {
+                        console.log(log_lead + '|response| ' + event.data);
+                        conn.socket.close();
+                    };
+                }
+                else {
+                    console.log('rpc.execute(\'' + action + '\'): missing |params|');
+                }
+                break;
+            default:
+                console.log('rpc.execute(): No |action| provided');
+                break;
+        }        
+    },
+    json: {
+        execute_addon: function (params) {
+            return  {   jsonrpc: '2.0',
+                        id: 1,
+                        method: 'Addons.ExecuteAddon',
+                        params: {
+                            wait: false,
+                            addonid: settings.get.input_addonid,
+                            params: params
+                        }
+                    }
+        }
+    },
+    stringify: {
+        execute_addon: function (params) {
+            return JSON.stringify(rpc.json.execute_addon(params));
+        }
+    }
 }
 
 
@@ -115,17 +134,17 @@ chrome.runtime.onConnect.addListener(function (port) {
                     settings.save(msg.settings);
                 }
                 else {
-                  console.log('T2KASocket |save_settings| missing |settings|');
+                  console.log('T2KASocket: |save_settings| missing |settings|');
                 }                
                 break;        
             case 'execute_addon':
                 if (msg.params) {
                     settings.load(function () {
-                        execute_rpc(msg.action, msg.params)
+                        rpc.execute(msg.action, msg.params);
                     });
                 }
                 else {
-                  console.log('T2KASocket |execute_addon| missing |params|');
+                  console.log('T2KASocket: |execute_addon| missing |params|');
                 }
                 break;
             case 'with_settings':
@@ -139,11 +158,12 @@ chrome.runtime.onConnect.addListener(function (port) {
                     });
                 }
                 else {
-                  console.log('T2KASocket |with_settings| missing |cb_functions|');
+                  console.log('T2KASocket: |with_settings| missing |cb_functions|');
                 }
                 break;            
             default:
-                console.log('T2KASocket |No valid action provided|');
+                console.log('T2KASocket: No valid |action| provided');
+                break;
         }
     });
 });
@@ -151,7 +171,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
     if (details.url.indexOf('://trakt.tv/') > -1) {
-        if ((settings.get.input_ip) && (settings.get.input_port) && (settings.get.input_addonid)) {
+        if (rpc.can_connect() === true) {
             chrome.tabs.executeScript(details.tabId, {
               file: '/js/content_script.js'
             });
