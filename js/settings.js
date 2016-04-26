@@ -101,7 +101,8 @@ function get_version () {
 
 function load_version () {
     var version_element = document.getElementById('extension_version');
-    version_element.innerHTML = chrome.i18n.getMessage('version') + ': ' + get_version();    
+    var inner_text = document.createTextNode(chrome.i18n.getMessage('version') + ': ' + get_version());
+    version_element.appendChild(inner_text);
 }
 
 

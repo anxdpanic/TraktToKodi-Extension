@@ -51,10 +51,10 @@ function action_button (name, data_type) {
   text_div.setAttribute('class', 'text');
   var main_info_div = document.createElement('div');
   main_info_div.setAttribute('class', 'main-info');
-  main_info_div.innerHTML = _i18n(name);
+  main_info_div.appendChild(document.createTextNode(_i18n(name)));
   var under_info_div = document.createElement('div');
   under_info_div.setAttribute('class', 'under-info');
-  under_info_div.innerHTML = _i18n(data_type);  
+  under_info_div.appendChild(document.createTextNode(_i18n(data_type)));  
   var icon_trakt = document.createElement('div');
   icon_trakt.setAttribute('class', 'fa fa-fw trakt-icon-t2ka-' + name);
   text_div.appendChild(main_info_div);
