@@ -5,7 +5,8 @@ function i18n(data_i18n) {
 
 function i18n_these(elements) {
     var inner_text = null;
-    for (i = 0; i < elements.length; i++) {
+    var _length = elements.length;
+    for (i = 0; i < _length; i++) {
         inner_text = document.createTextNode(i18n(elements[i].getAttribute('data-i18n')));
         elements[i].appendChild(inner_text);
     }
