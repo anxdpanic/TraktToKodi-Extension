@@ -1,8 +1,8 @@
 var port = chrome.runtime.connect({ name: 'T2KASocket' });
 
 
-String.prototype.Capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+function Capitalize (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 
@@ -472,7 +472,7 @@ function output_params (action, format, item) {
         case '1':
           params = {
             mode: 'get_sources',
-            video_type: video_type.Capitalize(),
+            video_type: Capitalize(video_type),
             trakt_id: trakt.id(),
             year: trakt.year(),
             title: trakt.title(true, false)
@@ -494,7 +494,7 @@ function output_params (action, format, item) {
         case '1':
           params = {
             mode: 'autoplay',
-            video_type: video_type.Capitalize(),
+            video_type: Capitalize(video_type),
             trakt_id: trakt.id(),
             year: trakt.year(),
             title: trakt.title(true, false)
@@ -559,7 +559,7 @@ function output_params (action, format, item) {
         case '1':
           params = {
             mode: 'get_sources',
-            video_type: video_type.Capitalize(),
+            video_type: Capitalize(video_type),
             season: trakt.season(),
             episode: trakt.episode(),
             trakt_id: trakt.id('show'),
@@ -588,7 +588,7 @@ function output_params (action, format, item) {
         case '1':
           params = {
             mode: 'autoplay',
-            video_type: video_type.Capitalize(),
+            video_type: Capitalize(video_type),
             season: trakt.season(),
             episode: trakt.episode(),
             trakt_id: trakt.id('show'),
@@ -655,7 +655,16 @@ port.onMessage.addListener(function(msg) {
         settings.get = msg.settings;
         var _length = msg.cb_functions.length;
         for (var i = 0; i < _length; i++) {
-          eval(msg.cb_functions[i])();
+          switch(msg.cb_functions[i]) {
+            case 'add_items.icons':
+              add_items.icons();
+              break;
+            case 'add_items.buttons':
+              add_items.buttons();
+              break;
+            default:
+              break;
+          }
         }
       }
       break;
