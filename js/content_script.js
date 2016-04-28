@@ -1,492 +1,510 @@
-var settings = null;
-var t2ka_port = chrome.runtime.connect({ name: 'T2KASocket' });
+var port = chrome.runtime.connect({ name: 'T2KASocket' });
 
 
-t2ka_port.onMessage.addListener(function(msg) {
-  switch (msg.action) {
-    case 'with_settings':
-      if ((msg.cb_functions) && (msg.settings)) {
-        settings = msg.settings;
-        var funcs = msg.cb_functions;
-        if (funcs) {
-          for (var i = 0; i < funcs.length; i++) {
-            switch(funcs[i]) {
-              case 'add_quick_icons':
-                add_quick_icons();
-                break;
-              case 'add_action_buttons':
-                add_action_buttons();
-                break;
-              default:
-                break;                                
-            }
+String.prototype.Capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+
+var settings = {
+  get: (null),
+  load: function (callback_array) {
+    port.postMessage({ 
+      action: 'with_settings', 
+      cb_functions: callback_array
+    });      
+  }
+}
+
+
+function CheckType (data_type) {
+  this.valid = function () {
+    if ((data_type === 'movie') || (data_type === 'show') || (data_type === 'season') || (data_type === 'episode')) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };
+  this.can_play = function () {
+    if ((data_type !== 'show') && (data_type !== 'season')) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };  
+  this.show_play = function () {
+    if (this.can_play() === true) {
+      if (((data_type === 'movie') && (settings.get.input_movie_show_play === true)) 
+        || ((data_type === 'episode') && (settings.get.input_episode_show_play === true))) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    } 
+    else {
+      return false;
+    }
+  };
+  this.open_to_season = function () {
+    if ((settings.get.input_episode_open_season === true) && (data_type === 'episode')) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };
+}
+
+
+var action_elements = { 
+  add_to_page: function (root_item, item, data_type, action_type) {
+    var check_type = new CheckType(data_type);
+    if (check_type.valid() === true) {
+      var action_added = false;
+      if (action_type === 'button') {
+        var open_item = item.getElementsByClassName('btn-t2ka-open')[0];
+        var play_item = item.getElementsByClassName('btn-t2ka-play')[0];         
+      }
+      else {
+        var open_item = item.getElementsByClassName('t2ka_open')[0];
+        var play_item = item.getElementsByClassName('t2ka_play')[0];
+      }
+      if (!open_item) {
+        action_added = true;
+        var element_data_type = data_type;
+        if (check_type.open_to_season()) {
+          element_data_type = 'season';
+        }
+        if (action_type === 'button') {
+          root_item.appendChild(action_elements.button('open', element_data_type))
+        }
+        else {
+          root_item.getElementsByClassName('actions')[0].appendChild(action_elements.icon('open', element_data_type));  
+        }       
+      }
+      if (!play_item) {
+        if (check_type.show_play() === true) {
+          action_added = true;
+          if (action_type === 'button') {
+            root_item.appendChild(action_elements.button('play', data_type))
+          }
+          else {          
+            root_item.getElementsByClassName('actions')[0].appendChild(action_elements.icon('play', data_type));
           }
         }
       }
-      break;
-    default:
-      break;
-  }
-});
-
-
-function action_icon (name, data_type) {
-  var icon_element = document.createElement('a');
-  icon_element.setAttribute('class', 't2ka_' + name);
-  icon_element.setAttribute('title', _i18n(name) + ' ' + _i18n(data_type)); 
-  var base_div = document.createElement('div');
-  base_div.setAttribute('class', 'base');
-  var icon_thick = document.createElement('div');
-  icon_thick.setAttribute('class', 'trakt-icon-t2ka-' + name + '-thick');
-  icon_element.appendChild(base_div);
-  icon_element.appendChild(icon_thick);
-  return icon_element;
-}
-
-
-function action_button (name, data_type) {
-  var button_element = document.createElement('a');
-  button_element.setAttribute('class', 'btn btn-block btn-summary btn-t2ka-' + name);
-  var text_div = document.createElement('div');
-  text_div.setAttribute('class', 'text');
-  var main_info_div = document.createElement('div');
-  main_info_div.setAttribute('class', 'main-info');
-  main_info_div.innerHTML = _i18n(name);
-  var under_info_div = document.createElement('div');
-  under_info_div.setAttribute('class', 'under-info');
-  under_info_div.innerHTML = _i18n(data_type);  
-  var icon_trakt = document.createElement('div');
-  icon_trakt.setAttribute('class', 'fa fa-fw trakt-icon-t2ka-' + name);
-  text_div.appendChild(main_info_div);
-  text_div.appendChild(under_info_div);
-  button_element.appendChild(icon_trakt);
-  button_element.appendChild(text_div);
-  return button_element;
-}
-
-
-var add_quick_icons = function () {
-  var quick_icons = '';
-  var data_type = '';
-  var action_added = false;
-  var open_item = '';
-  var play_item = '';  
-  var element_data_type = '';
-
-  var grid_items = document.getElementsByClassName('grid-item');
-  
-  for (var i = 0; i < grid_items.length; i++) {
-    quick_icons = grid_items[i].getElementsByClassName('quick-icons')[0];
-    if (quick_icons) {
-      data_type = grid_items[i].getAttribute('data-type');
-      if ((data_type === 'movie') || (data_type === 'show') || (data_type === 'season') || (data_type === 'episode')) {
-        action_added = false;
-        open_item = grid_items[i].getElementsByClassName('t2ka_open')[0];
-        play_item = grid_items[i].getElementsByClassName('t2ka_play')[0];        
-        if (!open_item) {
-          action_added = true;
-          element_data_type = data_type;
-          if ((settings.input_episode_open_season === true) && (data_type === 'episode')) {
-            element_data_type = 'season';
-          }
-          quick_icons.getElementsByClassName('actions')[0].appendChild(action_icon('open', element_data_type));
-        }
-        if (!play_item) {
-          if ((data_type !== 'show') && (data_type !== 'season')) {
-            if (((data_type === 'movie') && (settings.input_movie_show_play === true)) || ((data_type === 'episode') && (settings.input_episode_show_play === true))) {
-              action_added = true;
-              quick_icons.getElementsByClassName('actions')[0].appendChild(action_icon('play', data_type));
-            }
-          }
-        }
-        if (action_added) {
-          add_listener(grid_items[i], data_type, 'icon');
-        }
+      if (action_added) {
+        action_elements.add_listener(item, data_type, action_type);
       }
     }
-  }
-}
-
-
-var add_action_buttons = function () {
-  var action_added = false;
-  var action_buttons = document.getElementsByClassName('action-buttons')[0];
-  if (action_buttons) {
-    data_type = action_buttons.getElementsByClassName('btn-watch')[0]
-    if (data_type) {
-      data_type = data_type.getAttribute('data-type');
-      if ((data_type === 'movie') || (data_type === 'show') || (data_type === 'season') || (data_type === 'episode')) {
-        action_added = false;
-        var open_item = action_buttons.getElementsByClassName('btn-t2ka-open')[0];
-        var play_item = action_buttons.getElementsByClassName('btn-t2ka-play')[0];         
-        if (!open_item) {
-          action_added = true;
-          element_data_type = data_type;
-          if ((settings.input_episode_open_season === true) && (data_type === 'episode')) {
-            element_data_type = 'season';
-          }
-          action_buttons.appendChild(action_button('open', element_data_type))
-        }
-        if (!play_item) {
-          if ((data_type !== 'show') && (data_type !== 'season')) {
-            if (((data_type === 'movie') && (settings.input_movie_show_play === true)) || ((data_type === 'episode') && (settings.input_episode_show_play === true))) {
-              action_added = true;
-              action_buttons.appendChild(action_button('play', data_type))
-            }
-          }
-        }
-        if (action_added) {
-          add_listener(action_buttons, data_type, 'button');
-        }
-      }
+  },
+  icon: function (name, data_type) {
+    var icon_element = document.createElement('a');
+    icon_element.setAttribute('class', 't2ka_' + name);
+    icon_element.setAttribute('title', i18n(name) + ' ' + i18n(data_type)); 
+    var base_div = document.createElement('div');
+    base_div.setAttribute('class', 'base');
+    var icon_thick = document.createElement('div');
+    icon_thick.setAttribute('class', 'trakt-icon-t2ka-' + name + '-thick');
+    icon_element.appendChild(base_div);
+    icon_element.appendChild(icon_thick);
+    return icon_element;
+  },
+  button: function (name, data_type) {
+    var button_element = document.createElement('a');
+    button_element.setAttribute('class', 'btn btn-block btn-summary btn-t2ka-' + name);
+    var text_div = document.createElement('div');
+    text_div.setAttribute('class', 'text');
+    var main_info_div = document.createElement('div');
+    main_info_div.setAttribute('class', 'main-info');
+    main_info_div.appendChild(document.createTextNode(i18n(name)));
+    var under_info_div = document.createElement('div');
+    under_info_div.setAttribute('class', 'under-info');
+    under_info_div.appendChild(document.createTextNode(i18n(data_type)));  
+    var icon_trakt = document.createElement('div');
+    icon_trakt.setAttribute('class', 'fa fa-fw trakt-icon-t2ka-' + name);
+    text_div.appendChild(main_info_div);
+    text_div.appendChild(under_info_div);
+    button_element.appendChild(icon_trakt);
+    button_element.appendChild(text_div);
+    return button_element;
+  },
+  add_listener: function (items, data_type, action_input) {
+    var open_item = '';
+    var play_item = '';
+    var check_type = new CheckType(data_type);
+    if (action_input === 'icon') {
+      open_item = items.getElementsByClassName('t2ka_open')[0];
+      play_item = items.getElementsByClassName('t2ka_play')[0];
     }
-  }
-}
-
-
-function add_listener(l_elements, data_type, item_type) {
-  var open_item = '';
-  var play_item = '';
-  if (item_type === 'icon') {
-    open_item = l_elements.getElementsByClassName('t2ka_open')[0];
-    play_item = l_elements.getElementsByClassName('t2ka_play')[0];
-  }
-  else if (item_type === 'button') {
-    open_item = l_elements.getElementsByClassName('btn-t2ka-open')[0];
-    play_item = l_elements.getElementsByClassName('btn-t2ka-play')[0];
-  }
-  switch (data_type) {
-    case 'movie':
-      if (open_item) {
-        open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_movie', item_type);
-        });                
-      }
-      if (play_item) {
-        if (settings.input_movie_show_play === true) {
-          play_item.addEventListener("click", function () {
-            kodi_execute(this, 'play_movie', item_type);
-          });                 
-        }
-      }
-      break;
-    case 'show':
-      if (open_item) {            
-        open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_show', item_type);
-        });                
-      }
-      break;
-    case 'season':
-      if (open_item) {                        
-        open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_season', item_type);
-        });                                            
-      }
-      break;    
-    case 'episode':
-      if (open_item) {                        
-        open_item.addEventListener("click", function () {
-          kodi_execute(this, 'open_episode', item_type);
-        });                
-      }
-      if (play_item) {                          
-        if (settings.input_episode_show_play === true) {
-          play_item.addEventListener("click", function () {
-            kodi_execute(this, 'play_episode', item_type);
+    else if (action_input === 'button') {
+      open_item = items.getElementsByClassName('btn-t2ka-open')[0];
+      play_item = items.getElementsByClassName('btn-t2ka-play')[0];
+    }
+    switch (data_type) {
+      case 'movie':
+        if (open_item) {
+          open_item.addEventListener("click", function () {
+            kodi.execute_addon(this, 'open_movie', action_input);
           });                
         }
-      }
-      break;
-    default:
-      break;
+        if (play_item) {
+          if (check_type.show_play() === true) {
+            play_item.addEventListener("click", function () {
+              kodi.execute_addon(this, 'play_movie', action_input);
+            });                 
+          }
+        }
+        break;
+      case 'show':
+        if (open_item) {            
+          open_item.addEventListener("click", function () {
+            kodi.execute_addon(this, 'open_show', action_input);
+          });                
+        }
+        break;
+      case 'season':
+        if (open_item) {                        
+          open_item.addEventListener("click", function () {
+            kodi.execute_addon(this, 'open_season', action_input);
+          });                                            
+        }
+        break;    
+      case 'episode':
+        if (open_item) {                        
+          open_item.addEventListener("click", function () {
+            kodi.execute_addon(this, 'open_episode', action_input);
+          });                
+        }
+        if (play_item) {                          
+          if (check_type.show_play() === true) {
+            play_item.addEventListener("click", function () {
+              kodi.execute_addon(this, 'play_episode', action_input);
+            });                
+          }
+        }
+        break;
+      default:
+        break;
+    }
   }
 }
 
 
-function get_trakt_id (grid_item, video_type) {
+var add_items = {
+  icons: function () {
+    var quick_icons = '';
+    var data_type = '';
+    var grid_items = document.getElementsByClassName('grid-item');
+    var _length = grid_items.length;
+    for (var i = 0; i < _length; i++) {
+      if (grid_items[i].getElementsByClassName('grid-item')[0]) { continue; }
+      data_type = '';
+      quick_icons = grid_items[i].getElementsByClassName('quick-icons')[0];
+      if (quick_icons) {
+        data_type = grid_items[i].getAttribute('data-type');
+        if (!data_type) { continue; }
+        action_elements.add_to_page(quick_icons, grid_items[i], data_type, 'icon');
+      }
+    }    
+  },
+  buttons: function () {
+    var action_buttons = document.getElementsByClassName('action-buttons')[0];
+    if (action_buttons) {
+      data_type = action_buttons.getElementsByClassName('btn-watch')[0]
+      if (data_type) {
+        data_type = data_type.getAttribute('data-type');
+        if (!data_type) { return; }
+        action_elements.add_to_page(action_buttons, action_buttons, data_type, 'button');
+      }
+    }    
+  }
+}
+
+
+function Trakt (item, video_type) {
+  this.id = function (_video_type) {
+    if (!_video_type) {
+      _video_type = video_type;
+    }
     var value = '';
-    value = grid_item.getAttribute('data-'+ video_type.toLowerCase() +'-id');
+    value = item.getAttribute('data-'+ _video_type.toLowerCase() +'-id');
     if (!value) {
-      grid_item = grid_item.getElementsByClassName('btn-watch')[0];
-      if (grid_item) {
-        value = grid_item.getAttribute('data-'+ video_type.toLowerCase() +'-id');
+      value = item.getElementsByClassName('btn-watch')[0];
+      if (value) {
+        value = value.getAttribute('data-'+ _video_type.toLowerCase() +'-id');
       }
     }
     return value;
-}
-
-
-function get_year (grid_item) {
-  var value = grid_item.getElementsByClassName('year')[0];
-  if (value) {
-    value = value.innerHTML;
+  },
+  this.year = function () {
+    var value = item.getElementsByClassName('year')[0];
     if (value) {
-      return value.split('T')[0].split(' ')[0].split('-')[0];
-    }
-  }
-  if (!value) {
-    value = get_airdate(grid_item);
-    if (value) {
-      return value.split('T')[0].split(' ')[0].split('-')[0];
-    }
-    else {
-      value = get_item_title(grid_item, false, false);
+      value = value.innerHTML;
       if (value) {
-        var year_regx = new RegExp(/^.*([0-9]{4}).*$/);
-        value = year_regx.exec(value);
-        if (value) {
-          if (value.length === 2) {
-            return value[1];
-          }
-        }
+        return value.split('T')[0].split(' ')[0].split('-')[0];
       }
-      return '';
     }
-  }
-}
-
-
-function get_season (grid_item) {
-  var season = grid_item.getAttribute('data-season-number');
-  if (season) {
-    return season;
-  }
-  else {
-    season = grid_item.getElementsByClassName('main-title-sxe')[0];
-    if (season) {
-      if (season.innerHTML.indexOf('Special') > -1) {
-        return '0';
+    if (!value) {
+      value = this.airdate();
+      if (value) {
+        return value.split('T')[0].split(' ')[0].split('-')[0];
       }
       else {
-        return season.innerHTML.split('x')[0]; 
+        value = this.title(false, false);
+        if (value) {
+          var year_regx = new RegExp(/^.*([0-9]{4}).*$/);
+          value = year_regx.exec(value);
+          if (value) {
+            if (value.length === 2) {
+              return value[1];
+            }
+          }
+        }
+        return '';
       }
     }
+  },
+  this._strip_year = function (title) {
+    var year = new RegExp(/^(.+)\([0-9]{4}\).*$/);
+    var value = year.exec(title);
+    if (!value) {
+      return title;
+    }
+    else if (value.length === 2) {
+      return value[1].trim();
+    }
     else {
-      season = grid_item.getElementsByClassName('btn-watch')[0];      
+      return title;
+    }
+  },
+  this.season = function () {
+    var season = item.getAttribute('data-season-number');
+    if (season) {
+      return season;
+    }
+    else {
+      season = item.getElementsByClassName('main-title-sxe')[0];
       if (season) {
-        return season.getAttribute('data-season-number');
+        if (season.innerHTML.indexOf('Special') > -1) {
+          return '0';
+        }
+        else {
+          return season.innerHTML.split('x')[0]; 
+        }
+      }
+      else {
+        season = item.getElementsByClassName('btn-watch')[0];      
+        if (season) {
+          return season.getAttribute('data-season-number');
+        }
+        else {
+          return '';
+        }
+      }
+    }
+  },
+  this.title = function (strip_year, allow_match) {
+    var items = document.getElementsByClassName('grid-item')[0];
+    var _item = item;
+    if (!items) {
+      _item = document;
+    }
+    var value = this._itemprop(_item, 'meta', 'name', false, 0);
+    if (value) {
+      if (!allow_match) {
+        if (value !== this.series_title(_item)) {
+          if (strip_year) {
+            return this._strip_year(value);
+          }
+          return value; 
+        }
+        value = null;
+      }
+      else {
+        if (strip_year) {
+          return this._strip_year(value);
+        }
+        return value;     
+      }
+    }  
+    if (!value) {
+      value = this._itemprop(_item, 'meta', 'name', false, 1);
+      if (value) {
+        if (strip_year) {
+          return this._strip_year(value);
+        }      
+        return value;
       }
       else {
         return '';
       }
     }
-  }
-}
-
-
-function _strip_year (title) {
-  var year = new RegExp(/^(.+)\([0-9]{4}\).*$/);
-  var value = year.exec(title);
-  if (!value) {
-    return title;
-  }
-  else if (value.length === 2) {
-    return value[1].trim();
-  }
-  else {
-    return title;
-  }
-}
-
-
-function get_item_title (grid_item, strip_year, allow_match) {
-  var grid_items = document.getElementsByClassName('grid-item')[0];
-  if (!grid_items) {
-    grid_item = document;
-  }
-  var value = get_itemprop(grid_item, 'meta', 'name', false, 0);
-  if (value) {
-    if (!allow_match) {
-      if (value !== get_series_title(grid_item)) {
-        if (strip_year) {
-          return _strip_year(value);
-        }
-        return value; 
-      }
-      value = null;
+  },
+  this.series_title = function (_item) {
+    if (!_item) {
+      _item = item;
     }
-    else {
-      if (strip_year) {
-        return _strip_year(value);
-      }
-      return value;     
-    }
-  }  
-  if (!value) {
-    value = get_itemprop(grid_item, 'meta', 'name', false, 1);
+    var value = this.parent_title(_item);
     if (value) {
-      if (strip_year) {
-        return _strip_year(value);
-      }      
       return value;
     }
     else {
-      return '';
-    }
-  }
-}
-
-
-function get_series_title (grid_item) {
-  var value = get_parent_title(grid_item);
-  if (value) {
-    return value;
-  }
-  else {
-    var is_fake = grid_item.getAttribute('class');
-    if (is_fake) {
-      if (is_fake.indexOf('fake') > -1) {
-        value = grid_item.getElementsByTagName('h5')[0];
+      var is_fake = _item.getAttribute('class');
+      if (is_fake) {
+        if (is_fake.indexOf('fake') > -1) {
+          value = _item.getElementsByTagName('h5')[0];
+          if (value) {
+            return value.innerHTML.trim();
+          }
+        }
+      }
+      value = this.parent_title(document);
+      if (value) {
+        return value;
+      }
+      else {
+        value = _item.parentElement.getElementsByClassName('show-title')[0];
         if (value) {
-          return value.innerHTML.trim();
+          value = value.getElementsByTagName('a')[0];
+          if (value) {
+            return value.innerHTML.trim();
+          }
+        }
+        if (!value) {
+          return '';
         }
       }
     }
-    value = get_parent_title(document);
+  },
+  this.episode = function () {
+    var value = this._itemprop(item, 'meta', 'episodeNumber', false, 0);
     if (value) {
       return value;
     }
     else {
-      return '';
+      value = this._itemprop(document, 'meta', 'episodeNumber', false, 0);
+      if (value) {
+        return value;
+      }  
+      else {
+        return '';  
+      }
     }
-  }
-}
-
-
-function get_episode (grid_item) {
-  var value = get_itemprop(grid_item, 'meta', 'episodeNumber', false, 0);
-  if (value) {
-    return value;
-  }
-  else {
-    value = get_itemprop(document, 'meta', 'episodeNumber', false, 0);
-    if (value) {
-      return value;
+  },
+  this.airdate = function () {
+    var items = document.getElementsByClassName('grid-item')[0];
+    var _item = item;
+    if (!items) {
+      _item = document;
     }  
-    else {
-      return '';  
-    }
-  }
-}
-
-
-function get_airdate (grid_item) {
-  var grid_items = document.getElementsByClassName('grid-item')[0];
-  if (!grid_items) {
-    grid_item = document;
-  }  
-  var value = get_itemprop(grid_item, 'meta', 'datePublished', false, 0);
-  if (value) {
-    return value.split('T')[0].split(' ')[0];
-  }
-  else {
-    value = get_itemprop(grid_item, 'meta', 'startDate', false, 0);
+    var value = this._itemprop(_item, 'meta', 'datePublished', false, 0);
     if (value) {
       return value.split('T')[0].split(' ')[0];
-    }  
-    else {    
-      return '';  
     }
-  }
-}
-
-
-function get_art (grid_item) {
-  var value = get_itemprop(grid_item, 'meta', 'image', false, 0);
-  if (value){
-    return value;
-  }
-  else {
-    return '';
-  }
-}
-
-
-function get_parent_title(grid_item) {
-  var value = get_itemprop(grid_item, 'span', 'partOfSeries', true, 0);
-  if (value) {
-    value = get_itemprop(value, 'meta', 'name', false, 0);
-    if (value) {
+    else {
+      value = this._itemprop(_item, 'meta', 'startDate', false, 0);
+      if (value) {
+        return value.split('T')[0].split(' ')[0];
+      }  
+      else {    
+        return '';  
+      }
+    }
+  },
+  this.art = function () {
+    var value = this._itemprop(item, 'meta', 'image', false, 0);
+    if (value){
       return value;
     }
-  }
-  return '';
-}
-
-
-function get_itemprop(grid_item, tag_name, prop_name, return_DOM, index) {
-  var count = 0;
-  var elements = grid_item.getElementsByTagName(tag_name);  
-  for (var i = 0; i < elements.length; i++) {
-    if (elements[i].getAttribute('itemprop') === prop_name) {
-      if (index === count) {
-        if (return_DOM === true) {
-          return elements[i] 
-        }
-        if (elements[i].getAttribute('content')) {
-          return elements[i].getAttribute('content');
-        }
-        else {
-          return null;
-        }
-      }
-      count++
+    else {
+      return '';
     }
-  }
-  return null;
+  },
+  this.parent_title = function (_item) {
+    if (!_item) {
+      _item = item;
+    }
+    var value = this._itemprop(_item, 'span', 'partOfSeries', true, 0);
+    if (value) {
+      value = this._itemprop(value, 'meta', 'name', false, 0);
+      if (value) {
+        return value;
+      }
+    }
+    return '';
+  },
+  this._itemprop = function (_item, tag_name, prop_name, return_DOM, index) {
+    var count = 0;
+    var elements = _item.getElementsByTagName(tag_name);
+    var _length = elements.length;
+    for (var i = 0; i < _length; i++) {
+      if (elements[i].getAttribute('itemprop') === prop_name) {
+        if (index === count) {
+          if (return_DOM === true) {
+            return elements[i] 
+          }
+          if (elements[i].getAttribute('content')) {
+            return elements[i].getAttribute('content');
+          }
+          else {
+            return null;
+          }
+        }
+        count++
+      }
+    }
+    return null;
+  }  
 }
 
 
-function output_params (action, format, grid_item) {
+function output_params (action, format, item) {
   var params = {};
+  var video_type = action.split('_')[1];
+  var trakt = new Trakt(item, video_type);
   switch (action) {
     case 'open_movie':
-      var video_type = 'Movie';
-      var year = get_year(grid_item);
-      var title = get_item_title(grid_item, true, false);
-      var trakt_id = get_trakt_id(grid_item, video_type);
       switch (format) {
         case '1':
           params = {
             mode: 'get_sources',
-            video_type: video_type,
-            trakt_id: trakt_id,
-            year: year,
-            title: title
+            video_type: video_type.Capitalize(),
+            trakt_id: trakt.id(),
+            year: trakt.year(),
+            title: trakt.title(true, false)
           };
           break; 
         case '2':
           params = {
             mode: 'open',
             video_type: video_type,
-            trakt_id: trakt_id
+            trakt_id: trakt.id()
           };
           break; 
         default: 
           break;
       }
       break;
-    case 'play_movie':
-      var video_type = 'Movie';     
-      var year = get_year(grid_item);
-      var title = get_item_title(grid_item, true, false);
-      var trakt_id = get_trakt_id(grid_item, video_type);     
+    case 'play_movie':   
       switch (format) {
         case '1':
           params = {
             mode: 'autoplay',
-            video_type: video_type,
-            trakt_id: trakt_id,
-            year: year,
-            title: title
+            video_type: video_type.Capitalize(),
+            trakt_id: trakt.id(),
+            year: trakt.year(),
+            title: trakt.title(true, false)
           };        
           break;
         case '2':
           params = {
             mode: 'play',
             video_type: video_type,
-            trakt_id: trakt_id,
+            trakt_id: trakt.id(),
           };        
           break;          
         default: 
@@ -494,27 +512,21 @@ function output_params (action, format, grid_item) {
       }
       break;
     case 'open_show':
-      var video_type = 'Show';
-      var year = get_year(grid_item);
-      var fanart = get_art(grid_item);
-      var title = get_item_title(grid_item, true, true);
-      var trakt_id = get_trakt_id(grid_item, video_type);  
-
       switch (format) {
         case '1':
           params = {
             mode: 'seasons',
-            fanart: fanart,
-            trakt_id: trakt_id,
-            year: year,
-            title: title
+            fanart: trakt.art(),
+            trakt_id: trakt.id(),
+            year: trakt.year(),
+            title: trakt.title(true, true)
           };        
           break;
         case '2':
           params = {
             mode: 'open',
             video_type: video_type,
-            trakt_id: trakt_id
+            trakt_id: trakt.id()
           };        
           break;          
         default: 
@@ -522,24 +534,20 @@ function output_params (action, format, grid_item) {
       }
       break;
     case 'open_season':
-      var video_type = 'Show';
-      var season = get_season(grid_item);
-      var trakt_id = get_trakt_id(grid_item, video_type); 
-
       switch (format) {
         case '1':
           params = {
             mode: 'episodes',
-            season: season,
-            trakt_id: trakt_id,
+            season: trakt.season(),
+            trakt_id: trakt.id('show'),
           };    
           break;
         case '2':
           params = {
             mode: 'open',
             video_type: video_type,          
-            season: season,
-            trakt_id: trakt_id
+            season: trakt.season(),
+            trakt_id: trakt.id()
           };    
           break;          
         default: 
@@ -547,77 +555,57 @@ function output_params (action, format, grid_item) {
       }
       break;
     case 'open_episode':
-      var video_type = 'Episode';
-      var season = get_season(grid_item);
-      var episode = get_episode(grid_item);
-      var ep_title = get_item_title(grid_item, true, false);
-      var ep_airdate = get_airdate(grid_item);
-      var year = get_year(grid_item);
-      var title = get_series_title(grid_item);
-      var trakt_id = get_trakt_id(grid_item, video_type);  
-      var trakt_id_show = get_trakt_id(grid_item, 'Show');  
-      
       switch (format) {
         case '1':
           params = {
             mode: 'get_sources',
-            video_type: video_type,
-            season: season,
-            episode: episode,
-            trakt_id: trakt_id_show,
-            year: year,
-            ep_airdate: ep_airdate,
-            title: title,
-            ep_title: ep_title
+            video_type: video_type.Capitalize(),
+            season: trakt.season(),
+            episode: trakt.episode(),
+            trakt_id: trakt.id('show'),
+            year: trakt.year(),
+            ep_airdate: trakt.airdate(),
+            title: trakt.series_title(),
+            ep_title: trakt.title(true, false)
           }; 
           break;
         case '2':
           params = {
             mode: 'open',
             video_type: video_type,
-            season: season,
-            episode: episode,
-            show_id: trakt_id_show,            
-            trakt_id: trakt_id
+            season: trakt.season(),
+            episode: trakt.episode(),
+            show_id: trakt.id('show'),            
+            trakt_id: trakt.id()
           }; 
           break;          
         default: 
           break;
       }
       break;                        
-    case 'play_episode':
-      var video_type = 'Episode';
-      var season = get_season(grid_item);
-      var episode = get_episode(grid_item);
-      var ep_title = get_item_title(grid_item, true, false);
-      var ep_airdate = get_airdate(grid_item);
-      var year = get_year(grid_item);
-      var title = get_series_title(grid_item);
-      var trakt_id = get_trakt_id(grid_item, video_type);  
-      var trakt_id_show = get_trakt_id(grid_item, 'Show');  
-          
+    case 'play_episode':       
       switch (format) {
         case '1':
           params = {
             mode: 'autoplay',
-            video_type: video_type,
-            season: season,
-            episode: episode,
-            trakt_id: trakt_id_show,
-            year: year,
-            ep_airdate: ep_airdate,
-            title: title,
-            ep_title: ep_title
+            video_type: video_type.Capitalize(),
+            season: trakt.season(),
+            episode: trakt.episode(),
+            trakt_id: trakt.id('show'),
+            year: trakt.year(),
+            ep_airdate: trakt.airdate(),
+            title: trakt.series_title(),
+            ep_title: trakt.title(true, false)
           };        
           break;
         case '2':
           params = {
             mode: 'play',
             video_type: video_type,
-            season: season,
-            episode: episode,
-            show_id: trakt_id_show,
-            trakt_id: trakt_id
+            season: trakt.season(),
+            episode: trakt.episode(),
+            show_id: trakt.id('show'),
+            trakt_id: trakt.id()
           }; 
           break;             
         default: 
@@ -631,39 +619,50 @@ function output_params (action, format, grid_item) {
 }
 
 
-function _kodi_execute(params) {
-  if (params) {
-    t2ka_port.postMessage({ 
-      action: 'execute_addon', 
-      params: params
-    });
+var kodi = {
+  execute_addon: function (event_element, action, action_input) {
+    var item = event_element.parentElement.parentElement.parentElement;
+    if (action_input === 'button') {
+      item = document.getElementsByTagName('html')[0];
+    }
+    if ((action === 'open_episode') && (settings.get.input_episode_open_season === true)) {
+      action = 'open_season';
+    } 
+    kodi.rpc.execute_addon(output_params(action, settings.get.input_output_format, item));
+  },
+  rpc: {
+    execute_addon: function (params) {
+      if (params) {
+        port.postMessage({ 
+          action: 'execute_addon', 
+          params: params
+        });
+      }
+    }
   }
 }
 
 
-function kodi_execute (event_element, action, item_type) {
-  var item = event_element.parentElement.parentElement.parentElement;
-  if (item_type === 'button') {
-    item = document.getElementsByTagName('html')[0];
-  }
-  if ((action === 'open_episode') && (settings.input_episode_open_season === true)) {
-    action = 'open_season';
-  } 
-  _kodi_execute(output_params(action, settings.input_output_format, item));
-}
-
-
-function _i18n(data_i18n) {
+function i18n(data_i18n) {
   return chrome.i18n.getMessage(data_i18n);
 }
 
 
-function with_settings (callback_array) {
-  t2ka_port.postMessage({ 
-    action: 'with_settings', 
-    cb_functions: callback_array
-  });  
-}
+port.onMessage.addListener(function(msg) {
+  switch (msg.action) {
+    case 'with_settings':
+      if ((msg.cb_functions) && (msg.settings)) {
+        settings.get = msg.settings;
+        var _length = msg.cb_functions.length;
+        for (var i = 0; i < _length; i++) {
+          eval(msg.cb_functions[i])();
+        }
+      }
+      break;
+    default:
+      break;
+  }
+});
 
 
-with_settings(['add_quick_icons', 'add_action_buttons']);
+settings.load(['add_items.icons', 'add_items.buttons']);

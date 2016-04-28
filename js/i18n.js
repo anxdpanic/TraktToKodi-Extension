@@ -1,24 +1,20 @@
-function i18n() {
-    var elements = document.getElementsByClassName('settings header');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].innerHTML = _i18n(elements[i].getAttribute('data-i18n'));
-    }
-    elements = document.getElementsByTagName('label');
-    for (i = 0; i < elements.length; i++) {
-        elements[i].innerHTML = _i18n(elements[i].getAttribute('data-i18n'));
-    }
-    elements = document.getElementsByTagName('button');
-    for (i = 0; i < elements.length; i++) {
-        elements[i].innerHTML = _i18n(elements[i].getAttribute('data-i18n'));
-    }  
-}
-
-
-function _i18n(data_i18n) {
+function i18n(data_i18n) {
     return chrome.i18n.getMessage(data_i18n);
 }
 
 
+function i18n_these(elements) {
+    var inner_text = null;
+    var _length = elements.length;
+    for (i = 0; i < _length; i++) {
+        inner_text = document.createTextNode(i18n(elements[i].getAttribute('data-i18n')));
+        elements[i].appendChild(inner_text);
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', function () {
-    i18n();
+    i18n_these(document.getElementsByClassName('settings header'));
+    i18n_these(document.getElementsByTagName('label'));
+    i18n_these(document.getElementsByTagName('button'));
 });
