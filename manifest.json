@@ -4,7 +4,7 @@
   "name": "Trakt2KodiAddon",
   "short_name": "Trakt2KodiAddon",
   "description": "Open/Play trakt.tv items in a Kodi Addon",
-  "version": "0.0.0.9",
+  "version": "0.0.0.11",
   "default_locale": "en",
   "options_page": "/html/settings.html",
 
@@ -21,22 +21,6 @@
     },
     "default_popup": "/html/settings.html"
   },
-
-  "web_accessible_resources": [
-    "/images/icon_16.png",
-    "/images/icon_19.png",
-    "/images/icon_38.png",
-    "/images/icon_48.png",
-    "/images/icon_128.png",
-    "/css/settings.css",
-    "/css/tabs.css",
-    "/css/trakt.css",
-    "/js/background.js",
-    "/js/content_script.js",
-    "/js/i18n.js",
-    "/js/settings.js",
-    "/html/settings.html"
-  ],
 
   "content_scripts": [
     {
