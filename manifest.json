@@ -1,57 +1,47 @@
 {
-  "manifest_version": 2,
+	"manifest_version": 2,
 
-  "name": "Trakt2KodiAddon",
-  "short_name": "Trakt2KodiAddon",
-  "description": "Open/Play trakt.tv items in a Kodi Addon",
-  "version": "0.0.0.11",
-  "default_locale": "en",
-  "options_page": "/html/settings.html",
+	"name": "Trakt2KodiAddon",
+	"short_name": "Trakt2KodiAddon",
+	"description": "Open/Play trakt.tv items in a Kodi Addon",
+	"version": "0.0.0.11",
+	"default_locale": "en",
+	"options_page": "/html/settings.html",
 
-  "icons": {
-    "128": "/images/icon_128.png",
-    "48": "/images/icon_48.png",
-    "16": "/images/icon_16.png"
-  },
+	"icons": {
+		"128": "/images/icon_128.png",
+		"48": "/images/icon_48.png",
+		"16": "/images/icon_16.png"
+	},
 
-  "browser_action": {
-    "default_icon": {
-      "38": "/images/icon_38.png",
-      "19": "/images/icon_19.png"
-    },
-    "default_popup": "/html/settings.html"
-  },
+	"browser_action": {
+		"default_icon": {
+			"38": "/images/icon_38.png",
+			"19": "/images/icon_19.png"
+		},
+		"default_popup": "/html/settings.html"
+	},
 
-  "content_scripts": [
-    {
-      "matches": [
-        "*://trakt.tv/*"
-      ],
-      "css": [
-        "/css/trakt.css"
-      ],
-      "js": [
-        "/js/content_script.js"
-      ],
-      "all_frames": true
-    }
-  ],
+	"content_scripts": [
+		{
+			"matches": ["*://trakt.tv/*"],
+			"css": ["/css/trakt.css" ],
+			"js": ["/js/content_script.js"],
+			"all_frames": true
+		}
+	],
 
-  "background": {
-    "matches": [
-      "*://trakt.tv/*"
-    ],    
-    "scripts": [
-      "/js/background.js"
-    ]
-  },
+	"background": {
+		"matches": ["*://trakt.tv/*"],
+		"scripts": ["/js/background.js"]
+	},
 
-  "permissions": [
-    "*://trakt.tv/*",
-    "tabs", 
-    "webNavigation",
-    "background",
-    "activeTab",
-    "storage"
-  ]
+	"permissions": [
+		"*://trakt.tv/*",
+		"tabs", 
+		"webNavigation",
+		"background",
+		"activeTab",
+		"storage"
+	]
 }

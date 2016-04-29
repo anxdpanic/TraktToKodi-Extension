@@ -1,69 +1,69 @@
 @import url('http://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 
 body {
-  background: #000; 
-  color: #FFF; 
-  font: 14px 'Open Sans', sans-serif;
+	background: #000;
+	color: #FFF;
+	font: 14px 'Open Sans', sans-serif;
 }
 
 input,
 button {
-    font: 14px 'Open Sans', sans-serif;
+	font: 14px 'Open Sans', sans-serif;
 }
 
 .main {
-  margin: 0 auto; 
-  min-width: 291px; 
-  max-width: 291px;
+	margin: 0 auto;
+	min-width: 291px;
+	max-width: 291px;
 }
 
 .content {
-  background: #FFF; 
-  color: #373737;
-  min-height: 321px;
-  max-height: 321px;
+	background: #FFF;
+	color: #373737;
+	min-height: 321px;
+	max-height: 321px;
 }
 
 div[id^="content"] {
-  display: none; 
-  padding: 20px 25px 5px;
+	display: none;
+	padding: 20px 25px 5px;
 }
 
 div[id^="content"]::after {
-  content: "\A";
-  white-space: pre;
+	content: "\A";
+	white-space: pre;
 }
 
 input[id^="tab"] {
-  display: none;
+	display: none;
 }
 
 label[for^="tab"] {
-  display: inline-block; 
-  padding: 15px 25px; 
-  font-weight: 600; 
-  text-align: center;
+	display: inline-block;
+	padding: 15px 25px;
+	font-weight: 600;
+	text-align: center;
 }
 
 label[for^="tab"]:hover {
-  color: #000; 
-  background: #CCC; 
-  cursor: pointer;
+	color: #000;
+	background: #CCC;
+	cursor: pointer;
 }
 
 input[id^="tab"]:checked + label[for^="tab"] {
-  background: #FFF; 
-  color: #000;
+	background: #FFF;
+	color: #000;
 }
 
 #tab1:checked ~ .content #content1,
 #tab2:checked ~ .content #content2,
 #tab3:checked ~ .content #content3 {
- display: block;
+	display: block;
 }
 
-@media screen and (max-width: 291px) { 
-  label[id^="tab"] {
-    padding: 15px 10px;
-  } 
+@media screen and (max-width: 291px) {
+	label[id^="tab"] {
+		padding: 15px 10px;
+	}
 }

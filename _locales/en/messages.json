@@ -1,110 +1,110 @@
 {
-  "settings": {
-    "description": "English: Settings",
-    "message": "Settings"
-  },
-  "settings_kodi_remote_header": {
-    "description": "English: Kodi Remote Settings",
-    "message": "Kodi Remote Settings"
-  },
-  "ipaddress_input": {
-    "description": "English: IP Address/Host: ",
-    "message": "IP Address/Host: "
-  },
-  "port_input": {
-    "description": "English: Port :",
-    "message": "Port: "
-  },
-  "addonid_input": {
-    "description": "English: Addon ID :",
-    "message": "Addon ID: "
-  },  
-  "save": {
-    "description": "English: Save",
-    "message": "Save"
-  },
-  "clear": {
-    "description": "English: Clear",
-    "message": "Clear"
-  },
-  "settings_movie_header": {
-    "description": "English: Movie Settings",
-    "message": "Movie Settings"
-  },
-  "movie_show_play_input": {
-    "description": "English: Show Play on movies",
-    "message": "Show Play on movies"
-  },
-  "settings_episode_header": {
-    "description": "English: Episode Settings",
-    "message": "Episode Settings"
-  },
-  "episode_show_play_input": {
-    "description": "English: Show Play on episodes",
-    "message": "Show Play on episodes"
-  },
-  "episode_open_season_input": {
-    "description": "English: Episodes open to season",
-    "message": "Episodes open to season"
-  },
-  "tab_1": {
-    "description": "English: Kodi",
-    "message": "Kodi"
-  },
-  "tab_2": {
-    "description": "English: Content",
-    "message": "Content"
-  },
-  "tab_3": {
-    "description": "English: Output",
-    "message": "Output"
-  },  
-  "settings_format_header": {
-    "description": "English: Formats",
-    "message": "Formats"
-  }, 
-  "input_output_format_1": {
-    "description": "English: Format 1",
-    "message": "Format 1"
-  },
-  "input_output_format_2": {
-    "description": "English: Format 2",
-    "message": "Format 2"
-  },
-  "input_output_format_3": {
-    "description": "English: Format 3",
-    "message": "Format 3"
-  },
-  "input_output_format_4": {
-    "description": "English: Format 4",
-    "message": "Format 4"
-  },
-  "play": {
-    "description": "English: Play",
-    "message": "Play"
-  },
-  "open": {
-    "description": "English: Open",
-    "message": "Open"
-  },
-  "show": {
-    "description": "English: show",
-    "message": "show"
-  },
-  "movie": {
-    "description": "English: movie",
-    "message": "movie"
-  },
-  "season": {
-    "description": "English: season",
-    "message": "season"
-  },
-  "episode": {
-    "description": "English: episode",
-    "message": "episode"
-  },
-  "version": {
-    "description": "English: version",
-    "message": "version"
-  }
+	"settings": {
+		"description": "English: Settings",
+		"message": "Settings"
+	},
+	"settings_kodi_remote_header": {
+		"description": "English: Kodi Remote Settings",
+		"message": "Kodi Remote Settings"
+	},
+	"ipaddress_input": {
+		"description": "English: IP Address/Host: ",
+		"message": "IP Address/Host: "
+	},
+	"port_input": {
+		"description": "English: Port :",
+		"message": "Port: "
+	},
+	"addonid_input": {
+		"description": "English: Addon ID :",
+		"message": "Addon ID: "
+	},
+	"save": {
+		"description": "English: Save",
+		"message": "Save"
+	},
+	"clear": {
+		"description": "English: Clear",
+		"message": "Clear"
+	},
+	"settings_movie_header": {
+		"description": "English: Movie Settings",
+		"message": "Movie Settings"
+	},
+	"movie_show_play_input": {
+		"description": "English: Show Play on movies",
+		"message": "Show Play on movies"
+	},
+	"settings_episode_header": {
+		"description": "English: Episode Settings",
+		"message": "Episode Settings"
+	},
+	"episode_show_play_input": {
+		"description": "English: Show Play on episodes",
+		"message": "Show Play on episodes"
+	},
+	"episode_open_season_input": {
+		"description": "English: Episodes open to season",
+		"message": "Episodes open to season"
+	},
+	"tab_1": {
+		"description": "English: Kodi",
+		"message": "Kodi"
+	},
+	"tab_2": {
+		"description": "English: Content",
+		"message": "Content"
+	},
+	"tab_3": {
+		"description": "English: Output",
+		"message": "Output"
+	},
+	"settings_format_header": {
+		"description": "English: Formats",
+		"message": "Formats"
+	},
+	"input_output_format_1": {
+		"description": "English: Format 1",
+		"message": "Format 1"
+	},
+	"input_output_format_2": {
+		"description": "English: Format 2",
+		"message": "Format 2"
+	},
+	"input_output_format_3": {
+		"description": "English: Format 3",
+		"message": "Format 3"
+	},
+	"input_output_format_4": {
+		"description": "English: Format 4",
+		"message": "Format 4"
+	},
+	"play": {
+		"description": "English: Play",
+		"message": "Play"
+	},
+	"open": {
+		"description": "English: Open",
+		"message": "Open"
+	},
+	"show": {
+		"description": "English: show",
+		"message": "show"
+	},
+	"movie": {
+		"description": "English: movie",
+		"message": "movie"
+	},
+	"season": {
+		"description": "English: season",
+		"message": "season"
+	},
+	"episode": {
+		"description": "English: episode",
+		"message": "episode"
+	},
+	"version": {
+		"description": "English: version",
+		"message": "version"
+	}
 }
