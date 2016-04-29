@@ -3,12 +3,12 @@
 body {
 	background: #000;
 	color: #FFF;
-	font: 14px 'Open Sans', sans-serif;
+	font: 12px 'Open Sans', sans-serif;
 }
 
 input,
 button {
-	font: 14px 'Open Sans', sans-serif;
+	font: 12px 'Open Sans', sans-serif;
 }
 
 .main {
@@ -20,18 +20,13 @@ button {
 .content {
 	background: #FFF;
 	color: #373737;
-	min-height: 321px;
-	max-height: 321px;
+	min-height: 291px;
+	max-height: 291px;
 }
 
 div[id^="content"] {
 	display: none;
 	padding: 20px 25px 5px;
-}
-
-div[id^="content"]::after {
-	content: "\A";
-	white-space: pre;
 }
 
 input[id^="tab"] {
@@ -56,9 +51,30 @@ input[id^="tab"]:checked + label[for^="tab"] {
 	color: #000;
 }
 
+div[id^="content_sub"] {
+	padding: 0px !important;
+}
+
+.content_sub {
+	background: #FFF;
+	color: #373737;
+}
+
+input[id^="tab_sub"]:checked + label[for^="tab_sub"] {
+	background: #000 !important;
+	color: #FFF !important;
+}
+
 #tab1:checked ~ .content #content1,
 #tab2:checked ~ .content #content2,
 #tab3:checked ~ .content #content3 {
+	display: block;
+}
+
+#tab_sub1:checked ~ .content_sub #content_sub1,
+#tab_sub2:checked ~ .content_sub #content_sub2,
+#tab_sub3:checked ~ .content_sub #content_sub3,
+#tab_sub4:checked ~ .content_sub #content_sub4 {
 	display: block;
 }
 

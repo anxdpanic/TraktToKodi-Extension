@@ -4,8 +4,8 @@
 .header {
 	background-color: #303030;
 	width: 100%;
-	margin: 0.5em 1em 0.5em 0em ;
-	padding: 0.1em 0em 0.2em 0em;
+	margin: 0.3em 0.5em 0.3em 0em ;
+	padding: 0.1em 0em 0.1em 0em;
 }
 
 h4[class*="settings header"] {
@@ -13,14 +13,22 @@ h4[class*="settings header"] {
 	text-align: center;
 }
 
-.textboxes > p {
-	margin-top: 0.6em;
-	margin-bottom: 0.6em;
-	padding: 0.0em;
+.input_block {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	padding: 0.1em;
+	width: 100%;
+	line-height: 1.9em;
+}
+
+input[class*="settings text"] {
+	float: right;
+	margin-left: 0.5em;
+	margin-right: 0.1em;
 }
 
 .buttons {
-	padding-top: 1.2em;
+	padding-top: 0.5em;
 	width: 100%;
 }
 
@@ -38,11 +46,17 @@ button[class*="settings button"] {
 [class="settings checkbox"] ~ label,
 [class="settings radio"] ~ label {
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: middle;
+}
+
+input[class="settings checkbox"],
+input[class="settings radio"] {
+	display: inline-block;
+	vertical-align: middle;
 }
 
 #extension_version {
 	float: right;
 	color: gray;
-	font: 11px 'Open Sans', sans-serif;
+	font: 10px 'Open Sans', sans-serif;
 }

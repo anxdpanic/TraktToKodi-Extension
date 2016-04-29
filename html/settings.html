@@ -8,84 +8,174 @@
 		<!-- /stylesheets -->
 	</head>
 
-<body class="settings">
+	<body class="settings">
 		<div class="main">
 			<input id="tab1" type="radio" name="tabs" checked>
 			<label for="tab1" data-i18n="tab_1"></label>
 
 			<input id="tab2" type="radio" name="tabs">
 			<label for="tab2" data-i18n="tab_2"></label>
-
-			<input id="tab3" type="radio" name="tabs">
-			<label for="tab3" data-i18n="tab_3"></label>
 			<div class="content">
 				<div id="content1">
-					<div id="settings-h4-1" class="header">
-						<h4 id="settings-kodi-remote-header" class="settings header" data-i18n="settings_kodi_remote_header"></h4>
-					</div>
-					<div id="kodi-http-settings" class="textboxes">
-						<p>
-							<label for="input-ip" class="settings label" data-i18n="ipaddress_input"></label>
-						</p>
-						<p>
-							<input type="text" id="input-ip" class="settings text" />
-						</p>
-						<p>
-							<label for="input-port" class="settings label" data-i18n="port_input"></label>
-						</p>
-						<p>
-							<input type="number" id="input-port" class="settings text" min="0" max="65535"/>
-						</p>
-						<p>
-							<label for="input-addonid" class="settings label" data-i18n="addonid_input"></label>
-						</p>
-						<p>
-							<input type="text" id="input-addonid" class="settings text" />
-						</p>
-					</div>
+					<input id="tab_sub1" type="radio" name="tabs_sub1" checked>
+					<label for="tab_sub1" data-i18n="tab_sub_1"></label>
 
+					<input id="tab_sub2" type="radio" name="tabs_sub1">
+					<label for="tab_sub2" data-i18n="tab_sub_2"></label>
+
+					<input id="tab_sub3" type="radio" name="tabs_sub1">
+					<label for="tab_sub3" data-i18n="tab_sub_3"></label>
+
+					<input id="tab_sub4" type="radio" name="tabs_sub1">
+					<label for="tab_sub4" data-i18n="tab_sub_4"></label>
+					<div class="content_sub">
+						<div id="content_sub1">
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_kodi_remote_header"></h4>
+							</div>
+							<div class="textboxes">
+								<div class="input_block">
+									<label for="iphost_1" class="settings label" data-i18n="iphost_input"></label>
+									<input type="text" id="iphost_1" class="settings text" />
+								</div>
+								<div class="input_block">
+									<label for="port_1" class="settings label" data-i18n="port_input"></label>
+									<input type="number" id="port_1" class="settings text" min="0" max="65535"/>
+								</div>
+								<div class="input_block">
+									<label for="addonid_1" class="settings label" data-i18n="addonid_input"></label>
+									<input type="text" id="addonid_1" class="settings text" />
+								</div>
+								<div class="header">
+									<h4 id="settings-formats-header-1" class="settings header" data-i18n="settings_format_header"></h4>
+								</div>
+								<div class="radios">
+									<div class="input_block">
+										<input id="format_1" type="radio" class="settings radio" name="formats_1" value='1'>
+										<label for="format_1" class="settings label" data-i18n="format_1"></label>
+										<input id="format_2" type="radio" class="settings radio" name="formats_1" value='2'>
+										<label for="format_2" class="settings label" data-i18n="format_2"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="content_sub2">
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_kodi_remote_header"></h4>
+							</div>
+							<div class="textboxes">
+								<div class="input_block">
+									<label for="iphost_2" class="settings label" data-i18n="iphost_input"></label>
+									<input type="text" id="iphost_2" class="settings text" />
+								</div>
+								<div class="input_block">
+									<label for="port_2" class="settings label" data-i18n="port_input"></label>
+									<input type="number" id="port_2" class="settings text" min="0" max="65535"/>
+								</div>
+								<div class="input_block">
+									<label for="addonid_2" class="settings label" data-i18n="addonid_input"></label>
+									<input type="text" id="addonid_2" class="settings text" />
+								</div>
+							</div>
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_format_header"></h4>
+							</div>
+							<div class="radios">
+								<div class="input_block">
+									<input id="format_3" type="radio" class="settings radio" name="formats_2" value='1'>
+									<label for="format_3" class="settings label" data-i18n="format_1"></label>
+									<input id="format_4" type="radio" class="settings radio" name="formats_2" value='2'>
+									<label for="format_4" class="settings label" data-i18n="format_2"></label>
+								</div>
+							</div>
+						</div>
+						<div id="content_sub3">
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_kodi_remote_header"></h4>
+							</div>
+							<div class="textboxes">
+								<div class="input_block">
+									<label for="iphost_3" class="settings label" data-i18n="iphost_input"></label>
+									<input type="text" id="iphost_3" class="settings text" />
+								</div>
+								<div class="input_block">
+									<label for="port_3" class="settings label" data-i18n="port_input"></label>
+									<input type="number" id="port_3" class="settings text" min="0" max="65535"/>
+								</div>
+								<div class="input_block">
+									<label for="addonid_3" class="settings label" data-i18n="addonid_input"></label>
+									<input type="text" id="addonid_3" class="settings text" />
+								</div>
+							</div>
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_format_header"></h4>
+							</div>
+							<div class="radios">
+								<div class="input_block">
+									<input id="format_5" type="radio" class="settings radio" name="formats_3" value='1'>
+									<label for="format_5" class="settings label" data-i18n="format_1"></label>
+									<input id="format_6" type="radio" class="settings radio" name="formats_3" value='2'>
+									<label for="format_6" class="settings label" data-i18n="format_2"></label>
+								</div>
+							</div>
+						</div>
+						<div id="content_sub4">
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_kodi_remote_header"></h4>
+							</div>
+							<div class="textboxes">
+								<div class="input_block">
+									<label for="iphost_4" class="settings label" data-i18n="iphost_input"></label>
+									<input type="text" id="iphost_4" class="settings text" />
+								</div>
+								<div class="input_block">
+									<label for="port_4" class="settings label" data-i18n="port_input"></label>
+									<input type="number" id="port_4" class="settings text" min="0" max="65535"/>
+								</div>
+								<div class="input_block">
+									<label for="addonid_4" class="settings label" data-i18n="addonid_input"></label>
+									<input type="text" id="addonid_4" class="settings text" />
+								</div>
+							</div>
+							<div class="header">
+								<h4 class="settings header" data-i18n="settings_format_header"></h4>
+							</div>
+							<div class="radios">
+								<div class="input_block">
+									<input id="format_7" type="radio" class="settings radio" name="formats_4" value='1'>
+									<label for="format_7" class="settings label" data-i18n="format_1"></label>
+									<input id="format_8" type="radio" class="settings radio" name="formats_4" value='2'>
+									<label for="format_8" class="settings label" data-i18n="format_2"></label>
+								</div>
+							</div>
+						</div>						
+					</div>
 					<div id="kodi-settings-buttons" class="buttons">
-						<button id="button-clear" class="settings button" data-i18n="clear"></button>
 						<button id="button-save" class="settings button" data-i18n="save"></button>
 					</div>
 				</div>
 				<div id="content2">
-					<div id="settings-h4-2" class="header">
+					<div class="header">
 						<h4 id="settings-movie-header" class="settings header" data-i18n="settings_movie_header"></h4>
 					</div>
 					<div id="movie-content-settings" class="checkboxes">
-						<p>
+						<div class="input_block">
 							<input type="checkbox" id="input-movie-show-play" class="settings checkbox" />
-							<label for="input-movie-show-play" class="settings label" data-i18n="movie_show_play_input"></label>
-						</p>
+							<label for="input-movie-show-play" class="settings label" data-i18n="show_play"></label>
+						</div>
 					</div>
-					<div id="settings-h4-3" class="header">
+					<div class="header">
 						<h4 id="settings-episode-header" class="settings header" data-i18n="settings_episode_header"></h4>
 					</div>
 					<div id="episode-content-settings" class="checkboxes">
-						<p>
-							<input type="checkbox" id="input-episode-open-season" class="settings checkbox" />
-							<label for="input-episode-open-season" class="settings label" data-i18n="episode_open_season_input"></label>
-						</p>
-						<p>
+						<div class="input_block">
 							<input type="checkbox" id="input-episode-show-play" class="settings checkbox" />
-							<label for="input-episode-show-play" class="settings label" data-i18n="episode_show_play_input"></label>
-						</p>
-					</div>
-				</div>
-				<div id="content3">
-					<div id="settings-h4-4" class="header">
-						<h4 id="settings-formats-header" class="settings header" data-i18n="settings_format_header"></h4>
-					</div>
-					<div id="output-format-settings" class="radios">
-						<p>
-						<input id="input-output-format-1" type="radio" class="settings radio" name="formats" value='1'>
-						<label for="input-output-format-1" class="settings label" data-i18n="input_output_format_1"></label>
-						</p>
-						<p>
-						<input id="input-output-format-2" type="radio" class="settings radio" name="formats" value='2'>
-						<label for="input-output-format-2" class="settings label" data-i18n="input_output_format_2"></label>
-						</p>
+							<label for="input-episode-show-play" class="settings label" data-i18n="show_play"></label>
+						</div>
+						<div class="input_block">
+							<input type="checkbox" id="input-episode-open-season" class="settings checkbox" />
+							<label for="input-episode-open-season" class="settings label" data-i18n="episode_open_season"></label>
+						</div>
 					</div>
 				</div>
 			</div>
