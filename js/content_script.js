@@ -367,11 +367,14 @@ function Trakt (item, video_type) {
 				return value;
 			}
 			else {
-				value = _item.parentElement.getElementsByClassName('show-title')[0];
-				if (value) {
-					value = value.getElementsByTagName('a')[0];
+				value = null;
+				if (_item.parentElement) {
+					value = _item.parentElement.getElementsByClassName('show-title')[0];
 					if (value) {
-						return value.innerHTML.trim();
+						value = value.getElementsByTagName('a')[0];
+						if (value) {
+							return value.innerHTML.trim();
+						}
 					}
 				}
 				if (!value) {
