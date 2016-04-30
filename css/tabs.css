@@ -13,15 +13,15 @@ button {
 
 .main {
 	margin: 0 auto;
-	min-width: 291px;
-	max-width: 291px;
+	min-width: 287px;
+	max-width: 287px;
 }
 
 .content {
 	background: #FFF;
 	color: #373737;
-	min-height: 291px;
-	max-height: 291px;
+	min-height: 271px;
+	max-height: 271px;
 }
 
 div[id^="content"] {
@@ -60,6 +60,10 @@ div[id^="content_sub"] {
 	color: #373737;
 }
 
+label[for^="tab_sub"] {
+	padding: 5px 25px !important;
+}
+
 input[id^="tab_sub"]:checked + label[for^="tab_sub"] {
 	background: #303030 !important;
 	color: #FFF !important;
@@ -78,7 +82,7 @@ input[id^="tab_sub"]:checked + label[for^="tab_sub"] {
 	display: block;
 }
 
-@media screen and (max-width: 291px) {
+@media screen and (max-width: 287px) {
 	label[id^="tab"] {
 		padding: 15px 10px;
 	}

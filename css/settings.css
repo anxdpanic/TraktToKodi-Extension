@@ -22,6 +22,12 @@ input[class*="settings text"] {
 	float: right;
 	margin-left: 0.5em;
 	margin-right: 0.1em;
+	padding-left: 0.2em;
+}
+
+input[id^="iphost"],
+input[id^="addonid"] {
+	width: 10.5em;
 }
 
 .buttons {
