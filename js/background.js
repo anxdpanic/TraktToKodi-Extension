@@ -196,7 +196,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.onMessage.addListener(function(request, sender, sendResponse) {
 	switch(request.action) {
 		case 'active_format':
 			sendResponse({active_format: settings.get.profiles[settings.get.profiles.active].format});
