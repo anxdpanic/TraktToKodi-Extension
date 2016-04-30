@@ -10,53 +10,70 @@ var settings = {
 		});
 	},
 	update: function () {
-		document.getElementById('input-ip').value = settings.get.input_ip;
-		document.getElementById('input-port').value = settings.get.input_port;
-		document.getElementById('input-addonid').value = settings.get.input_addonid;
-		document.getElementById('input-movie-show-play').checked = settings.get.input_movie_show_play;
-		document.getElementById('input-episode-show-play').checked = settings.get.input_episode_show_play;
-		document.getElementById('input-episode-open-season').checked = settings.get.input_episode_open_season;
-		var rads = document.getElementsByClassName('settings radio');
+		var active_profile = settings.get.profiles.active;
+		var s = '';
+		var j = 0;
+		var i = 0;
+		var rads = document.querySelectorAll('input[name="tabs_sub1"]');
 		var _length = rads.length;
-		for (var i = 0; i < _length; i++) {
-			if (rads[i].value === settings.get.input_output_format) {
+		for (i = 0; i < _length; i++) {
+			if (rads[i].value === active_profile) {
 				rads[i].checked = true;
 				break;
 			}
 		}
+		for (i = 1; i < 5; i++) {
+			s = i.toString();
+			document.querySelector('input[id="iphost_' + s + '"]').value = settings.get.profiles[s].iphost;
+			document.querySelector('input[id="port_' + s + '"]').value = settings.get.profiles[s].port;
+			document.querySelector('input[id="addonid_' + s + '"]').value = settings.get.profiles[s].addonid;
+			rads = document.querySelectorAll('input[name="formats_' + s + '"]');
+			_length = rads.length;
+			for (j = 0; j < _length; j++) {
+				if (rads[j].value === settings.get.profiles[s].format) {
+					rads[j].checked = true;
+					break;
+				}
+			}
+		}
+		document.querySelector('#movie-show-play').checked = settings.get.movie_show_play;
+		document.querySelector('#episode-show-play').checked = settings.get.episode_show_play;
+		document.querySelector('#episode-open-season').checked = settings.get.episode_open_season;
 	},
 	save: function () {
-		var rads = document.getElementsByClassName('settings radio');
-		var input_output_format = '1';
-		var _length = rads.length;
-		for (var i = 0; i < _length; i++) {
-			if (rads[i].checked) {
-				input_output_format = rads[i].value;
-				break;
-			}
-		}
 		var new_settings = {
-			input_ip: document.getElementById('input-ip').value,
-			input_port: document.getElementById('input-port').value,
-			input_addonid: document.getElementById('input-addonid').value,
-			input_movie_show_play: document.getElementById('input-movie-show-play').checked,
-			input_episode_show_play: document.getElementById('input-episode-show-play').checked,
-			input_episode_open_season: document.getElementById('input-episode-open-season').checked,
-			input_output_format: input_output_format
+			profiles: {
+				'active': document.querySelector('input[name="tabs_sub1"]:checked').value,
+				'1': {
+					iphost: document.querySelector('input[id="iphost_1"]').value,
+					port: document.querySelector('input[id="port_1"]').value,
+					addonid: document.querySelector('input[id="addonid_1"]').value,
+					format: document.querySelector('input[name="formats_1"]:checked').value
+				},
+				'2': {
+					iphost: document.querySelector('input[id="iphost_2"]').value,
+					port: document.querySelector('input[id="port_2"]').value,
+					addonid: document.querySelector('input[id="addonid_2"]').value,
+					format: document.querySelector('input[name="formats_2"]:checked').value
+				},
+				'3': {
+					iphost: document.querySelector('input[id="iphost_3"]').value,
+					port: document.querySelector('input[id="port_3"]').value,
+					addonid: document.querySelector('input[id="addonid_3"]').value,
+					format: document.querySelector('input[name="formats_3"]:checked').value
+				},
+				'4': {
+					iphost: document.querySelector('input[id="iphost_4"]').value,
+					port: document.querySelector('input[id="port_4"]').value,
+					addonid: document.querySelector('input[id="addonid_4"]').value,
+					format: document.querySelector('input[name="formats_4"]:checked').value
+				}
+			},
+			movie_show_play: document.querySelector('#movie-show-play').checked,
+			episode_show_play: document.querySelector('#episode-show-play').checked,
+			episode_open_season: document.querySelector('#episode-open-season').checked
 		}
 		port.postMessage({ action: 'save_settings', settings: new_settings });
-	},
-	clear: function () {
-		var elements = document.getElementsByClassName('settings text');
-		var _length = elements.length;
-		for (var i = 0; i < _length; i++) {
-			if (elements[i].id == 'input-port') {
-				elements[i].value = '9090';
-			}
-			else {
-				elements[i].value = '';
-			}
-		}
 	}
 }
 
@@ -71,11 +88,6 @@ function load_version () {
 document.addEventListener('DOMContentLoaded', function () {
 	load_version();
 	settings.load(['settings.update']);
-});
-
-
-document.getElementById('button-clear').addEventListener('click', function () {
-	settings.clear();
 });
 
 
@@ -94,6 +106,15 @@ for (var i = 0; i < _length; i++) {
 
 
 var radios = document.getElementsByClassName('settings radio');
+_length = radios.length;
+for (i = 0; i < _length; i++) {
+	radios[i].addEventListener('click', function () {
+		settings.save();
+	});
+}
+
+
+radios = document.querySelectorAll('input[name="tabs_sub1"]');
 _length = radios.length;
 for (i = 0; i < _length; i++) {
 	radios[i].addEventListener('click', function () {

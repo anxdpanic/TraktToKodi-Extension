@@ -27,13 +27,36 @@ var settings = {
 		}
 	},
 	defaults: {
-			input_ip: '',
-			input_port: '9090',
-			input_addonid: '',
-			input_movie_show_play: false,
-			input_episode_show_play: false,
-			input_episode_open_season: false,
-			input_output_format: '1'
+		profiles: {
+			'active': '1',
+			'1': {
+				iphost: '',
+				port: '9090',
+				addonid: '',
+				format: '1'
+			},
+			'2': {
+				iphost: '',
+				port: '9090',
+				addonid: '',
+				format: '1'
+			},
+			'3': {
+				iphost: '',
+				port: '9090',
+				addonid: '',
+				format: '1'
+			},
+			'4': {
+				iphost: '',
+				port: '9090',
+				addonid: '',
+				format: '1'
+			}
+		},
+		movie_show_play: false,
+		episode_show_play: false,
+		episode_open_season: false
 	},
 	get: (this.defaults),
 	save: function (new_settings) {
@@ -61,7 +84,8 @@ var settings = {
 
 var rpc = {
 	can_connect: function () {
-		if ((settings.get.input_ip !== '') && (settings.get.input_port) && (settings.get.input_addonid !== '')) {
+		var active = settings.get.profiles.active;
+		if ((settings.get.profiles[active].iphost !== '') && (settings.get.profiles[active].port) && (settings.get.profiles[active].addonid !== '')) {
 			return true;
 		}
 		else {
@@ -69,7 +93,8 @@ var rpc = {
 		}
 	},
 	connection: function () {
-		this.url = 'ws://' + settings.get.input_ip + ':' + settings.get.input_port + '/jsonrpc';
+		var active = settings.get.profiles.active;
+		this.url = 'ws://' + settings.get.profiles[active].iphost + ':' + settings.get.profiles[active].port + '/jsonrpc';
 		this.socket = new WebSocket(this.url);
 	},
 	execute: function (action, params){
@@ -103,12 +128,13 @@ var rpc = {
 	},
 	json: {
 		execute_addon: function (params) {
+			var active = settings.get.profiles.active;
 			return {	jsonrpc: '2.0',
 						id: 1,
 						method: 'Addons.ExecuteAddon',
 						params: {
 							wait: false,
-							addonid: settings.get.input_addonid,
+							addonid: settings.get.profiles[active].addonid,
 							params: params
 						}
 					}
@@ -160,12 +186,22 @@ chrome.runtime.onConnect.addListener(function (port) {
 				else {
 					console.log('T2KASocket: |with_settings| missing |cb_functions|');
 				}
-				break;
+				break;	
 			default:
 				console.log('T2KASocket: No valid |action| provided');
 				break;
 		}
 	});
+});
+
+
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+	switch(request.action) {
+		case 'active_format':
+			sendResponse({active_format: settings.get.profiles[settings.get.profiles.active].format});
+			break;
+	}
+	return true;
 });
 
 

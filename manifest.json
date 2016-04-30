@@ -2,11 +2,9 @@
 	"manifest_version": 2,
 
 	"name": "Trakt2KodiAddon",
-	"short_name": "Trakt2KodiAddon",
 	"description": "Open/Play trakt.tv items in a Kodi Addon",
 	"version": "0.0.0.11",
 	"default_locale": "en",
-	"options_page": "/html/settings.html",
 
 	"icons": {
 		"128": "/images/icon_128.png",
@@ -37,11 +35,13 @@
 	},
 
 	"permissions": [
+		"background",
 		"*://trakt.tv/*",
 		"tabs", 
 		"webNavigation",
-		"background",
 		"activeTab",
 		"storage"
-	]
+	],
+
+	"options_page": "/html/settings.html"
 }

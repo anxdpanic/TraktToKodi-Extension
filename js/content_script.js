@@ -27,7 +27,7 @@ function CheckType (data_type) {
 		}
 	};
 	this.can_play = function () {
-		if ((data_type !== 'show') && (data_type !== 'season')) {
+		if ((data_type !== 'show') && (data_type !== 'season') && (this.valid() === true)) {
 			return true;
 		}
 		else {
@@ -36,8 +36,8 @@ function CheckType (data_type) {
 	};
 	this.show_play = function () {
 		if (this.can_play() === true) {
-			if (((data_type === 'movie') && (settings.get.input_movie_show_play === true))
-				|| ((data_type === 'episode') && (settings.get.input_episode_show_play === true))) {
+			if (((data_type === 'movie') && (settings.get.movie_show_play === true))
+				|| ((data_type === 'episode') && (settings.get.episode_show_play === true))) {
 				return true;
 			}
 			else {
@@ -49,7 +49,7 @@ function CheckType (data_type) {
 		}
 	};
 	this.open_to_season = function () {
-		if ((settings.get.input_episode_open_season === true) && (data_type === 'episode')) {
+		if ((settings.get.episode_open_season === true) && (data_type === 'episode')) {
 			return true;
 		}
 		else {
@@ -628,10 +628,12 @@ var kodi = {
 		if (action_input === 'button') {
 			item = document.getElementsByTagName('html')[0];
 		}
-		if ((action === 'open_episode') && (settings.get.input_episode_open_season === true)) {
+		if ((action === 'open_episode') && (settings.get.episode_open_season === true)) {
 			action = 'open_season';
 		}
-		kodi.rpc.execute_addon(output_params(action, settings.get.input_output_format, item));
+		chrome.runtime.sendMessage({action: 'active_format'}, function(response) {
+			kodi.rpc.execute_addon(output_params(action, response.active_format, item));
+		});		
 	},
 	rpc: {
 		execute_addon: function (params) {
@@ -658,7 +660,7 @@ port.onMessage.addListener(function(msg) {
 				settings.get = msg.settings;
 				var _length = msg.cb_functions.length;
 				for (var i = 0; i < _length; i++) {
-					switch(msg.cb_functions[i]) {
+					switch(msg.cb_functions[i].fn) {
 						case 'add_items.icons':
 							add_items.icons();
 							break;
@@ -677,4 +679,4 @@ port.onMessage.addListener(function(msg) {
 });
 
 
-settings.load(['add_items.icons', 'add_items.buttons']);
+settings.load([{fn: 'add_items.icons'}, {fn: 'add_items.buttons'}]);

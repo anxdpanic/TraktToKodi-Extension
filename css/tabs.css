@@ -61,7 +61,7 @@ div[id^="content_sub"] {
 }
 
 input[id^="tab_sub"]:checked + label[for^="tab_sub"] {
-	background: #000 !important;
+	background: #303030 !important;
 	color: #FFF !important;
 }
 
