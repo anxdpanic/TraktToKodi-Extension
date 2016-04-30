@@ -37,7 +37,7 @@
 	"permissions": [
 		"background",
 		"*://trakt.tv/*",
-		"tabs", 
+		"tabs",
 		"webNavigation",
 		"activeTab",
 		"storage"

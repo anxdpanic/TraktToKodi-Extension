@@ -56,7 +56,8 @@ var settings = {
 		},
 		movie_show_play: false,
 		episode_show_play: false,
-		episode_open_season: false
+		episode_open_season: false,
+		sidebar_pagination: false
 	},
 	get: (this.defaults),
 	save: function (new_settings) {
@@ -186,7 +187,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 				else {
 					console.log('T2KASocket: |with_settings| missing |cb_functions|');
 				}
-				break;	
+				break;
 			default:
 				console.log('T2KASocket: No valid |action| provided');
 				break;

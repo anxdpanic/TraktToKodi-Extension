@@ -147,3 +147,45 @@
 .btn-t2ka-play:hover .btn {
 	color: white !important
 }
+
+.frame-wrapper #date-nav-2 {
+	padding:0 0 20px 0;
+	margin-top:-5px
+}
+
+.frame-wrapper #date-nav-2:before,
+.frame-wrapper #date-nav-2:after {
+	content:" ";
+	display:table
+}
+
+.frame-wrapper #date-nav-2:after {
+	clear:both
+}
+
+.frame-wrapper #date-nav-2 .prev {
+	float:left
+}
+
+.frame-wrapper #date-nav-2 .prev .trakt-icon-arrow-left {
+	margin-right:5px;
+	font-size:20px
+}
+
+.frame-wrapper #date-nav-2 .next {
+	float:right
+}
+
+.frame-wrapper #date-nav-2 .next .trakt-icon-arrow-right {
+	margin-left:5px;
+	font-size:20px
+}
+
+.frame-wrapper #date-nav-2 .no-link {
+	color:#444
+}
+
+.frame-wrapper .sidenav #date-nav-2 {
+	margin-top:0;
+	padding-top:10px;
+}

@@ -221,6 +221,18 @@ var add_items = {
 				action_elements.add_to_page(action_buttons, action_buttons, data_type, 'button');
 			}
 		}
+	},
+	date_nav: function () {
+		if ((document.getElementById('date-nav-2')) || (!settings.get.sidebar_pagination)) { return; }
+		var nav_item = document.getElementById('date-nav');
+		if (nav_item) {
+			var sibling_item = document.getElementById('huckster-sidenav');
+			var clone_item = nav_item.cloneNode(true);
+			clone_item.setAttribute('id', 'date-nav-2')
+			if (sibling_item) {
+				sibling_item.parentElement.insertBefore(clone_item, sibling_item);
+			}
+		}
 	}
 }
 
@@ -633,7 +645,7 @@ var kodi = {
 		}
 		chrome.runtime.sendMessage({action: 'active_format'}, function(response) {
 			kodi.rpc.execute_addon(output_params(action, response.active_format, item));
-		});		
+		});
 	},
 	rpc: {
 		execute_addon: function (params) {
@@ -667,6 +679,9 @@ port.onMessage.addListener(function(msg) {
 						case 'add_items.buttons':
 							add_items.buttons();
 							break;
+						case 'add_items.date_nav':
+							add_items.date_nav();
+							break;
 						default:
 							break;
 					}
@@ -679,4 +694,4 @@ port.onMessage.addListener(function(msg) {
 });
 
 
-settings.load([{fn: 'add_items.icons'}, {fn: 'add_items.buttons'}]);
+settings.load([{fn: 'add_items.icons'}, {fn: 'add_items.buttons'}, {fn: 'add_items.date_nav'}]);

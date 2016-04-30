@@ -39,6 +39,7 @@ var settings = {
 		document.querySelector('#movie-show-play').checked = settings.get.movie_show_play;
 		document.querySelector('#episode-show-play').checked = settings.get.episode_show_play;
 		document.querySelector('#episode-open-season').checked = settings.get.episode_open_season;
+		document.querySelector('#sidebar-pagination').checked = settings.get.sidebar_pagination;
 	},
 	save: function () {
 		var new_settings = {
@@ -71,7 +72,8 @@ var settings = {
 			},
 			movie_show_play: document.querySelector('#movie-show-play').checked,
 			episode_show_play: document.querySelector('#episode-show-play').checked,
-			episode_open_season: document.querySelector('#episode-open-season').checked
+			episode_open_season: document.querySelector('#episode-open-season').checked,
+			sidebar_pagination: document.querySelector('#sidebar-pagination').checked
 		}
 		port.postMessage({ action: 'save_settings', settings: new_settings });
 	}

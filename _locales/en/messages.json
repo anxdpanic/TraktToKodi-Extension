@@ -62,7 +62,7 @@
 	"tab_sub_4": {
 		"description": "English: 4",
 		"message": "4"
-	},	
+	},
 	"settings_format_header": {
 		"description": "English: Output",
 		"message": "Output"
@@ -110,5 +110,13 @@
 	"version": {
 		"description": "English: version",
 		"message": "version"
+	},
+	"settings_trakt_header": {
+		"description": "English: Trakt",
+		"message": "Trakt"
+	},
+	"sidebar_pagination": {
+		"description": "English: Additional sidebar pagination",
+		"message": "Additional sidebar pagination"
 	}
 }
