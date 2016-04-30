@@ -22,12 +22,17 @@ input[class*="settings text"] {
 	float: right;
 	margin-left: 0.5em;
 	margin-right: 0.1em;
-	padding-left: 0.2em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 input[id^="iphost"],
 input[id^="addonid"] {
-	width: 10.5em;
+	width: 12.5em;
+}
+
+input[id^="port"] {
+	width: 4.5em;
 }
 
 .buttons {

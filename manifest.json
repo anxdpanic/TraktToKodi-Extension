@@ -23,7 +23,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://trakt.tv/*"],
-			"css": ["/css/trakt.css" ],
+			"css": ["/css/trakt.css"],
 			"js": ["/js/content_script.js"],
 			"all_frames": true
 		}

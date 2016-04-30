@@ -8,8 +8,8 @@
 		"message": "Kodi Connection"
 	},
 	"iphost_input": {
-		"description": "English: IP Address/Host: ",
-		"message": "IP Address/Host: "
+		"description": "English: IP/Host: ",
+		"message": "IP/Host: "
 	},
 	"port_input": {
 		"description": "English: Port :",
