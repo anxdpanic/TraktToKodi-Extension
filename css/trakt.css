@@ -1,149 +1,191 @@
 @charset "UTF-8"
 
 @font-face {
-  font-family:'trakt';
-  src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug);
-  src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug#iefix) format("embedded-opentype"),
-  url(/assets/trakt-57243f9aac73da4a24d1ef13350da272.woff?h16cug) format("woff"),
-  url(/assets/trakt-1ac730dd1dc3d1ea758e27da06a3263f.ttf?h16cug) format("truetype"),
-  url(/assets/trakt-10890dee02f1a21a74dc25aa5e5fc46e.svg?h16cug#trakt) format("svg");
-  font-weight:normal;
-  font-style:normal
+	font-family:'trakt';
+	src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug);
+	src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug#iefix) format("embedded-opentype"),
+	url(/assets/trakt-57243f9aac73da4a24d1ef13350da272.woff?h16cug) format("woff"),
+	url(/assets/trakt-1ac730dd1dc3d1ea758e27da06a3263f.ttf?h16cug) format("truetype"),
+	url(/assets/trakt-10890dee02f1a21a74dc25aa5e5fc46e.svg?h16cug#trakt) format("svg");
+	font-weight:normal;
+	font-style:normal
 }
 
-.quick-icons .actions a [class^="trakt-icon-t2ka-"], 
+.quick-icons .actions a [class^="trakt-icon-t2ka-"],
 .quick-icons .actions a [class*=" trakt-icon-t2ka-"] {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    line-height: inherit;
-    width: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	line-height: inherit;
+	width: 100%;
 }
 
 [class^="trakt-icon-t2ka-"],
-[class*=" trakt-icon-t2ka-"] 
+[class*=" trakt-icon-t2ka-"]
 {
-  font-family:'trakt';
-  speak:none;
-  font-style:normal;
-  font-weight:normal;
-  font-variant:normal;
-  text-transform:none;
-  text-rendering:auto;
-  line-height:1;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  vertical-align:middle;
-  display:inline-block
+	font-family:'trakt';
+	speak:none;
+	font-style:normal;
+	font-weight:normal;
+	font-variant:normal;
+	text-transform:none;
+	text-rendering:auto;
+	line-height:1;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+	vertical-align:middle;
+	display:inline-block
 }
 
 .trakt-icon-t2ka-open-thick:before,
 .trakt-icon-t2ka-open:before
 {
-  content:"\e619"
+	content:"\e619"
 }
 
 .trakt-icon-t2ka-play-thick:before,
 .trakt-icon-t2ka-play:before
 {
-  content:"\e640"
+	content:"\e640"
 }
 
-.quick-icons .actions a.t2ka_open 
+.quick-icons .actions a.t2ka_open
 {
-  color:#747399
+	color:#747399
 }
 
 .quick-icons .actions a.t2ka_open:hover,
 .quick-icons .actions a.t2ka_open.selected
 {
-  color:#fff
+	color:#fff
 }
 
-.quick-icons .actions a.t2ka_open:hover .base, 
+.quick-icons .actions a.t2ka_open:hover .base,
 .quick-icons .actions a.t2ka_open.selected .base
 {
-  background-color:#747399
+	background-color:#747399
 }
 
-.quick-icons .actions a.t2ka_play 
+.quick-icons .actions a.t2ka_play
 {
-  color:#990000
+	color:#990000
 }
 
 .quick-icons .actions a.t2ka_play:hover,
 .quick-icons .actions a.t2ka_play.selected
 {
-  color:#fff
+	color:#fff
 }
 
-.quick-icons .actions a.t2ka_play:hover .base, 
+.quick-icons .actions a.t2ka_play:hover .base,
 .quick-icons .actions a.t2ka_play.selected .base
 {
-  background-color:#990000
+	background-color:#990000
 }
 
 .trakt-icon-t2ka-open-thick,
 .trakt-icon-t2ka-play-thick
 {
-  vertical-align:top;
+	vertical-align:top;
 }
 
 .btn-t2ka-open .text .main-info,
 .btn-t2ka-play .text .main-info {
-  line-height: normal !important;
+	line-height: normal !important;
 }
 
 .btn-t2ka-open .text .under-info,
 .btn-t2ka-play .text .under-info {
-  display: block !important;
-  font-size: 11px !important;
+	display: block !important;
+	font-size: 11px !important;
 }
 
 .btn-t2ka-open {
-  margin-top: 5px !important;
-  color: #747399 !important;
-  background-color: white !important;
-  border-color: #747399 !important;
-  border: solid 1px #747399 !important;
-  transition: all .5s !important
+	margin-top: 5px !important;
+	color: #747399 !important;
+	background-color: white !important;
+	border-color: #747399 !important;
+	border: solid 1px #747399 !important;
+	transition: all .5s !important
 }
 
 .btn-t2ka-open:hover, .btn-t2ka-open:focus {
-  color: white !important;
-  background-color: #747399 !important;
-  border-color: #48475e !important
+	color: white !important;
+	background-color: #747399 !important;
+	border-color: #48475e !important
 }
 
 .btn-t2ka-open:hover {
-  background-color: #747399 !important;
-  color: white !important
+	background-color: #747399 !important;
+	color: white !important
 }
 
 .btn-t2ka-open:hover .btn {
-  color: white !important
+	color: white !important
 }
 
 .btn-t2ka-play {
-  margin-top: 5px !important;
-  color: #990000 !important;
-  background-color: white !important;
-  border-color: #990000 !important;
-  border: solid 1px #990000 !important;
-  transition: all .5s !important
+	margin-top: 5px !important;
+	color: #990000 !important;
+	background-color: white !important;
+	border-color: #990000 !important;
+	border: solid 1px #990000 !important;
+	transition: all .5s !important
 }
 
 .btn-t2ka-play:hover, .btn-t2ka-play:focus {
-  color: white !important;
-  background-color: #990000 !important;
-  border-color: #5e0000 !important
+	color: white !important;
+	background-color: #990000 !important;
+	border-color: #5e0000 !important
 }
 
 .btn-t2ka-play:hover {
-  background-color: #990000 !important;
-  color: white !important
+	background-color: #990000 !important;
+	color: white !important
 }
 
 .btn-t2ka-play:hover .btn {
-  color: white !important
+	color: white !important
+}
+
+.frame-wrapper #date-nav-2 {
+	padding:0 0 20px 0;
+	margin-top:-5px
+}
+
+.frame-wrapper #date-nav-2:before,
+.frame-wrapper #date-nav-2:after {
+	content:" ";
+	display:table
+}
+
+.frame-wrapper #date-nav-2:after {
+	clear:both
+}
+
+.frame-wrapper #date-nav-2 .prev {
+	float:left
+}
+
+.frame-wrapper #date-nav-2 .prev .trakt-icon-arrow-left {
+	margin-right:5px;
+	font-size:20px
+}
+
+.frame-wrapper #date-nav-2 .next {
+	float:right
+}
+
+.frame-wrapper #date-nav-2 .next .trakt-icon-arrow-right {
+	margin-left:5px;
+	font-size:20px
+}
+
+.frame-wrapper #date-nav-2 .no-link {
+	color:#444
+}
+
+.frame-wrapper .sidenav #date-nav-2 {
+	margin-top:0;
+	padding-top:10px;
 }
