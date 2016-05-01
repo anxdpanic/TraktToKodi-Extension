@@ -643,8 +643,17 @@ var kodi = {
 		if ((action === 'open_episode') && (settings.get.episode_open_season === true)) {
 			action = 'open_season';
 		}
-		chrome.runtime.sendMessage({action: 'active_format'}, function(response) {
-			kodi.rpc.execute_addon(output_params(action, response.active_format, item));
+		var qport = chrome.runtime.connect({ name: 'T2KASocket' });
+		qport.postMessage({action: 'active_format'}); 
+		qport.onMessage.addListener(function(msg) {
+			switch (msg.action) {
+				case 'active_format':
+					kodi.rpc.execute_addon(output_params(action, msg.active_format, item));
+					qport.disconnect();
+					break;
+				default:
+					break;
+			}
 		});
 	},
 	rpc: {
