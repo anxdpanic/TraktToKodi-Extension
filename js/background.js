@@ -188,21 +188,18 @@ chrome.runtime.onConnect.addListener(function (port) {
 					console.log('T2KASocket: |with_settings| missing |cb_functions|');
 				}
 				break;
+			case 'active_format':
+				port.postMessage({
+					action: 'active_format',
+					active_format: settings.get.profiles[settings.get.profiles.active].format
+				});
+				return true;
+				break;
 			default:
 				console.log('T2KASocket: No valid |action| provided');
 				break;
 		}
 	});
-});
-
-
-chrome.onMessage.addListener(function(request, sender, sendResponse) {
-	switch(request.action) {
-		case 'active_format':
-			sendResponse({active_format: settings.get.profiles[settings.get.profiles.active].format});
-			break;
-	}
-	return true;
 });
 
 
