@@ -20,14 +20,12 @@
 		"default_popup": "/html/settings.html"
 	},
 
-	"content_scripts": [
-		{
-			"matches": ["*://trakt.tv/*"],
-			"css": ["/css/trakt.css"],
-			"js": ["/js/content_script.js"],
-			"all_frames": true
-		}
-	],
+	"content_scripts": [{
+		"matches": ["*://trakt.tv/*"],
+		"css": ["/css/trakt.css"],
+		"js": ["/js/content_script.js"],
+		"all_frames": true
+	}],
 
 	"background": {
 		"matches": ["*://trakt.tv/*"],

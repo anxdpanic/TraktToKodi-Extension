@@ -1,5 +1,15 @@
-@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+@charset "UTF-8";
 
+@font-face {
+	font-family:'trakt';
+	src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug);
+	src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug#iefix) format("embedded-opentype"),
+	url(/assets/trakt-57243f9aac73da4a24d1ef13350da272.woff?h16cug) format("woff"),
+	url(/assets/trakt-1ac730dd1dc3d1ea758e27da06a3263f.ttf?h16cug) format("truetype"),
+	url(/assets/trakt-10890dee02f1a21a74dc25aa5e5fc46e.svg?h16cug#trakt) format("svg");
+	font-weight:normal;
+	font-style:normal
+}
 
 .header {
 	background-color: #303030;
@@ -15,6 +25,10 @@
 	margin-bottom: 0.2em;
 	padding: 0.1em;
 	width: 100%;
+	vertical-align: middle;
+}
+
+.textboxes > .input_block {
 	line-height: 1.9em;
 }
 
@@ -24,6 +38,8 @@ input[class*="settings text"] {
 	margin-right: 0.1em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
+	border-width: 0px 0px 1px 0px;
+	border-color: #000;
 }
 
 input[id^="iphost"],
@@ -40,31 +56,78 @@ input[id^="port"] {
 	width: 100%;
 }
 
-.buttons::after {
-	content: '\A';
-	white-space: pre;
-}
-
 button[class*="settings button"] {
 	float: right;
 	margin-left: 0.5em;
 	margin-right: 0em;
+	font-weight: 600;
+	text-align: center;	
+	padding: 5px 25px;
+	border: 0em;
+	background: #303030;
+	color: #FFF;
 }
 
-[class="settings checkbox"] ~ label,
-[class="settings radio"] ~ label {
-	display: inline-block;
-	vertical-align: middle;
+button[class*="settings button"]:hover {
+	color: #000;
+	background: #CCC;
+	cursor: pointer;
 }
 
-input[class="settings checkbox"],
-input[class="settings radio"] {
-	display: inline-block;
-	vertical-align: middle;
+button[class*="settings button"]:active {
+	color: #000;
+	background: #FFF;
+	border: 1px solid #000;
+	cursor: pointer;
 }
 
 #extension_version {
 	float: right;
 	color: gray;
-	font: 10px 'Open Sans', sans-serif;
+	font-size: 10px;
+}
+
+input[id^="format_"],
+input[type="checkbox"] {
+	display: none;
+}
+
+label[for^="format_"] {
+	display: inline-block;
+	font-weight: 600;
+	text-align: center;	
+	padding: 5px 25px;
+}
+
+label[for^="format_"]:hover {
+	color: #000;
+	background: #CCC;
+	cursor: pointer;
+}
+
+input[id^="format_"]:checked + label[for^="format_"] {
+	background: #303030 !important;
+	color: #FFF !important;
+}
+
+.font_checkbox + label {
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	vertical-align: top;
+}
+
+.font_checkbox {
+	font-family:'trakt';
+	display: inline-block;
+	vertical-align: top;
+	padding: 3px 3px;
+}
+
+.font_checkbox:before {
+	content: '\e604';
+}
+
+input[type="checkbox"]:checked + .font_checkbox:before {
+	content: '\e602';
 }

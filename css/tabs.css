@@ -1,14 +1,18 @@
-@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+@charset "UTF-8";
 
 body {
 	background: #000;
 	color: #FFF;
-	font: 12px 'Open Sans', sans-serif;
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+	font-size: 12px;
 }
 
 input,
-button {
-	font: 12px 'Open Sans', sans-serif;
+button,
+label,
+h4 {
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+	font-size: 12px;
 }
 
 .main {
@@ -20,8 +24,8 @@ button {
 .content {
 	background: #FFF;
 	color: #373737;
-	min-height: 271px;
-	max-height: 271px;
+	min-height: 276px;
+	max-height: 276px;
 }
 
 div[id^="content"] {
@@ -80,10 +84,4 @@ input[id^="tab_sub"]:checked + label[for^="tab_sub"] {
 #tab_sub3:checked ~ .content_sub #content_sub3,
 #tab_sub4:checked ~ .content_sub #content_sub4 {
 	display: block;
-}
-
-@media screen and (max-width: 287px) {
-	label[id^="tab"] {
-		padding: 15px 10px;
-	}
 }
