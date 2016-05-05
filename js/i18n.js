@@ -13,7 +13,7 @@ function i18n_these(elements) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
 	i18n_these(document.getElementsByClassName('settings header'));
 	i18n_these(document.getElementsByTagName('label'));
 	i18n_these(document.getElementsByTagName('button'));

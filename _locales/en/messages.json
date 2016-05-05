@@ -64,24 +64,24 @@
 		"message": "4"
 	},
 	"settings_format_header": {
-		"description": "English: Output",
-		"message": "Output"
+		"description": "English: Output Format",
+		"message": "Output Format"
 	},
 	"format_1": {
-		"description": "English: Format 1",
-		"message": "Format 1"
+		"description": "English: 1",
+		"message": "1"
 	},
 	"format_2": {
-		"description": "English: Format 2",
-		"message": "Format 2"
+		"description": "English: 2",
+		"message": "2"
 	},
 	"format_3": {
-		"description": "English: Format 3",
-		"message": "Format 3"
+		"description": "English: 3",
+		"message": "3"
 	},
 	"format_4": {
-		"description": "English: Format 4",
-		"message": "Format 4"
+		"description": "English: 4",
+		"message": "4"
 	},
 	"play": {
 		"description": "English: Play",

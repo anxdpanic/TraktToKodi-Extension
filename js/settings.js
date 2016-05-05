@@ -1,15 +1,17 @@
-var port = chrome.runtime.connect({ name: 'T2KASocket' });
+var port = chrome.runtime.connect({
+	name: 'T2KASocket'
+});
 
 
 var settings = {
 	get: (null),
-	load: function (callback_array) {
+	load: function(callback_array) {
 		port.postMessage({
 			action: 'with_settings',
 			cb_functions: callback_array
 		});
 	},
-	update: function () {
+	update: function() {
 		var active_profile = settings.get.profiles.active;
 		var s = '';
 		var j = 0;
@@ -41,7 +43,7 @@ var settings = {
 		document.querySelector('#episode-open-season').checked = settings.get.episode_open_season;
 		document.querySelector('#sidebar-pagination').checked = settings.get.sidebar_pagination;
 	},
-	save: function () {
+	save: function() {
 		var new_settings = {
 			profiles: {
 				'active': document.querySelector('input[name="tabs_sub1"]:checked').value,
@@ -75,25 +77,28 @@ var settings = {
 			episode_open_season: document.querySelector('#episode-open-season').checked,
 			sidebar_pagination: document.querySelector('#sidebar-pagination').checked
 		}
-		port.postMessage({ action: 'save_settings', settings: new_settings });
+		port.postMessage({
+			action: 'save_settings',
+			settings: new_settings
+		});
 	}
 }
 
 
-function load_version () {
+function load_version() {
 	var version_element = document.getElementById('extension_version');
 	var inner_text = document.createTextNode(chrome.i18n.getMessage('version') + ': ' + chrome.runtime.getManifest().version);
 	version_element.appendChild(inner_text);
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
 	load_version();
 	settings.load(['settings.update']);
 });
 
 
-document.getElementById('button-save').addEventListener('click', function () {
+document.getElementById('button-save').addEventListener('click', function() {
 	settings.save();
 });
 
@@ -101,7 +106,7 @@ document.getElementById('button-save').addEventListener('click', function () {
 var checkboxes = document.getElementsByClassName('settings checkbox');
 var _length = checkboxes.length;
 for (var i = 0; i < _length; i++) {
-	checkboxes[i].addEventListener('click', function () {
+	checkboxes[i].addEventListener('click', function() {
 		settings.save();
 	});
 }
@@ -110,7 +115,7 @@ for (var i = 0; i < _length; i++) {
 var radios = document.getElementsByClassName('settings radio');
 _length = radios.length;
 for (i = 0; i < _length; i++) {
-	radios[i].addEventListener('click', function () {
+	radios[i].addEventListener('click', function() {
 		settings.save();
 	});
 }
@@ -119,7 +124,7 @@ for (i = 0; i < _length; i++) {
 radios = document.querySelectorAll('input[name="tabs_sub1"]');
 _length = radios.length;
 for (i = 0; i < _length; i++) {
-	radios[i].addEventListener('click', function () {
+	radios[i].addEventListener('click', function() {
 		settings.save();
 	});
 }
@@ -131,7 +136,7 @@ port.onMessage.addListener(function(msg) {
 			if ((msg.cb_functions) && (msg.settings)) {
 				settings.get = msg.settings;
 				for (var i = 0; i < msg.cb_functions.length; i++) {
-					switch(msg.cb_functions[i]) {
+					switch (msg.cb_functions[i]) {
 						case 'settings.update':
 							settings.update();
 							break;
