@@ -102,19 +102,20 @@ var rpc = {
 			return;
 		}
 		var conn = new rpc.connection();
+		var rpc_request = null;
 		var log_lead = 'rpc.execute(\'' + action + '\'):\r\n|url| ' + conn.url + '\r\n';
 		switch (action) {
 			case 'execute_addon':
 				if (params) {
-					var rpc_request = rpc.stringify.execute_addon(params);
-					conn.socket.onopen = function(event) {
-						console.log(log_lead + '|request| ' + rpc_request);
-						conn.socket.send(rpc_request);
-					};
-					conn.socket.onmessage = function(event) {
-						console.log(log_lead + '|response| ' + event.data);
-						conn.socket.close();
-					};
+					rpc_request = rpc.stringify.execute_addon(params);
+
+				} else {
+					console.log('rpc.execute(\'' + action + '\'): missing |params|');
+				}
+				break;
+			case 'activate_window':
+				if (params) {
+					rpc_request = rpc.stringify.activate_window(params);
 				} else {
 					console.log('rpc.execute(\'' + action + '\'): missing |params|');
 				}
@@ -122,6 +123,16 @@ var rpc = {
 			default:
 				console.log('rpc.execute(): No |action| provided');
 				break;
+		}
+		if (rpc_request) {
+			conn.socket.onopen = function(event) {
+				console.log(log_lead + '|request| ' + rpc_request);
+				conn.socket.send(rpc_request);
+			};
+			conn.socket.onmessage = function(event) {
+				console.log(log_lead + '|response| ' + event.data);
+				conn.socket.close();
+			};
 		}
 	},
 	json: {
@@ -136,12 +147,36 @@ var rpc = {
 					addonid: settings.get.profiles[active].addonid,
 					params: params
 				}
+			};
+		},
+		activate_window: function(params) {
+			var active = settings.get.profiles.active;
+			var param_string = '';
+			var connector = '?';
+			for (var key in params) {
+				if ((param_string) && (connector !== '&')) {
+					connector = '&';
+				}
+				param_string += connector + key + '=' + params[key];
 			}
+			var addon_path = 'plugin://' + settings.get.profiles[active].addonid + encodeURI(param_string);
+			return {
+				jsonrpc: '2.0',
+				id: 1,
+				method: 'GUI.ActivateWindow',
+				params: {
+					window: 'videos',
+					parameters: [addon_path, 'return']
+				}
+			};
 		}
 	},
 	stringify: {
 		execute_addon: function(params) {
 			return JSON.stringify(rpc.json.execute_addon(params));
+		},
+		activate_window: function(params) {
+			return JSON.stringify(rpc.json.activate_window(params));
 		}
 	}
 }
@@ -158,16 +193,17 @@ chrome.runtime.onConnect.addListener(function(port) {
 				if (msg.settings) {
 					settings.save(msg.settings);
 				} else {
-					console.log('T2KASocket: |save_settings| missing |settings|');
+					console.log('T2KASocket: |' + msg.action + '| missing |settings|');
 				}
 				break;
 			case 'execute_addon':
+			case 'activate_window':
 				if (msg.params) {
 					settings.load(function() {
 						rpc.execute(msg.action, msg.params);
 					});
 				} else {
-					console.log('T2KASocket: |execute_addon| missing |params|');
+					console.log('T2KASocket: |' + msg.action + '| missing |params|');
 				}
 				break;
 			case 'with_settings':
@@ -180,7 +216,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 						});
 					});
 				} else {
-					console.log('T2KASocket: |with_settings| missing |cb_functions|');
+					console.log('T2KASocket: |' + msg.action + '| missing |cb_functions|');
 				}
 				break;
 			case 'active_format':
