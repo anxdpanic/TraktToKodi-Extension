@@ -140,13 +140,13 @@ var action_elements = {
 			case 'movie':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute_addon(this, 'open_movie', action_input);
+						kodi.execute(this, 'open_movie', action_input, 'activate_window');
 					});
 				}
 				if (play_item) {
 					if (check_type.show_play() === true) {
 						play_item.addEventListener("click", function() {
-							kodi.execute_addon(this, 'play_movie', action_input);
+							kodi.execute(this, 'play_movie', action_input, 'activate_window');
 						});
 					}
 				}
@@ -154,27 +154,27 @@ var action_elements = {
 			case 'show':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute_addon(this, 'open_show', action_input);
+						kodi.execute(this, 'open_show', action_input, 'activate_window');
 					});
 				}
 				break;
 			case 'season':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute_addon(this, 'open_season', action_input);
+						kodi.execute(this, 'open_season', action_input, 'activate_window');
 					});
 				}
 				break;
 			case 'episode':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute_addon(this, 'open_episode', action_input);
+						kodi.execute(this, 'open_episode', action_input, 'activate_window');
 					});
 				}
 				if (play_item) {
 					if (check_type.show_play() === true) {
 						play_item.addEventListener("click", function() {
-							kodi.execute_addon(this, 'play_episode', action_input);
+							kodi.execute(this, 'play_episode', action_input, 'activate_window');
 						});
 					}
 				}
@@ -618,7 +618,7 @@ function output_params(action, format, item) {
 
 
 var kodi = {
-	execute_addon: function(event_element, action, action_input) {
+	execute: function(event_element, action, action_input, rpc_method) {
 		var item = event_element.parentElement.parentElement.parentElement;
 		if (action_input === 'button') {
 			item = document.getElementsByTagName('html')[0];
@@ -635,7 +635,7 @@ var kodi = {
 		qport.onMessage.addListener(function(msg) {
 			switch (msg.action) {
 				case 'active_format':
-					kodi.rpc.execute_addon(output_params(action, msg.active_format, item));
+					kodi.rpc(rpc_method, output_params(action, msg.active_format, item));
 					qport.disconnect();
 					break;
 				default:
@@ -643,14 +643,19 @@ var kodi = {
 			}
 		});
 	},
-	rpc: {
-		execute_addon: function(params) {
-			if (params) {
-				port.postMessage({
-					action: 'execute_addon',
-					params: params
-				});
-			}
+	rpc: function(action, params) {
+		switch (action) {
+			case 'execute':
+			case 'activate_window':
+				if (params) {
+					port.postMessage({
+						action: action,
+						params: params
+					});
+				}
+				break;
+			default:
+				break;
 		}
 	}
 }
