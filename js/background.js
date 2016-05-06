@@ -56,7 +56,8 @@ var settings = {
 		movie_show_play: false,
 		episode_show_play: false,
 		episode_open_season: false,
-		sidebar_pagination: false
+		sidebar_pagination: false,
+		rpc_method: 'activate_window'
 	},
 	get: (this.defaults),
 	save: function(new_settings) {
@@ -219,10 +220,10 @@ chrome.runtime.onConnect.addListener(function(port) {
 					console.log('T2KASocket: |' + msg.action + '| missing |cb_functions|');
 				}
 				break;
-			case 'active_format':
+			case 'get_settings':
 				port.postMessage({
-					action: 'active_format',
-					active_format: settings.get.profiles[settings.get.profiles.active].format
+					action: 'get_settings',
+					settings: settings.get
 				});
 				return true;
 				break;

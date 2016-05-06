@@ -88,23 +88,33 @@ button[class*="settings button"]:active {
 }
 
 input[id^="format_"],
+input[id^="rpc_method_"],
 input[type="checkbox"] {
 	display: none;
 }
 
-label[for^="format_"] {
+label[for^="format_"],
+label[for^="rpc_method_"] {
 	display: inline-block;
 	font-weight: 600;
 	text-align: center;	
 	padding: 5px 25px;
 }
 
-label[for^="format_"]:hover {
+label[for^="rpc_method_"] {
+	font-size: 10px;
+	padding: 5px 0px !important;
+	width: 49%;
+}
+
+label[for^="format_"]:hover,
+label[for^="rpc_method_"]:hover {
 	color: #000;
 	background: #CCC;
 	cursor: pointer;
 }
 
+input[id^="rpc_method_"]:checked + label[for^="rpc_method_"],
 input[id^="format_"]:checked + label[for^="format_"] {
 	background: #303030 !important;
 	color: #FFF !important;

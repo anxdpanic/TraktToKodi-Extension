@@ -47,6 +47,10 @@
 		"description": "English: Options",
 		"message": "Options"
 	},
+	"tab_3": {
+		"description": "English: Advanced",
+		"message": "Advanced"
+	},
 	"tab_sub_1": {
 		"description": "English: 1",
 		"message": "1"
@@ -118,5 +122,17 @@
 	"sidebar_pagination": {
 		"description": "English: Additional sidebar pagination",
 		"message": "Additional sidebar pagination"
+	},
+	"settings_rpcmethod_header": {
+		"description": "English: RPC Method",
+		"message": "RPC Method"
+	},
+	"rpc_method_1": {
+		"description": "English: GUI.ActivateWindow",
+		"message": "GUI.ActivateWindow"
+	},
+	"rpc_method_2": {
+		"description": "English: Addons.ExecuteAddon",
+		"message": "Addons.ExecuteAddon"
 	}
 }

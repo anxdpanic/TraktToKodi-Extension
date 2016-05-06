@@ -140,13 +140,13 @@ var action_elements = {
 			case 'movie':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_movie', action_input, 'activate_window');
+						kodi.execute(this, 'open_movie', action_input);
 					});
 				}
 				if (play_item) {
 					if (check_type.show_play() === true) {
 						play_item.addEventListener("click", function() {
-							kodi.execute(this, 'play_movie', action_input, 'activate_window');
+							kodi.execute(this, 'play_movie', action_input);
 						});
 					}
 				}
@@ -154,27 +154,27 @@ var action_elements = {
 			case 'show':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_show', action_input, 'activate_window');
+						kodi.execute(this, 'open_show', action_input);
 					});
 				}
 				break;
 			case 'season':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_season', action_input, 'activate_window');
+						kodi.execute(this, 'open_season', action_input);
 					});
 				}
 				break;
 			case 'episode':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_episode', action_input, 'activate_window');
+						kodi.execute(this, 'open_episode', action_input);
 					});
 				}
 				if (play_item) {
 					if (check_type.show_play() === true) {
 						play_item.addEventListener("click", function() {
-							kodi.execute(this, 'play_episode', action_input, 'activate_window');
+							kodi.execute(this, 'play_episode', action_input);
 						});
 					}
 				}
@@ -618,7 +618,7 @@ function output_params(action, format, item) {
 
 
 var kodi = {
-	execute: function(event_element, action, action_input, rpc_method) {
+	execute: function(event_element, action, action_input) {
 		var item = event_element.parentElement.parentElement.parentElement;
 		if (action_input === 'button') {
 			item = document.getElementsByTagName('html')[0];
@@ -626,17 +626,22 @@ var kodi = {
 		if ((action === 'open_episode') && (settings.get.episode_open_season === true)) {
 			action = 'open_season';
 		}
-		var qport = chrome.runtime.connect({
+		var execute_port = chrome.runtime.connect({
 			name: 'T2KASocket'
 		});
-		qport.postMessage({
-			action: 'active_format'
+		execute_port.postMessage({
+			action: 'get_settings'
 		});
-		qport.onMessage.addListener(function(msg) {
+		execute_port.onMessage.addListener(function(msg) {
 			switch (msg.action) {
-				case 'active_format':
-					kodi.rpc(rpc_method, output_params(action, msg.active_format, item));
-					qport.disconnect();
+				case 'get_settings':
+					if (msg.settings) {
+						settings.get = msg.settings;
+						var active_format = settings.get.profiles.active;
+						var rpc_method = settings.get.rpc_method;
+						kodi.rpc(rpc_method, output_params(action, settings.get.profiles[active_format].format, item));
+						execute_port.disconnect();
+					}
 					break;
 				default:
 					break;
@@ -645,7 +650,7 @@ var kodi = {
 	},
 	rpc: function(action, params) {
 		switch (action) {
-			case 'execute':
+			case 'execute_addon':
 			case 'activate_window':
 				if (params) {
 					port.postMessage({
