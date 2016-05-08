@@ -128,11 +128,11 @@
 		"message": "RPC Method"
 	},
 	"rpc_method_1": {
-		"description": "English: GUI.ActivateWindow",
-		"message": "GUI.ActivateWindow"
-	},
-	"rpc_method_2": {
 		"description": "English: Addons.ExecuteAddon",
 		"message": "Addons.ExecuteAddon"
+	},
+	"rpc_method_2": {
+		"description": "English: GUI.ActivateWindow",
+		"message": "GUI.ActivateWindow"
 	}
 }

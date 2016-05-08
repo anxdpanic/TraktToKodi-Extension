@@ -57,7 +57,7 @@ var settings = {
 		episode_show_play: false,
 		episode_open_season: false,
 		sidebar_pagination: false,
-		rpc_method: 'activate_window'
+		rpc_method: 'execute_addon'
 	},
 	get: (this.defaults),
 	save: function(new_settings) {
