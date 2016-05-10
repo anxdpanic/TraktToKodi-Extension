@@ -249,12 +249,15 @@ var add_items = {
 
 
 function loading(item, toggle) {
-	var loading = item.querySelector('.loading');
-	if (loading) {
-		if ((loading.style.display !== 'block') && (toggle)) {
-			loading.style.display = 'block';
+	var loaditem = item.querySelector('.loading');
+	if (loaditem) {
+		if ((loaditem.style.display !== 'block') && (toggle)) {
+			loaditem.style.display = 'block';
+			setTimeout(function () {
+				loading(item);
+			}, 5000);
 		} else {
-			loading.style.display = 'none';
+			loaditem.style.display = 'none';
 		}
 	}
 }
