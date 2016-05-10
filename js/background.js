@@ -149,6 +149,10 @@ var rpc = {
 	json: {
 		execute_addon: function(params) {
 			var active = settings.get.profiles.active;
+			var outparams = {};
+			for (var key in params) {
+				outparams[key] = encodeURIComponent(params[key]);
+			}			
 			return {
 				jsonrpc: '2.0',
 				id: 1,
@@ -156,7 +160,7 @@ var rpc = {
 				params: {
 					wait: false,
 					addonid: settings.get.profiles[active].addonid,
-					params: params
+					params: outparams
 				}
 			};
 		},
@@ -168,9 +172,9 @@ var rpc = {
 				if ((param_string) && (connector !== '&')) {
 					connector = '&';
 				}
-				param_string += connector + key + '=' + params[key];
+				param_string += connector + key + '=' + encodeURIComponent(params[key]);
 			}
-			var addon_path = 'plugin://' + settings.get.profiles[active].addonid + encodeURI(param_string);
+			var addon_path = 'plugin://' + settings.get.profiles[active].addonid + param_string;
 			return {
 				jsonrpc: '2.0',
 				id: 1,
