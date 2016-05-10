@@ -126,13 +126,23 @@ var rpc = {
 				break;
 		}
 		if (rpc_request) {
-			conn.socket.onopen = function(event) {
+			conn.socket.onopen = function() {
 				console.log(log_lead + '|request| ' + rpc_request);
 				conn.socket.send(rpc_request);
 			};
 			conn.socket.onmessage = function(event) {
 				console.log(log_lead + '|response| ' + event.data);
 				conn.socket.close();
+			};
+			conn.socket.onerror = function(event) {
+				if (event.data) {
+					console.log(log_lead + '|ERROR| ' + event.data);
+				}
+			};
+			conn.socket.onclose = function(event) {
+				if ((!event.wasClean) && (event.reason)) {
+					console.log(log_lead + '|ERROR ' + event.code + '| ' + event.reason);
+				}
 			};
 		}
 	},
