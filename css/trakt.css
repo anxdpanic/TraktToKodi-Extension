@@ -89,17 +89,6 @@
 	vertical-align:top;
 }
 
-.btn-t2ka-open .text .main-info,
-.btn-t2ka-play .text .main-info {
-	line-height: normal !important;
-}
-
-.btn-t2ka-open .text .under-info,
-.btn-t2ka-play .text .under-info {
-	display: block !important;
-	font-size: 11px !important;
-}
-
 .btn-t2ka-open {
 	margin-top: 5px !important;
 	color: #747399 !important;
