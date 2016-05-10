@@ -1,3 +1,6 @@
+var production = true;
+
+
 var port = chrome.runtime.connect({
 	name: 'T2KASocket'
 });
@@ -113,16 +116,24 @@ var action_elements = {
 		text_div.setAttribute('class', 'text');
 		var main_info_div = document.createElement('div');
 		main_info_div.setAttribute('class', 'main-info');
-		main_info_div.appendChild(document.createTextNode(i18n(name)));
+		main_info_div.appendChild(document.createTextNode(i18n(name) + ' ' + i18n(data_type)));
 		var under_info_div = document.createElement('div');
 		under_info_div.setAttribute('class', 'under-info');
-		under_info_div.appendChild(document.createTextNode(i18n(data_type)));
 		var icon_trakt = document.createElement('div');
 		icon_trakt.setAttribute('class', 'fa fa-fw trakt-icon-t2ka-' + name);
+		var loading_div = document.createElement('div');
+		loading_div.setAttribute('class', 'loading');
+		var icon_div = document.createElement('div');
+		icon_div.setAttribute('class', 'icon');
+		var spin_div = document.createElement('div');
+		spin_div.setAttribute('class', 'fa fa-refresh fa-spin');
+		icon_div.appendChild(spin_div);
+		loading_div.appendChild(icon_div);
 		text_div.appendChild(main_info_div);
 		text_div.appendChild(under_info_div);
 		button_element.appendChild(icon_trakt);
 		button_element.appendChild(text_div);
+		button_element.appendChild(loading_div);
 		return button_element;
 	},
 	add_listener: function(items, data_type, action_input) {
@@ -140,13 +151,13 @@ var action_elements = {
 			case 'movie':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_movie', action_input);
+						execute_action(this, 'open_movie', action_input);
 					});
 				}
 				if (play_item) {
 					if (check_type.show_play() === true) {
 						play_item.addEventListener("click", function() {
-							kodi.execute(this, 'play_movie', action_input);
+							execute_action(this, 'play_movie', action_input);
 						});
 					}
 				}
@@ -154,27 +165,27 @@ var action_elements = {
 			case 'show':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_show', action_input);
+						execute_action(this, 'open_show', action_input);
 					});
 				}
 				break;
 			case 'season':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_season', action_input);
+						execute_action(this, 'open_season', action_input);
 					});
 				}
 				break;
 			case 'episode':
 				if (open_item) {
 					open_item.addEventListener("click", function() {
-						kodi.execute(this, 'open_episode', action_input);
+						execute_action(this, 'open_episode', action_input);
 					});
 				}
 				if (play_item) {
 					if (check_type.show_play() === true) {
 						play_item.addEventListener("click", function() {
-							kodi.execute(this, 'play_episode', action_input);
+							execute_action(this, 'play_episode', action_input);
 						});
 					}
 				}
@@ -237,250 +248,204 @@ var add_items = {
 }
 
 
-function Trakt(item, video_type) {
+function loading(item, toggle) {
+	var loading = item.querySelector('.loading');
+	if (loading) {
+		if ((loading.style.display !== 'block') && (toggle)) {
+			loading.style.display = 'block';
+		} else {
+			loading.style.display = 'none';
+		}
+	}
+}
+
+
+function TraktDOMScraper(item, video_type) {
 	this.id = function(_video_type) {
-			if (!_video_type) {
-				_video_type = video_type;
-			}
-			var value = '';
-			value = item.getAttribute('data-' + _video_type.toLowerCase() + '-id');
-			if (!value) {
-				value = item.getElementsByClassName('btn-watch')[0];
-				if (value) {
-					value = value.getAttribute('data-' + _video_type.toLowerCase() + '-id');
-				}
-			}
-			return value;
-		},
-		this.year = function() {
-			var value = item.getElementsByClassName('year')[0];
+		if (!_video_type) {
+			_video_type = video_type;
+		}
+		var value = '';
+		value = item.getAttribute('data-' + _video_type.toLowerCase() + '-id');
+		if (!value) {
+			value = item.getElementsByClassName('btn-watch')[0];
 			if (value) {
-				value = value.innerHTML;
-				if (value) {
-					return value.split('T')[0].split(' ')[0].split('-')[0];
-				}
-			}
-			if (!value) {
-				value = this.airdate();
-				if (value) {
-					return value.split('T')[0].split(' ')[0].split('-')[0];
-				} else {
-					value = this.title(false, false);
-					if (value) {
-						var year_regx = new RegExp(/^.*([0-9]{4}).*$/);
-						value = year_regx.exec(value);
-						if (value) {
-							if (value.length === 2) {
-								return value[1];
-							}
-						}
-					}
-					return '';
-				}
-			}
-		},
-		this._strip_year = function(title) {
-			var year = new RegExp(/^(.+)\([0-9]{4}\).*$/);
-			var value = year.exec(title);
-			if (!value) {
-				return title;
-			} else if (value.length === 2) {
-				return value[1].trim();
+				value = value.getAttribute('data-' + _video_type.toLowerCase() + '-id');
 			} else {
-				return title;
+				value = '';
 			}
-		},
-		this.season = function() {
-			var season = item.getAttribute('data-season-number');
+		}
+		return value;
+	};
+	this.season = function() {
+		var season = item.getAttribute('data-season-number');
+		if (season) {
+			return season;
+		} else {
+			season = item.getElementsByClassName('main-title-sxe')[0];
 			if (season) {
-				return season;
+				if (season.innerHTML.indexOf('Special') > -1) {
+					return '0';
+				} else {
+					return season.innerHTML.split('x')[0];
+				}
 			} else {
-				season = item.getElementsByClassName('main-title-sxe')[0];
+				season = item.getElementsByClassName('btn-watch')[0];
 				if (season) {
-					if (season.innerHTML.indexOf('Special') > -1) {
-						return '0';
-					} else {
-						return season.innerHTML.split('x')[0];
-					}
-				} else {
-					season = item.getElementsByClassName('btn-watch')[0];
-					if (season) {
-						return season.getAttribute('data-season-number');
-					} else {
-						return '';
-					}
-				}
-			}
-		},
-		this.title = function(strip_year, allow_match) {
-			var items = document.getElementsByClassName('grid-item')[0];
-			var _item = item;
-			if (!items) {
-				_item = document;
-			}
-			var value = this._itemprop(_item, 'meta', 'name', false, 0);
-			if (value) {
-				if (!allow_match) {
-					if (value !== this.series_title(_item)) {
-						if (strip_year) {
-							return this._strip_year(value);
-						}
-						return value;
-					}
-					value = null;
-				} else {
-					if (strip_year) {
-						return this._strip_year(value);
-					}
-					return value;
-				}
-			}
-			if (!value) {
-				value = this._itemprop(_item, 'meta', 'name', false, 1);
-				if (value) {
-					if (strip_year) {
-						return this._strip_year(value);
-					}
-					return value;
+					return season.getAttribute('data-season-number');
 				} else {
 					return '';
 				}
 			}
-		},
-		this.series_title = function(_item) {
-			if (!_item) {
-				_item = item;
-			}
-			var value = this.parent_title(_item);
-			if (value) {
-				return value;
-			} else {
-				var is_fake = _item.getAttribute('class');
-				if (is_fake) {
-					if (is_fake.indexOf('fake') > -1) {
-						value = _item.getElementsByTagName('h5')[0];
-						if (value) {
-							return value.innerHTML.trim();
-						}
-					}
-				}
-				value = this.parent_title(document);
-				if (value) {
-					return value;
-				} else {
-					value = null;
-					if (_item.parentElement) {
-						value = _item.parentElement.getElementsByClassName('show-title')[0];
-						if (value) {
-							value = value.getElementsByTagName('a')[0];
-							if (value) {
-								return value.innerHTML.trim();
-							}
-						}
-					}
-					if (!value) {
-						return '';
-					}
-				}
-			}
-		},
-		this.episode = function() {
-			var value = this._itemprop(item, 'meta', 'episodeNumber', false, 0);
-			if (value) {
-				return value;
-			} else {
-				value = this._itemprop(document, 'meta', 'episodeNumber', false, 0);
-				if (value) {
-					return value;
-				} else {
-					return '';
-				}
-			}
-		},
-		this.airdate = function() {
-			var items = document.getElementsByClassName('grid-item')[0];
-			var _item = item;
-			if (!items) {
-				_item = document;
-			}
-			var value = this._itemprop(_item, 'meta', 'datePublished', false, 0);
-			if (value) {
-				return value.split('T')[0].split(' ')[0];
-			} else {
-				value = this._itemprop(_item, 'meta', 'startDate', false, 0);
-				if (value) {
-					return value.split('T')[0].split(' ')[0];
-				} else {
-					return '';
-				}
-			}
-		},
-		this.art = function() {
-			var value = this._itemprop(item, 'meta', 'image', false, 0);
+		}
+	};
+	this.episode = function() {
+		var value = this._itemprop(item, 'meta', 'episodeNumber', false, 0);
+		if (value) {
+			return value;
+		} else {
+			value = this._itemprop(document, 'meta', 'episodeNumber', false, 0);
 			if (value) {
 				return value;
 			} else {
 				return '';
 			}
-		},
-		this.parent_title = function(_item) {
-			if (!_item) {
-				_item = item;
-			}
-			var value = this._itemprop(_item, 'span', 'partOfSeries', true, 0);
-			if (value) {
-				value = this._itemprop(value, 'meta', 'name', false, 0);
-				if (value) {
-					return value;
-				}
-			}
-			return '';
-		},
-		this._itemprop = function(_item, tag_name, prop_name, return_DOM, index) {
-			var count = 0;
-			var elements = _item.getElementsByTagName(tag_name);
-			var _length = elements.length;
-			for (var i = 0; i < _length; i++) {
-				if (elements[i].getAttribute('itemprop') === prop_name) {
-					if (index === count) {
-						if (return_DOM === true) {
-							return elements[i]
-						}
-						if (elements[i].getAttribute('content')) {
-							return elements[i].getAttribute('content');
-						} else {
-							return null;
-						}
-					}
-					count++
-				}
-			}
-			return null;
 		}
+	};
+	this._itemprop = function(_item, tag_name, prop_name, return_DOM, index) {
+		var count = 0;
+		var elements = _item.getElementsByTagName(tag_name);
+		var _length = elements.length;
+		for (var i = 0; i < _length; i++) {
+			if (elements[i].getAttribute('itemprop') === prop_name) {
+				if (index === count) {
+					if (return_DOM === true) {
+						return elements[i];
+					}
+					if (elements[i].getAttribute('content')) {
+						return elements[i].getAttribute('content');
+					} else {
+						return null;
+					}
+				}
+				count++
+			}
+		}
+		return null;
+	};
 }
 
 
-function output_params(action, format, item) {
-	var params = {};
-	var video_type = action.split('_')[1];
-	var trakt = new Trakt(item, video_type);
+function Trakt() {
+	this._stages = JSON.parse(atob('ew0KCSJwcm9kdWN0aW9uIjogew0KCQkidXJsIjogImh0dHBzOi8vYXBpLXYybGF1bmNoLnRyYWt0LnR2IiwNCgkJInZlcnNpb24iOiAiMiIsDQoJCSJrZXlzIjogew0KCQkJImNsaWVudF9pZCI6ICIyMWFjYTc0MzUwMmNlZWE3MDVlMTY1YTk3OGMyMWZmMDZmYTM3NWRkNTM2Mzg2ZjhjNTZmMTcxMTczMDQ1N2RkIiwNCgkJCSJjbGllbnRfc2VjcmV0IjogIjMxMTljNjk2MzI5NTVhZDNkZWM4NDFjZmJkYzEwMjkyYjZkZDdiMDlmZjU5Y2E3NzMzYjc2NDg1YmE2Zjg4YzQiDQoJCX0NCgl9LA0KCSJzdGFnaW5nIjogew0KCQkidXJsIjogImh0dHBzOi8vYXBpLXN0YWdpbmcudHJha3QudHYiLA0KCQkidmVyc2lvbiI6ICIyIiwJCQ0KCQkia2V5cyI6IHsNCgkJCSJjbGllbnRfaWQiOiAiZDBjZTc4MzdjZGQzZTQzMjYzMmQ5N2YyNGQ3ZWRlNTIyNjdlYzBlODA3NTZmMjQwMjM0ZDZjOTgwNzY3YzQxYyIsDQoJCQkiY2xpZW50X3NlY3JldCI6ICI2NTgyMWM5MTBmNGYzNGQ3ZDIyYjMzMDYwNDkxMzc4ZGIwNzgxMmFiNmU5Mzc2MDI4YjQ0NzFkY2VhZTJiMGMyIg0KCQl9DQoJfQ0KfQ=='));
+	this.stage = function() {
+		if (production === true) {
+			return this._stages['production'];
+		} else {
+			return this._stages['staging'];
+		}
+	};
+	this.request = function(request, params, callback) {
+		var extended = '?extended=full';
+		if (params['images'] === true) {
+			extended += ',images';
+		}
+		var data_type = params['type'];
+		var data_id = params['id'];
+		switch (request) {
+			case 'summary':
+				switch (data_type) {
+					case 'movie':
+						var movie_url = '/movies/' + params['movie_id'] + extended;
+						this.GET(movie_url, callback, params);
+						break;
+					case 'show':
+						var show_url = '/shows/' + params['show_id'] + extended;
+						this.GET(show_url, callback, params);
+						break;
+					case 'season':
+						var season_url = '/shows/' + params['show_id'] + '/seasons' + extended;
+						this.GET(season_url, callback, params);
+						break;
+					case 'episode':
+						var show_url = '/shows/' + params['show_id'] + extended;
+						this.GET(show_url, function() {
+							var ep_url = '/shows/' + params['show_id'] + '/seasons/' + params['season'] + '/episodes/' + params['episode'] + extended;
+							var trakt = new Trakt();
+							trakt.GET(ep_url, callback, params);
+						}, params);
+						break;
+					default:
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+	};
+	this.headers = new Headers({
+		'Content-Type': 'application/json',
+		'trakt-api-key': this.stage()['keys']['client_id'],
+		'trakt-api-version': this.stage()['version']
+	});
+	this.GET = function(url, callback, params) {
+		var request_url = this.stage()['url'] + url;
+
+		fetch(request_url, {
+				method: 'GET',
+				headers: this.headers
+			})
+			.then(function(response) {
+				if (response.status !== 200) {
+					console.log('API Error, Status Code: %i', response.status);
+					loading(params['loading_item']);
+					return;
+				}
+				response.json().then(function(data) {
+					if (!params['json']) {
+						params['json'] = [data];
+					} else {
+						params['json'] = params['json'].concat([data])
+					}
+					callback(params);
+				});
+			})
+			.catch(function(error) {
+				console.log('Fetch Error: %s', error);
+				loading(params['loading_item']);
+			});
+	};
+}
+
+
+var output_params = function(params) {
+	var outparams = {};
+	var action = params['action'];
+	var format = params['format'];
+	var video_type = params['type'];
+	var _json_count = params['json'].length;
+	if (_json_count < 1) {
+		loading(params['loading_item']);
+		return;
+	}
+	var base_data = params['json'][0];
 	switch (action) {
 		case 'open_movie':
 			switch (format) {
 				case '1':
-					params = {
+					outparams = {
 						mode: 'get_sources',
 						video_type: Capitalize(video_type),
-						trakt_id: trakt.id(),
-						year: trakt.year(),
-						title: trakt.title(true, false)
+						trakt_id: base_data['ids']['trakt'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title']
 					};
 					break;
 				case '2':
-					params = {
+					outparams = {
 						mode: 'open',
 						video_type: video_type,
-						trakt_id: trakt.id()
+						trakt_id: base_data['ids']['trakt'].toString()
 					};
 					break;
 				default:
@@ -490,19 +455,19 @@ function output_params(action, format, item) {
 		case 'play_movie':
 			switch (format) {
 				case '1':
-					params = {
+					outparams = {
 						mode: 'autoplay',
 						video_type: Capitalize(video_type),
-						trakt_id: trakt.id(),
-						year: trakt.year(),
-						title: trakt.title(true, false)
+						trakt_id: base_data['ids']['trakt'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title']
 					};
 					break;
 				case '2':
-					params = {
+					outparams = {
 						mode: 'play',
 						video_type: video_type,
-						trakt_id: trakt.id(),
+						trakt_id: base_data['ids']['trakt'].toString(),
 					};
 					break;
 				default:
@@ -512,19 +477,19 @@ function output_params(action, format, item) {
 		case 'open_show':
 			switch (format) {
 				case '1':
-					params = {
+					outparams = {
 						mode: 'seasons',
-						fanart: trakt.art(),
-						trakt_id: trakt.id(),
-						year: trakt.year(),
-						title: trakt.title(true, true)
+						fanart: base_data['images']['fanart']['medium'],
+						trakt_id: base_data['ids']['trakt'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title']
 					};
 					break;
 				case '2':
-					params = {
+					outparams = {
 						mode: 'open',
 						video_type: video_type,
-						trakt_id: trakt.id()
+						trakt_id: base_data['ids']['trakt'].toString()
 					};
 					break;
 				default:
@@ -534,18 +499,18 @@ function output_params(action, format, item) {
 		case 'open_season':
 			switch (format) {
 				case '1':
-					params = {
+					outparams = {
 						mode: 'episodes',
-						season: trakt.season(),
-						trakt_id: trakt.id('show'),
+						season: params['season'],
+						trakt_id: params['show_id'],
 					};
 					break;
 				case '2':
-					params = {
+					outparams = {
 						mode: 'open',
 						video_type: video_type,
-						season: trakt.season(),
-						trakt_id: trakt.id()
+						season: params['season'],
+						trakt_id: params['season_id']
 					};
 					break;
 				default:
@@ -553,28 +518,36 @@ function output_params(action, format, item) {
 			}
 			break;
 		case 'open_episode':
+			if (_json_count < 2) {
+				loading(params['loading_item']);
+				return;
+			}
+			var episode_data = params['json'][1];
 			switch (format) {
 				case '1':
-					params = {
-						mode: 'get_sources',
-						video_type: Capitalize(video_type),
-						season: trakt.season(),
-						episode: trakt.episode(),
-						trakt_id: trakt.id('show'),
-						year: trakt.year(),
-						ep_airdate: trakt.airdate(),
-						title: trakt.series_title(),
-						ep_title: trakt.title(true, false)
-					};
+					if (episode_data['first_aired']) {
+						var airdate = episode_data['first_aired'].split('T')[0];
+						outparams = {
+							mode: 'get_sources',
+							video_type: Capitalize(video_type),
+							season: params['season'],
+							episode: params['episode'],
+							trakt_id: base_data['ids']['trakt'].toString(),
+							year: base_data['year'].toString(),
+							ep_airdate: airdate,
+							title: base_data['title'],
+							ep_title: episode_data['title']
+						};
+					}
 					break;
 				case '2':
-					params = {
+					outparams = {
 						mode: 'open',
 						video_type: video_type,
-						season: trakt.season(),
-						episode: trakt.episode(),
-						show_id: trakt.id('show'),
-						trakt_id: trakt.id()
+						season: params['season'],
+						episode: params['episode'],
+						show_id: base_data['ids']['trakt'].toString(),
+						trakt_id: episode_data['ids']['trakt'].toString()
 					};
 					break;
 				default:
@@ -582,28 +555,36 @@ function output_params(action, format, item) {
 			}
 			break;
 		case 'play_episode':
+			if (_json_count < 2) {
+				loading(params['loading_item']);
+				return;
+			}
+			var episode_data = params['json'][1];
 			switch (format) {
 				case '1':
-					params = {
-						mode: 'autoplay',
-						video_type: Capitalize(video_type),
-						season: trakt.season(),
-						episode: trakt.episode(),
-						trakt_id: trakt.id('show'),
-						year: trakt.year(),
-						ep_airdate: trakt.airdate(),
-						title: trakt.series_title(),
-						ep_title: trakt.title(true, false)
-					};
+					if (episode_data['first_aired']) {
+						var airdate = episode_data['first_aired'].split('T')[0];
+						outparams = {
+							mode: 'autoplay',
+							video_type: Capitalize(video_type),
+							season: params['season'],
+							episode: params['episode'],
+							trakt_id: base_data['ids']['trakt'].toString(),
+							year: base_data['year'].toString(),
+							ep_airdate: airdate,
+							title: base_data['title'],
+							ep_title: episode_data['title']
+						};
+					}
 					break;
 				case '2':
-					params = {
+					outparams = {
 						mode: 'play',
 						video_type: video_type,
-						season: trakt.season(),
-						episode: trakt.episode(),
-						show_id: trakt.id('show'),
-						trakt_id: trakt.id()
+						season: params['season'],
+						episode: params['episode'],
+						show_id: base_data['ids']['trakt'].toString(),
+						trakt_id: episode_data['ids']['trakt'].toString()
 					};
 					break;
 				default:
@@ -613,41 +594,94 @@ function output_params(action, format, item) {
 		default:
 			break;
 	}
-	return params;
+	loading(params['loading_item']);
+	if (params['callback'] && params['arg1']) {
+		params['callback'](params['arg1'], outparams);
+	} else if (params['callback']) {
+		params['callback'](outparams);
+	} else {
+		return outparams;
+	}
+}
+
+
+function get_output_params(params) {
+	var outparams = {};
+	params['type'] = params['action'].split('_')[1];
+	var traktDOM = new TraktDOMScraper(params['item'], params['type']);
+	var trakt = new Trakt();
+	switch (params['type']) {
+		case 'movie':
+			params['movie_id'] = traktDOM.id('movie');
+			trakt.request('summary', params, output_params);
+			break;
+		case 'show':
+			params['show_id'] = traktDOM.id('show');
+			params['images'] = true;
+			trakt.request('summary', params, output_params);
+			break;
+		case 'season':
+			params['show_id'] = traktDOM.id('show');
+			params['season_id'] = traktDOM.id('season');
+			params['season'] = traktDOM.season();
+			return trakt.request('summary', params, output_params);
+			break;
+		case 'episode':
+			params['show_id'] = traktDOM.id('show');
+			params['season'] = traktDOM.season();
+			params['episode'] = traktDOM.episode();
+			trakt.request('summary', params, output_params);
+			break;
+	}
+}
+
+
+function execute_action(event_element, action, action_input) {
+	if (action_input === 'button') {
+		var item = document.getElementsByTagName('html')[0];
+		var loading_item = event_element;
+	} else if (action_input === 'icon') {
+		var item = event_element.parentElement.parentElement.parentElement;
+		var loading_item = item;
+	} else {
+		return;
+	}
+	if ((action === 'open_episode') && (settings.get.episode_open_season === true)) {
+		action = 'open_season';
+	}
+	loading(loading_item, true);
+	var execute_port = chrome.runtime.connect({
+		name: 'T2KASocket'
+	});
+	execute_port.postMessage({
+		action: 'get_settings'
+	});
+	execute_port.onMessage.addListener(function(msg) {
+		switch (msg.action) {
+			case 'get_settings':
+				if (msg.settings) {
+					settings.get = msg.settings;
+					var active_format = settings.get.profiles.active;
+					params = {
+						action: action,
+						format: settings.get.profiles[active_format].format,
+						item: item,
+						loading_item: loading_item,
+						callback: kodi.rpc,
+						arg1: settings.get.rpc_method
+					}
+					get_output_params(params);
+					execute_port.disconnect();
+				}
+				break;
+			default:
+				break;
+		}
+	});
 }
 
 
 var kodi = {
-	execute: function(event_element, action, action_input) {
-		var item = event_element.parentElement.parentElement.parentElement;
-		if (action_input === 'button') {
-			item = document.getElementsByTagName('html')[0];
-		}
-		if ((action === 'open_episode') && (settings.get.episode_open_season === true)) {
-			action = 'open_season';
-		}
-		var execute_port = chrome.runtime.connect({
-			name: 'T2KASocket'
-		});
-		execute_port.postMessage({
-			action: 'get_settings'
-		});
-		execute_port.onMessage.addListener(function(msg) {
-			switch (msg.action) {
-				case 'get_settings':
-					if (msg.settings) {
-						settings.get = msg.settings;
-						var active_format = settings.get.profiles.active;
-						var rpc_method = settings.get.rpc_method;
-						kodi.rpc(rpc_method, output_params(action, settings.get.profiles[active_format].format, item));
-						execute_port.disconnect();
-					}
-					break;
-				default:
-					break;
-			}
-		});
-	},
 	rpc: function(action, params) {
 		switch (action) {
 			case 'execute_addon':
