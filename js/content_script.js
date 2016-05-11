@@ -370,10 +370,6 @@ function Trakt() {
 						var show_url = '/shows/' + params['show_id'] + extended;
 						this.GET(show_url, callback, params);
 						break;
-						//case 'season':
-						//	var season_url = '/shows/' + params['show_id'] + '/seasons' + extended;
-						//	trakt.GET(season_url, callback, params);
-						//	break;
 					case 'episode':
 						var show_url = '/shows/' + params['show_id'] + extended;
 						this.GET(show_url, function() {
