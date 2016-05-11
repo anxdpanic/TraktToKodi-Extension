@@ -50,7 +50,7 @@ button[class*="settings button"] {
 	margin-left: 0.5em;
 	margin-right: 0em;
 	font-weight: 600;
-	text-align: center;	
+	text-align: center;
 	padding: 5px 25px;
 	border: 0em;
 	background: #303030;
@@ -86,7 +86,7 @@ label[for^="format_"],
 label[for^="rpc_method_"] {
 	display: inline-block;
 	font-weight: 600;
-	text-align: center;	
+	text-align: center;
 	padding: 5px 25px;
 }
 

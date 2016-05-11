@@ -49,7 +49,7 @@ var settings = {
 				rads[j].checked = true;
 				break;
 			}
-		}		
+		}
 	},
 	save: function() {
 		var new_settings = {
