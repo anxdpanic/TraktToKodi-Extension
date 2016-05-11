@@ -249,11 +249,14 @@ var add_items = {
 
 
 function loading(item, toggle) {
+	if (!item) {
+		return;
+	}
 	var loaditem = item.querySelector('.loading');
 	if (loaditem) {
 		if ((loaditem.style.display !== 'block') && (toggle)) {
 			loaditem.style.display = 'block';
-			setTimeout(function () {
+			setTimeout(function() {
 				loading(item);
 			}, 5000);
 		} else {
@@ -363,13 +366,14 @@ function Trakt() {
 						this.GET(movie_url, callback, params);
 						break;
 					case 'show':
+					case 'season':
 						var show_url = '/shows/' + params['show_id'] + extended;
 						this.GET(show_url, callback, params);
 						break;
-					case 'season':
-						var season_url = '/shows/' + params['show_id'] + '/seasons' + extended;
-						this.GET(season_url, callback, params);
-						break;
+						//case 'season':
+						//	var season_url = '/shows/' + params['show_id'] + '/seasons' + extended;
+						//	trakt.GET(season_url, callback, params);
+						//	break;
 					case 'episode':
 						var show_url = '/shows/' + params['show_id'] + extended;
 						this.GET(show_url, function() {
@@ -431,6 +435,18 @@ var output_params = function(params) {
 		loading(params['loading_item']);
 		return;
 	}
+	this.plugin_url = function(plugin_params) {
+		var active = settings.get.profiles.active;
+		var param_string = '';
+		var connector = '?';
+		for (var key in plugin_params) {
+			if ((param_string) && (connector !== '&')) {
+				connector = '&';
+			}
+			param_string += connector + key + '=' + encodeURIComponent(plugin_params[key]);
+		}
+		return 'plugin://' + settings.get.profiles[active].addonid + param_string;
+	};
 	var base_data = params['json'][0];
 	switch (action) {
 		case 'open_movie':
@@ -449,6 +465,25 @@ var output_params = function(params) {
 						mode: 'open',
 						video_type: video_type,
 						trakt_id: base_data['ids']['trakt'].toString()
+					};
+					break;
+				case '3':
+					var meta = {
+						year: base_data['year'].toString(),
+						title: base_data['title'],
+						premiered: base_data['released'],
+						poster: base_data['images']['poster']['medium'],
+						fanart: base_data['images']['fanart']['medium'],
+						thumb: base_data['images']['thumb']['full'],
+						banner: base_data['images']['banner']['full']
+					};
+					outparams = {
+						action: 'sources',
+						imdb: base_data['ids']['imdb'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title'],
+						premiered: base_data['released'],
+						meta: JSON.stringify(meta)
 					};
 					break;
 				default:
@@ -473,6 +508,25 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 					};
 					break;
+				case '3':
+					var meta = {
+						title: base_data['title'],
+						premiered: base_data['released'],
+						poster: base_data['images']['poster']['medium']
+					};
+					var urlparams = {
+						action: 'play',
+						imdb: base_data['ids']['imdb'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title'],
+						meta: JSON.stringify(meta)
+					};
+					var url = this.plugin_url(urlparams);
+					outparams = {
+						action: 'alterSources',
+						url: url
+					};
+					break;
 				default:
 					break;
 			}
@@ -495,6 +549,15 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString()
 					};
 					break;
+				case '3':
+					outparams = {
+						action: 'seasons',
+						imdb: base_data['ids']['imdb'].toString(),
+						tvdb: base_data['ids']['tvdb'].toString(),
+						year: base_data['year'].toString(),
+						tvshowtitle: base_data['title']
+					};
+					break;
 				default:
 					break;
 			}
@@ -514,6 +577,16 @@ var output_params = function(params) {
 						video_type: video_type,
 						season: params['season'],
 						trakt_id: params['season_id']
+					};
+					break;
+				case '3':
+					outparams = {
+						action: 'episodes',
+						imdb: base_data['ids']['imdb'].toString(),
+						tvdb: base_data['ids']['tvdb'].toString(),
+						year: base_data['year'].toString(),
+						season: params['season'],
+						tvshowtitle: base_data['title']
 					};
 					break;
 				default:
@@ -553,6 +626,30 @@ var output_params = function(params) {
 						trakt_id: episode_data['ids']['trakt'].toString()
 					};
 					break;
+				case '3':
+					var meta = {
+						year: base_data['year'].toString(),
+						tvshowtitle: base_data['title'],
+						title: episode_data['title'],
+						premiered: airdate,
+						episode: params['episode'],
+						season: params['season'],
+						poster: base_data['images']['poster']['medium'],
+						fanart: base_data['images']['fanart']['medium'],
+						thumb: episode_data['images']['screenshot']['thumb'],
+						banner: base_data['images']['banner']['full']
+					};
+					outparams = {
+						action: 'sources',
+						imdb: base_data['ids']['imdb'].toString(),
+						tvdb: base_data['ids']['tvdb'].toString(),
+						year: base_data['year'].toString(),
+						tvshowtitle: base_data['title'],
+						episode: params['episode'],
+						season: params['season'],
+						meta: JSON.stringify(meta)
+					};
+					break;
 				default:
 					break;
 			}
@@ -590,6 +687,32 @@ var output_params = function(params) {
 						trakt_id: episode_data['ids']['trakt'].toString()
 					};
 					break;
+				case '3':
+					var meta = {
+						year: base_data['year'].toString(),
+						tvshowtitle: base_data['title'],
+						title: episode_data['title'],
+						episode: params['episode'],
+						season: params['season'],
+						premiered: airdate,
+						thumb: episode_data['images']['screenshot']['thumb']
+					};
+					var urlparams = {
+						action: 'play',
+						imdb: base_data['ids']['imdb'].toString(),
+						tvdb: base_data['ids']['tvdb'].toString(),
+						year: base_data['year'].toString(),
+						tvshowtitle: base_data['title'],
+						episode: params['episode'],
+						season: params['season'],
+						meta: JSON.stringify(meta)
+					};
+					var url = this.plugin_url(urlparams);
+					outparams = {
+						action: 'alterSources',
+						url: url
+					};
+					break;
 				default:
 					break;
 			}
@@ -616,6 +739,7 @@ function get_output_params(params) {
 	switch (params['type']) {
 		case 'movie':
 			params['movie_id'] = traktDOM.id('movie');
+			params['images'] = true;
 			trakt.request('summary', params, output_params);
 			break;
 		case 'show':
@@ -627,12 +751,14 @@ function get_output_params(params) {
 			params['show_id'] = traktDOM.id('show');
 			params['season_id'] = traktDOM.id('season');
 			params['season'] = traktDOM.season();
+			params['images'] = true;
 			return trakt.request('summary', params, output_params);
 			break;
 		case 'episode':
 			params['show_id'] = traktDOM.id('show');
 			params['season'] = traktDOM.season();
 			params['episode'] = traktDOM.episode();
+			params['images'] = true;
 			trakt.request('summary', params, output_params);
 			break;
 	}
