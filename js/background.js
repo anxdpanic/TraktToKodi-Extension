@@ -149,41 +149,77 @@ var rpc = {
 	json: {
 		execute_addon: function(params) {
 			var active = settings.get.profiles.active;
-			var outparams = {};
-			for (var key in params) {
-				outparams[key] = encodeURIComponent(params[key]);
-			}			
-			return {
+			var out_json = {
 				jsonrpc: '2.0',
 				id: 1,
 				method: 'Addons.ExecuteAddon',
 				params: {
 					wait: false,
 					addonid: settings.get.profiles[active].addonid,
-					params: outparams
+					params: ''
 				}
 			};
+			this.encode_keys = function(eparams) {
+				var oparams = {};
+				for (var key in eparams) {
+					oparams[key] = encodeURIComponent(eparams[key]);
+				}
+				return oparams;
+			};
+			var outparams = this.encode_keys(params);
+			var _length = JSON.stringify(outparams).length + JSON.stringify(out_json).length;
+			if (_length > 1024) {
+				if (params['meta']) {
+					if (params['meta']['banner']) {
+						delete params['meta']['banner'];
+						outparams = this.encode_keys(params);
+					} else if (params['meta']['fanart']) {
+						delete params['meta']['fanart'];
+						outparams = this.encode_keys(params);
+					}
+				}
+			}
+			out_json['params']['params'] = outparams;
+			return out_json;
 		},
 		activate_window: function(params) {
-			var active = settings.get.profiles.active;
-			var param_string = '';
-			var connector = '?';
-			for (var key in params) {
-				if ((param_string) && (connector !== '&')) {
-					connector = '&';
-				}
-				param_string += connector + key + '=' + encodeURIComponent(params[key]);
-			}
-			var addon_path = 'plugin://' + settings.get.profiles[active].addonid + param_string;
-			return {
+			var out_json = {
 				jsonrpc: '2.0',
 				id: 1,
 				method: 'GUI.ActivateWindow',
 				params: {
 					window: 'videos',
-					parameters: [addon_path, 'return']
+					parameters: ['', 'return']
 				}
 			};
+			this.plugin_url = function(pparams) {
+				var active = settings.get.profiles.active;
+				var param_string = '';
+				var connector = '?';
+
+				for (var key in pparams) {
+					if ((param_string) && (connector !== '&')) {
+						connector = '&';
+					}
+					param_string += connector + key + '=' + encodeURIComponent(pparams[key]);
+				}
+				return 'plugin://' + settings.get.profiles[active].addonid + param_string;
+			}
+			var addon_url = this.plugin_url(params);
+			var _length = addon_url.length + JSON.stringify(out_json).length;
+			if (_length > 1024) {
+				if (params['meta']) {
+					if (params['meta']['banner']) {
+						delete params['meta']['banner'];
+						addon_url = this.plugin_url(params);
+					} else if (params['meta']['fanart']) {
+						delete params['meta']['fanart'];
+						addon_url = this.plugin_url(params);
+					}
+				}
+			}
+			out_json['params']['parameters'][0] = addon_url;
+			return out_json;
 		}
 	},
 	stringify: {
