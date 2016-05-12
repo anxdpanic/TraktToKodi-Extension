@@ -492,6 +492,16 @@ var output_params = function(params) {
 						thumb: base_data['images']['poster']['medium']
 					};
 					break;
+				case '5':
+					outparams = {
+						mode: 'get_movie_sources',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						imdb_id: base_data['ids']['imdb'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title']
+					};
+					break;
 				default:
 					break;
 			}
@@ -543,6 +553,16 @@ var output_params = function(params) {
 						thumb: base_data['images']['poster']['medium']
 					};
 					break;
+				case '5':
+					outparams = {
+						mode: 'get_movie_sources',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						imdb_id: base_data['ids']['imdb'].toString(),
+						year: base_data['year'].toString(),
+						title: base_data['title']
+					};
+					break;
 				default:
 					break;
 			}
@@ -584,6 +604,16 @@ var output_params = function(params) {
 						thumb: base_data['images']['poster']['medium']
 					};
 					break;
+				case '5':
+					outparams = {
+						mode: 'season_list',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						imdb_id: base_data['ids']['imdb'].toString(),
+						slug: base_data['ids']['slug'].toString(),
+						fanart: base_data['images']['fanart']['medium']
+					};
+					break;
 				default:
 					break;
 			}
@@ -623,6 +653,17 @@ var output_params = function(params) {
 						name: 'Season ' + params['season'],
 						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
 						thumb: base_data['images']['poster']['medium']
+					};
+					break;
+				case '5':
+					outparams = {
+						mode: 'episode_list',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						season_id: params['season_id'],
+						season: params['season'],
+						imdb_id: base_data['ids']['imdb'].toString(),
+						slug: base_data['ids']['slug'].toString(),
+						fanart: base_data['images']['fanart']['medium']
 					};
 					break;
 				default:
@@ -704,6 +745,19 @@ var output_params = function(params) {
 						thumb: episode_data['images']['screenshot']['thumb']
 					};
 					break;
+				case '5':
+					outparams = {
+						mode: 'get_episode_sources',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						imdb_id: base_data['ids']['imdb'].toString(),
+						year: base_data['year'].toString(),
+						showtitle: base_data['title'],
+						season: params['season'],
+						episode: params['episode'],
+						display: params['season'] + '.' + params['episode'] + ' ' + episode_data['title']
+					};
+					break;
 				default:
 					break;
 			}
@@ -783,6 +837,19 @@ var output_params = function(params) {
 						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
 						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
 						thumb: episode_data['images']['screenshot']['thumb']
+					};
+					break;
+				case '5':
+					outparams = {
+						mode: 'get_episode_sources',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						imdb_id: base_data['ids']['imdb'].toString(),
+						year: base_data['year'].toString(),
+						showtitle: base_data['title'],
+						season: params['season'],
+						episode: params['episode'],
+						display: params['season'] + '.' + params['episode'] + ' ' + episode_data['title']
 					};
 					break;
 				default:
