@@ -482,6 +482,16 @@ var output_params = function(params) {
 						meta: JSON.stringify(meta)
 					};
 					break;
+				case '4':
+					outparams = {
+						mode: 'findsource',
+						media: 'movies',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
+						movie_title: base_data['title'],
+						thumb: base_data['images']['poster']['medium']
+					};
+					break;
 				default:
 					break;
 			}
@@ -523,6 +533,16 @@ var output_params = function(params) {
 						url: url
 					};
 					break;
+				case '4':
+					outparams = {
+						mode: 'findsource',
+						media: 'movies',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
+						movie_title: base_data['title'],
+						thumb: base_data['images']['poster']['medium']
+					};
+					break;
 				default:
 					break;
 			}
@@ -554,6 +574,16 @@ var output_params = function(params) {
 						tvshowtitle: base_data['title']
 					};
 					break;
+				case '4':
+					outparams = {
+						mode: 'find_season',
+						media: 'shows',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
+						movie_title: base_data['title'],
+						thumb: base_data['images']['poster']['medium']
+					};
+					break;
 				default:
 					break;
 			}
@@ -583,6 +613,16 @@ var output_params = function(params) {
 						year: base_data['year'].toString(),
 						season: params['season'],
 						tvshowtitle: base_data['title']
+					};
+					break;
+				case '4':
+					outparams = {
+						mode: 'find_episode',
+						media: 'shows',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						name: 'Season ' + params['season'],
+						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
+						thumb: base_data['images']['poster']['medium']
 					};
 					break;
 				default:
@@ -646,6 +686,24 @@ var output_params = function(params) {
 						meta: JSON.stringify(meta)
 					};
 					break;
+				case '4':
+					var season = params['season'];
+					var episode = params['episode'];
+					if (season.length < 2) {
+						season = '0' + season;
+					}
+					if (episode.length < 2) {
+						episode = '0' + episode;
+					}
+					outparams = {
+						mode: 'findsource',
+						media: 'shows',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
+						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
+						thumb: episode_data['images']['screenshot']['thumb']
+					};
+					break;
 				default:
 					break;
 			}
@@ -707,6 +765,24 @@ var output_params = function(params) {
 					outparams = {
 						action: 'alterSources',
 						url: url
+					};
+					break;
+				case '4':
+					var season = params['season'];
+					var episode = params['episode'];
+					if (season.length < 2) {
+						season = '0' + season;
+					}
+					if (episode.length < 2) {
+						episode = '0' + episode;
+					}
+					outparams = {
+						mode: 'findsource',
+						media: 'shows',
+						trakt_id: base_data['ids']['trakt'].toString(),
+						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
+						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
+						thumb: episode_data['images']['screenshot']['thumb']
 					};
 					break;
 				default:

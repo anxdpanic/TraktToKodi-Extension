@@ -24,13 +24,13 @@ h4 {
 .content {
 	background: #FFF;
 	color: #373737;
-	min-height: 276px;
-	max-height: 276px;
+	min-height: 255px;
+	max-height: 255px;
 }
 
 div[id^="content"] {
 	display: none;
-	padding: 20px 25px 5px;
+	padding: 10px 20px 5px;
 }
 
 input[id^="tab"] {
@@ -56,12 +56,21 @@ input[id^="tab"]:checked + label[for^="tab"] {
 }
 
 div[id^="content_sub"] {
-	padding: 0px !important;
+	padding: 0px 0px 3px 0px !important;
+}
+
+div[id^="content_sub"] .header:first-of-type {
+	margin-top: 0px !important;
 }
 
 .content_sub {
 	background: #FFF;
 	color: #373737;
+	border: 1px solid #303030;
+}
+
+label[for^="tab_sub"]:first-of-type {
+	margin-left: 10px !important;
 }
 
 label[for^="tab_sub"] {
