@@ -102,12 +102,15 @@ label[for^="rpc_method_"] {
 	display: inline-block;
 	font-weight: 600;
 	text-align: center;
-	padding: 5px 25px;
+}
+
+label[for^="format_"] {
+	padding: 5px 19px;
 }
 
 label[for^="rpc_method_"] {
 	font-size: 10px;
-	padding: 5px 0px !important;
+	padding: 5px 0px;
 	width: 49%;
 }
 

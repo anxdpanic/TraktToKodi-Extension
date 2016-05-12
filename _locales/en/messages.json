@@ -87,6 +87,10 @@
 		"description": "English: 4",
 		"message": "4"
 	},
+	"format_5": {
+		"description": "English: 5",
+		"message": "5"
+	},
 	"play": {
 		"description": "English: Play",
 		"message": "Play"
