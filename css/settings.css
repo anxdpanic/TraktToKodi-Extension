@@ -21,14 +21,18 @@
 	line-height: 1.9em;
 }
 
+.textboxes label {
+	margin-left: 8px;
+}
+
 input[class*="settings text"] {
 	float: right;
-	margin-left: 0.5em;
-	margin-right: 0.1em;
+	margin-left: 8px;
+	margin-right: 8px;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	border-width: 0px 0px 1px 0px;
-	border-color: #000;
+	border-color: #999;
 }
 
 input[id^="iphost"],
@@ -41,7 +45,6 @@ input[id^="port"] {
 }
 
 .buttons {
-	padding-top: 0.5em;
 	width: 100%;
 }
 
@@ -51,10 +54,12 @@ button[class*="settings button"] {
 	margin-right: 0em;
 	font-weight: 600;
 	text-align: center;
-	padding: 5px 25px;
-	border: 0em;
+	padding: 4px 24px;
+	border: 1px solid #303030;
 	background: #303030;
 	color: #FFF;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 button[class*="settings button"]:hover {
@@ -66,13 +71,19 @@ button[class*="settings button"]:hover {
 button[class*="settings button"]:active {
 	color: #000;
 	background: #FFF;
-	border: 1px solid #000;
 	cursor: pointer;
+}
+
+.footer {
+	margin-top: 0.1em;
+	margin-bottom: 0.1em;
+	width: 100%;
+	vertical-align: middle;
 }
 
 #extension_version {
 	float: right;
-	color: gray;
+	color: #CCC;
 	font-size: 10px;
 }
 
@@ -80,6 +91,10 @@ input[id^="format_"],
 input[id^="rpc_method_"],
 input[type="checkbox"] {
 	display: none;
+}
+
+label[for^="format_"]:first-of-type {
+	margin-left: 7px !important;
 }
 
 label[for^="format_"],
@@ -120,6 +135,7 @@ input[id^="format_"]:checked + label[for^="format_"] {
 	display: inline-block;
 	vertical-align: middle;
 	padding: 3px 3px;
+	width: 1.1em;
 }
 
 .font_checkbox:before {
