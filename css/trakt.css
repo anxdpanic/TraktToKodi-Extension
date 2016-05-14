@@ -1,16 +1,5 @@
 @charset "UTF-8";
 
-@font-face {
-	font-family:'trakt';
-	src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug);
-	src:url(/assets/trakt-56b42f62549d913a838af382441fdb84.eot?h16cug#iefix) format("embedded-opentype"),
-	url(/assets/trakt-57243f9aac73da4a24d1ef13350da272.woff?h16cug) format("woff"),
-	url(/assets/trakt-1ac730dd1dc3d1ea758e27da06a3263f.ttf?h16cug) format("truetype"),
-	url(/assets/trakt-10890dee02f1a21a74dc25aa5e5fc46e.svg?h16cug#trakt) format("svg");
-	font-weight:normal;
-	font-style:normal
-}
-
 .quick-icons .actions a [class^="trakt-icon-t2ka-"],
 .quick-icons .actions a [class*=" trakt-icon-t2ka-"] {
 	position: absolute;

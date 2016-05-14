@@ -45,21 +45,20 @@ input[id^="port"] {
 }
 
 .buttons {
+	margin: 5px 0px 5px 0px;
+	padding: 0px 0px 0px 0px;
 	width: 100%;
 }
 
 button[class*="settings button"] {
 	float: right;
-	margin-left: 0.5em;
-	margin-right: 0em;
+	margin: 0px 8px 0px 5px;
 	font-weight: 600;
 	text-align: center;
 	padding: 4px 24px;
 	border: 1px solid #303030;
 	background: #303030;
 	color: #FFF;
-	margin-top: 10px;
-	margin-bottom: 10px;
 }
 
 button[class*="settings button"]:hover {
@@ -75,8 +74,8 @@ button[class*="settings button"]:active {
 }
 
 .footer {
-	margin-top: 0.1em;
-	margin-bottom: 0.1em;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
 	width: 100%;
 	vertical-align: middle;
 }
@@ -85,6 +84,7 @@ button[class*="settings button"]:active {
 	float: right;
 	color: #CCC;
 	font-size: 10px;
+	margin-right: 8px;
 }
 
 input[id^="format_"],

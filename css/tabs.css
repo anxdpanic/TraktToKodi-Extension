@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body {
-	background: #000;
+	background: #303030;
 	color: #FFF;
 	font-family: 'Segoe UI', Tahoma, sans-serif;
 	font-size: 12px;
@@ -30,7 +30,7 @@ h4 {
 
 div[id^="content"] {
 	display: none;
-	padding: 10px 20px 5px;
+	padding: 10px 20px 3px;
 }
 
 input[id^="tab"] {
@@ -67,6 +67,7 @@ div[id^="content_sub"] .header:first-of-type {
 	background: #FFF;
 	color: #373737;
 	border: 1px solid #303030;
+	margin: 0px 0px 0px 0px !important;
 }
 
 label[for^="tab_sub"]:first-of-type {
