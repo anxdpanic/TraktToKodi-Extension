@@ -12,7 +12,7 @@
 		"message": "IP/Host: "
 	},
 	"port_input": {
-		"description": "English: Port :",
+		"description": "English: Port: ",
 		"message": "Port: "
 	},
 	"addonid_input": {
