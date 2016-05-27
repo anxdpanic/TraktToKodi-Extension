@@ -16,6 +16,11 @@ Uses Kodi JSON-RPC over web sockets to remotely execute the user provided add-on
     - A Kodi add-on that supports this extensions Kodi JSON-RPC requests
     - Kodi setting: _Settings -> Services -> Remote Control -> Allow remote control by programs on other systems_
 
+- Support
+    -
+
+    Post an [Issue](https://github.com/anxdpanic/Trakt2KodiAddon-Extension/issues) , or visit [#the_projects on Snoonet](https://kiwiirc.com/client/irc.snoonet.org/The_Projects)
+
 ---
 
 Special thanks to [@konsumer420](https://twitter.com/konsumer420) for the icons/artwork
