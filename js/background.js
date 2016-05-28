@@ -1,3 +1,13 @@
+var production = true;
+
+
+function log(string) {
+    if (!production) {
+        console.log(string);
+    }
+}
+
+
 var settings = {
 	_storage: function(action, arg1, arg2) {
 		var has_sync = (chrome.storage.sync !== undefined) ? true : false;
@@ -27,59 +37,66 @@ var settings = {
 	},
 	defaults: {
 		profiles: {
-			'active': '1',
-			'1': {
-				iphost: '',
-				port: '9090',
-				addonid: '',
-				format: '1'
+			"active": "1",
+			"1": {
+				iphost: "",
+				port: "9090",
+				addonid: "",
+				format: "1"
 			},
-			'2': {
-				iphost: '',
-				port: '9090',
-				addonid: '',
-				format: '1'
+			"2": {
+				iphost: "",
+				port: "9090",
+				addonid: "",
+				format: "1"
 			},
-			'3': {
-				iphost: '',
-				port: '9090',
-				addonid: '',
-				format: '1'
+			"3": {
+				iphost: "",
+				port: "9090",
+				addonid: "",
+				format: "1"
 			},
-			'4': {
-				iphost: '',
-				port: '9090',
-				addonid: '',
-				format: '1'
+			"4": {
+				iphost: "",
+				port: "9090",
+				addonid: "",
+				format: "1"
 			}
 		},
 		movie_show_play: false,
 		episode_show_play: false,
 		episode_open_season: false,
 		sidebar_pagination: false,
-		rpc_method: 'execute_addon'
+		rpc_method: "execute_addon"
 	},
 	get: (this.defaults),
-	save: function(new_settings) {
-		settings._storage(
-			'set',
-			new_settings,
-			function() {
-				settings.get = new_settings;
-			}
-		);
-	},
-	load: function(callback) {
-		settings._storage(
-			'get',
-			settings.defaults,
-			function(items) {
-				settings.get = items;
-				if (callback) {
-					callback();
-				}
-			});
-	}
+    save: function(new_settings, callback) {
+        settings._storage(
+            'set',
+            new_settings,
+            function() {
+                settings.get = new_settings;
+                if (callback) {
+                    callback();
+                }
+            }
+        );
+    },
+    load: function(callback) {
+        settings._storage(
+            'get',
+            null,
+            function(items) {
+                if (JSON.stringify(items) === JSON.stringify({})) {
+                    settings.save(settings.defaults, callback);
+                } else {
+                    settings.get = items;
+                    if (callback) {
+                        callback();
+                    }
+                }
+            });
+    }
 };
 
 
@@ -99,7 +116,7 @@ var rpc = {
 	},
 	execute: function(action, params) {
 		if (rpc.can_connect() !== true) {
-			console.log('rpc.execute(): Connection information missing/incomplete');
+			log('rpc.execute(): Connection information missing/incomplete');
 			return;
 		}
 		var conn = new rpc.connection();
@@ -111,37 +128,37 @@ var rpc = {
 					rpc_request = rpc.stringify.execute_addon(params);
 
 				} else {
-					console.log('rpc.execute(\'' + action + '\'): missing |params|');
+					log('rpc.execute(\'' + action + '\'): missing |params|');
 				}
 				break;
 			case 'activate_window':
 				if (params) {
 					rpc_request = rpc.stringify.activate_window(params);
 				} else {
-					console.log('rpc.execute(\'' + action + '\'): missing |params|');
+					log('rpc.execute(\'' + action + '\'): missing |params|');
 				}
 				break;
 			default:
-				console.log('rpc.execute(): No |action| provided');
+				log('rpc.execute(): No |action| provided');
 				break;
 		}
 		if (rpc_request) {
 			conn.socket.onopen = function() {
-				console.log(log_lead + '|request| ' + rpc_request);
+				log(log_lead + '|request| ' + rpc_request);
 				conn.socket.send(rpc_request);
 			};
 			conn.socket.onmessage = function(event) {
-				console.log(log_lead + '|response| ' + event.data);
+				log(log_lead + '|response| ' + event.data);
 				conn.socket.close();
 			};
 			conn.socket.onerror = function(event) {
 				if (event.data) {
-					console.log(log_lead + '|ERROR| ' + event.data);
+					log(log_lead + '|ERROR| ' + event.data);
 				}
 			};
 			conn.socket.onclose = function(event) {
 				if ((!event.wasClean) && (event.reason)) {
-					console.log(log_lead + '|ERROR ' + event.code + '| ' + event.reason);
+					log(log_lead + '|ERROR ' + event.code + '| ' + event.reason);
 				}
 			};
 		}
@@ -244,7 +261,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 				if (msg.settings) {
 					settings.save(msg.settings);
 				} else {
-					console.log('T2KASocket: |' + msg.action + '| missing |settings|');
+					log('T2KASocket: |' + msg.action + '| missing |settings|');
 				}
 				break;
 			case 'execute_addon':
@@ -254,7 +271,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 						rpc.execute(msg.action, msg.params);
 					});
 				} else {
-					console.log('T2KASocket: |' + msg.action + '| missing |params|');
+					log('T2KASocket: |' + msg.action + '| missing |params|');
 				}
 				break;
 			case 'with_settings':
@@ -267,7 +284,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 						});
 					});
 				} else {
-					console.log('T2KASocket: |' + msg.action + '| missing |cb_functions|');
+					log('T2KASocket: |' + msg.action + '| missing |cb_functions|');
 				}
 				break;
 			case 'get_settings':
@@ -278,7 +295,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 				return true;
 				break;
 			default:
-				console.log('T2KASocket: No valid |action| provided');
+				log('T2KASocket: No valid |action| provided');
 				break;
 		}
 	});
