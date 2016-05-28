@@ -3,7 +3,7 @@
 
 	"name": "Trakt2KodiAddon",
 	"description": "Open/Play content from trakt.tv in a Kodi add-on.",
-	"version": "0.2.0.0",
+	"version": "0.2.1.0",
 	"default_locale": "en",
 
 	"icons": {
