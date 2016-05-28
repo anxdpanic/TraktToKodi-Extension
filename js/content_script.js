@@ -1,6 +1,13 @@
 var production = true;
 
 
+function log(string) {
+    if (!production) {
+        console.log(string);
+    }
+}
+
+
 var port = chrome.runtime.connect({
 	name: 'T2KASocket'
 });
@@ -400,7 +407,7 @@ function Trakt() {
 			})
 			.then(function(response) {
 				if (response.status !== 200) {
-					console.log('API Error, Status Code: %i', response.status);
+					log('API Error, Status Code: %i', response.status);
 					loading(params['loading_item']);
 					return;
 				}
@@ -414,7 +421,7 @@ function Trakt() {
 				});
 			})
 			.catch(function(error) {
-				console.log('Fetch Error: %s', error);
+				log('Fetch Error: %s', error);
 				loading(params['loading_item']);
 			});
 	};
