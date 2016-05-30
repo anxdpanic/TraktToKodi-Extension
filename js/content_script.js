@@ -562,7 +562,8 @@ var output_params = function(params) {
 					break;
 				case '5':
 					outparams = {
-						mode: 'get_movie_sources',
+						mode: 'play_movie',
+						rand: Math.random().toString(),
 						trakt_id: base_data['ids']['trakt'].toString(),
 						tmdb_id: base_data['ids']['tmdb'].toString(),
 						imdb_id: base_data['ids']['imdb'].toString(),
