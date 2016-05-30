@@ -2,9 +2,9 @@ var production = true;
 
 
 function log(string) {
-    if (!production) {
-        console.log(string);
-    }
+	if (!production) {
+		console.log(string);
+	}
 }
 
 
@@ -70,34 +70,49 @@ var settings = {
 		rpc_method: "execute_addon"
 	},
 	get: (this.defaults),
-    save: function(new_settings, callback) {
-        settings._storage(
-            'set',
-            new_settings,
-            function() {
-                settings.get = new_settings;
-                if (callback) {
-                    callback();
-                }
-            }
-        );
-    },
-    load: function(callback) {
-        settings._storage(
-            'get',
-            null,
-            function(items) {
-                if (JSON.stringify(items) === JSON.stringify({})) {
-                    settings.save(settings.defaults, callback);
-                } else {
-                    settings.get = items;
-                    if (callback) {
-                        callback();
-                    }
-                }
-            });
-    }
+	save: function(new_settings, callback) {
+		settings._storage(
+			'set',
+			new_settings,
+			function() {
+				settings.get = new_settings;
+				if (callback) {
+					callback();
+				}
+			}
+		);
+	},
+	load: function(callback) {
+		settings._storage(
+			'get',
+			null,
+			function(items) {
+				if (JSON.stringify(items) === JSON.stringify({})) {
+					settings.save(settings.defaults, callback);
+				} else {
+					settings.get = items;
+					if (callback) {
+						callback();
+					}
+				}
+			});
+	}
 };
+
+
+function get_plugin_url(pparams) {
+	var active = settings.get.profiles.active;
+	var param_string = '';
+	var connector = '?';
+
+	for (var key in pparams) {
+		if ((param_string) && (connector !== '&')) {
+			connector = '&';
+		}
+		param_string += connector + key + '=' + encodeURIComponent(pparams[key]);
+	}
+	return 'plugin://' + settings.get.profiles[active].addonid + param_string;
+}
 
 
 var rpc = {
@@ -134,6 +149,13 @@ var rpc = {
 			case 'activate_window':
 				if (params) {
 					rpc_request = rpc.stringify.activate_window(params);
+				} else {
+					log('rpc.execute(\'' + action + '\'): missing |params|');
+				}
+				break;
+			case 'player_open':
+				if (params) {
+					rpc_request = rpc.stringify.player_open(params);
 				} else {
 					log('rpc.execute(\'' + action + '\'): missing |params|');
 				}
@@ -209,33 +231,36 @@ var rpc = {
 					parameters: ['', 'return']
 				}
 			};
-			this.plugin_url = function(pparams) {
-				var active = settings.get.profiles.active;
-				var param_string = '';
-				var connector = '?';
 
-				for (var key in pparams) {
-					if ((param_string) && (connector !== '&')) {
-						connector = '&';
-					}
-					param_string += connector + key + '=' + encodeURIComponent(pparams[key]);
-				}
-				return 'plugin://' + settings.get.profiles[active].addonid + param_string;
-			}
-			var addon_url = this.plugin_url(params);
+			var addon_url = get_plugin_url(params);
 			var _length = addon_url.length + JSON.stringify(out_json).length;
 			if (_length > 1024) {
 				if (params['meta']) {
 					if (params['meta']['banner']) {
 						delete params['meta']['banner'];
-						addon_url = this.plugin_url(params);
+						addon_url = get_plugin_url(params);
 					} else if (params['meta']['fanart']) {
 						delete params['meta']['fanart'];
-						addon_url = this.plugin_url(params);
+						addon_url = get_plugin_url(params);
 					}
 				}
 			}
 			out_json['params']['parameters'][0] = addon_url;
+			return out_json;
+		},
+		player_open: function(params) {
+			var out_json = {
+				jsonrpc: '2.0',
+				id: 1,
+				method: 'Player.Open',
+				params: {
+					item: {
+						file: ''
+					}
+				}
+			};
+			var addon_url = get_plugin_url(params);
+			out_json['params']['item']['file'] = addon_url;
 			return out_json;
 		}
 	},
@@ -245,7 +270,10 @@ var rpc = {
 		},
 		activate_window: function(params) {
 			return JSON.stringify(rpc.json.activate_window(params));
-		}
+		},
+        player_open: function(params) {
+            return JSON.stringify(rpc.json.player_open(params));
+        }
 	}
 }
 
@@ -264,6 +292,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 					log('T2KASocket: |' + msg.action + '| missing |settings|');
 				}
 				break;
+			case 'player_open':
 			case 'execute_addon':
 			case 'activate_window':
 				if (msg.params) {
