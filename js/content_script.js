@@ -960,6 +960,7 @@ function execute_action(event_element, action, action_input) {
 var kodi = {
 	rpc: function(action, params) {
 		switch (action) {
+			case 'player_open':
 			case 'execute_addon':
 			case 'activate_window':
 				if (params) {
