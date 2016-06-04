@@ -330,16 +330,17 @@ chrome.runtime.onConnect.addListener(function(port) {
 	});
 });
 
-
-chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
-	if (details.url.indexOf('://trakt.tv/') > -1) {
-		if (rpc.can_connect() === true) {
-			chrome.tabs.executeScript(details.tabId, {
-				file: '/js/content_script.js'
-			});
-			chrome.tabs.insertCSS(details.tabId, {
-				file: '/css/trakt.css'
-			});
+if (browser.webNavigation.onHistoryStateUpdated) {
+	browser.webNavigation.onHistoryStateUpdated.addListener(function(details) {
+		if (details.url.indexOf('://trakt.tv/') > -1) {
+			if (rpc.can_connect() === true) {
+				chrome.tabs.executeScript(details.tabId, {
+					file: '/js/content_script.js'
+				});
+				chrome.tabs.insertCSS(details.tabId, {
+					file: '/css/trakt.css'
+				});
+			}
 		}
-	}
-});
+	});
+}
