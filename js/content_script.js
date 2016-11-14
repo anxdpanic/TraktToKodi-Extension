@@ -244,7 +244,7 @@ var add_items = {
 		}
 		var nav_item = document.getElementById('date-nav');
 		if (nav_item) {
-			var sibling_item = document.getElementById('huckster-sidenav');
+			var sibling_item = document.getElementById('huckster-desktop-sidenav');
 			var clone_item = nav_item.cloneNode(true);
 			clone_item.setAttribute('id', 'date-nav-2')
 			if (sibling_item) {
