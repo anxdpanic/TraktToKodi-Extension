@@ -41,7 +41,6 @@ var settings = {
 		document.querySelector('#movie-show-play').checked = settings.get.movie_show_play;
 		document.querySelector('#episode-show-play').checked = settings.get.episode_show_play;
 		document.querySelector('#episode-open-season').checked = settings.get.episode_open_season;
-		document.querySelector('#sidebar-pagination').checked = settings.get.sidebar_pagination;
 		rads = document.querySelectorAll('input[name="rpc_method"]');
 		_length = rads.length;
 		for (j = 0; j < _length; j++) {
@@ -83,7 +82,6 @@ var settings = {
 			movie_show_play: document.querySelector('#movie-show-play').checked,
 			episode_show_play: document.querySelector('#episode-show-play').checked,
 			episode_open_season: document.querySelector('#episode-open-season').checked,
-			sidebar_pagination: document.querySelector('#sidebar-pagination').checked,
 			rpc_method: document.querySelector('input[name="rpc_method"]:checked').value
 		}
 		port.postMessage({
