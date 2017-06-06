@@ -1,5 +1,5 @@
 ![Trakt2KodiAddon](https://raw.githubusercontent.com/anxdpanic/Trakt2KodiAddon-Extension/chrome/images/icon_128.png)
-#Trakt2KodiAddon (Google Chrome)
+# Trakt2KodiAddon (Google Chrome)
 
 Open/Play content from trakt.tv in a Kodi add-on.
 
