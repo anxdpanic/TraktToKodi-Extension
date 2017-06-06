@@ -1,5 +1,5 @@
 ![Trakt2KodiAddon](https://raw.githubusercontent.com/anxdpanic/Trakt2KodiAddon-Extension/firefox/images/icon_128.png)
-#Trakt2KodiAddon (Firefox)
+# Trakt2KodiAddon (Firefox)
 
 Open/Play content from trakt.tv in a Kodi add-on.
 
