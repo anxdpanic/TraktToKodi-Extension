@@ -338,11 +338,7 @@ function TraktDOMScraper(item, video_type) {
 function Trakt() {
 	this._stages = JSON.parse(atob('ew0KCSJwcm9kdWN0aW9uIjogew0KCQkidXJsIjogImh0dHBzOi8vYXBpLXYybGF1bmNoLnRyYWt0LnR2IiwNCgkJInZlcnNpb24iOiAiMiIsDQoJCSJrZXlzIjogew0KCQkJImNsaWVudF9pZCI6ICIyMWFjYTc0MzUwMmNlZWE3MDVlMTY1YTk3OGMyMWZmMDZmYTM3NWRkNTM2Mzg2ZjhjNTZmMTcxMTczMDQ1N2RkIiwNCgkJCSJjbGllbnRfc2VjcmV0IjogIjMxMTljNjk2MzI5NTVhZDNkZWM4NDFjZmJkYzEwMjkyYjZkZDdiMDlmZjU5Y2E3NzMzYjc2NDg1YmE2Zjg4YzQiDQoJCX0NCgl9LA0KCSJzdGFnaW5nIjogew0KCQkidXJsIjogImh0dHBzOi8vYXBpLXN0YWdpbmcudHJha3QudHYiLA0KCQkidmVyc2lvbiI6ICIyIiwJCQ0KCQkia2V5cyI6IHsNCgkJCSJjbGllbnRfaWQiOiAiZDBjZTc4MzdjZGQzZTQzMjYzMmQ5N2YyNGQ3ZWRlNTIyNjdlYzBlODA3NTZmMjQwMjM0ZDZjOTgwNzY3YzQxYyIsDQoJCQkiY2xpZW50X3NlY3JldCI6ICI2NTgyMWM5MTBmNGYzNGQ3ZDIyYjMzMDYwNDkxMzc4ZGIwNzgxMmFiNmU5Mzc2MDI4YjQ0NzFkY2VhZTJiMGMyIg0KCQl9DQoJfQ0KfQ=='));
 	this.stage = function() {
-		if (production === true) {
-			return this._stages['production'];
-		} else {
-			return this._stages['staging'];
-		}
+		return this._stages['production'];
 	};
 	this.request = function(request, params, callback) {
 		var extended = '?extended=full';
