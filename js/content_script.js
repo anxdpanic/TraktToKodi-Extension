@@ -461,10 +461,10 @@ var output_params = function(params) {
 						year: base_data['year'].toString(),
 						title: base_data['title'],
 						premiered: base_data['released'],
-						poster: base_data['images']['poster']['medium'],
-						fanart: base_data['images']['fanart']['medium'],
-						thumb: base_data['images']['thumb']['full'],
-						banner: base_data['images']['banner']['full']
+						poster: 'DefaultVideoCover.png',
+						fanart: 'DefaultVideo.png',
+						thumb: 'DefaultVideo.png',
+						banner: 'DefaultVideo.png'
 					};
 					outparams = {
 						action: 'sources',
@@ -482,7 +482,7 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
 						movie_title: base_data['title'],
-						thumb: base_data['images']['poster']['medium']
+						thumb: 'DefaultVideoCover.png'
 					};
 					break;
 				case '5':
@@ -521,7 +521,7 @@ var output_params = function(params) {
 					var meta = {
 						title: base_data['title'],
 						premiered: base_data['released'],
-						poster: base_data['images']['poster']['medium']
+						poster: 'DefaultVideoCover.png'
 					};
 					var urlparams = {
 						action: 'play',
@@ -543,7 +543,7 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
 						movie_title: base_data['title'],
-						thumb: base_data['images']['poster']['medium']
+						thumb: 'DefaultVideoCover.png'
 					};
 					break;
 				case '5':
@@ -566,7 +566,7 @@ var output_params = function(params) {
 				case '1':
 					outparams = {
 						mode: 'seasons',
-						fanart: base_data['images']['fanart']['medium'],
+						fanart: 'DefaultVideo.png',
 						trakt_id: base_data['ids']['trakt'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title']
@@ -595,7 +595,7 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
 						movie_title: base_data['title'],
-						thumb: base_data['images']['poster']['medium']
+						thumb: 'DefaultVideoCover.png'
 					};
 					break;
 				case '5':
@@ -605,7 +605,7 @@ var output_params = function(params) {
 						tmdb_id: base_data['ids']['tmdb'].toString(),
 						imdb_id: base_data['ids']['imdb'].toString(),
 						slug: base_data['ids']['slug'].toString(),
-						fanart: base_data['images']['fanart']['medium']
+						fanart: 'DefaultVideo.png'
 					};
 					break;
 				default:
@@ -646,7 +646,7 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 						name: 'Season ' + params['season'],
 						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						thumb: base_data['images']['poster']['medium']
+						thumb: 'DefaultVideoCover.png'
 					};
 					break;
 				case '5':
@@ -657,7 +657,7 @@ var output_params = function(params) {
 						season: params['season'],
 						imdb_id: base_data['ids']['imdb'].toString(),
 						slug: base_data['ids']['slug'].toString(),
-						fanart: base_data['images']['fanart']['medium']
+						fanart: 'DefaultVideo.png'
 					};
 					break;
 				default:
@@ -705,10 +705,10 @@ var output_params = function(params) {
 						premiered: airdate,
 						episode: params['episode'],
 						season: params['season'],
-						poster: base_data['images']['poster']['medium'],
-						fanart: base_data['images']['fanart']['medium'],
-						thumb: episode_data['images']['screenshot']['thumb'],
-						banner: base_data['images']['banner']['full']
+						poster: 'DefaultVideoCover.png',
+						fanart: 'DefaultVideo.png',
+						thumb: 'DefaultVideo.png',
+						banner: 'DefaultVideo.png'
 					};
 					outparams = {
 						action: 'sources',
@@ -736,7 +736,7 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
 						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						thumb: episode_data['images']['screenshot']['thumb']
+						thumb: 'DefaultVideo.png'
 					};
 					break;
 				case '5':
@@ -797,7 +797,7 @@ var output_params = function(params) {
 						episode: params['episode'],
 						season: params['season'],
 						premiered: airdate,
-						thumb: episode_data['images']['screenshot']['thumb']
+						thumb: 'DefaultVideo.png'
 					};
 					var urlparams = {
 						action: 'play',
@@ -830,7 +830,7 @@ var output_params = function(params) {
 						trakt_id: base_data['ids']['trakt'].toString(),
 						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
 						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						thumb: episode_data['images']['screenshot']['thumb']
+						thumb: 'DefaultVideo.png'
 					};
 					break;
 				case '5':
@@ -873,26 +873,26 @@ function get_output_params(params) {
 	switch (params['type']) {
 		case 'movie':
 			params['movie_id'] = traktDOM.id('movie');
-			params['images'] = true;
+			params['images'] = false;
 			trakt.request('summary', params, output_params);
 			break;
 		case 'show':
 			params['show_id'] = traktDOM.id('show');
-			params['images'] = true;
+			params['images'] = false;
 			trakt.request('summary', params, output_params);
 			break;
 		case 'season':
 			params['show_id'] = traktDOM.id('show');
 			params['season_id'] = traktDOM.id('season');
 			params['season'] = traktDOM.season();
-			params['images'] = true;
+			params['images'] = false;
 			return trakt.request('summary', params, output_params);
 			break;
 		case 'episode':
 			params['show_id'] = traktDOM.id('show');
 			params['season'] = traktDOM.season();
 			params['episode'] = traktDOM.episode();
-			params['images'] = true;
+			params['images'] = false;
 			trakt.request('summary', params, output_params);
 			break;
 	}
