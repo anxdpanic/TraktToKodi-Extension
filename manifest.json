@@ -20,6 +20,11 @@
 		"default_popup": "/html/settings.html"
 	},
 
+	"options_ui": {
+		"page": "/html/settings.html",
+		"chrome_style": false
+	},
+
 	"content_scripts": [{
 		"matches": ["*://*.trakt.tv/*"],
 		"css": ["/css/trakt.css"],
@@ -29,7 +34,8 @@
 
 	"background": {
 		"matches": ["*://*.trakt.tv/*"],
-		"scripts": ["/js/background.js"]
+		"scripts": ["/js/background.js"],
+		"persistent": false
 	},
 
 	"permissions": [
