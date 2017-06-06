@@ -34,6 +34,11 @@
 		"all_frames": true
 	}],
 
+	"options_ui": {
+		"page": "/html/settings.html",
+		"browser_style": false
+	},
+
 	"background": {
 		"scripts": ["/js/background.js"]
 	},
