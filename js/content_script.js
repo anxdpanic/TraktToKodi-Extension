@@ -978,10 +978,22 @@ port.onMessage.addListener(function(msg) {
 				for (var i = 0; i < _length; i++) {
 					switch (msg.cb_functions[i].fn) {
 						case 'add_items.icons':
-							add_items.icons();
+							var icons_interval = setInterval(add_icons_dom, 1000);
+							function add_icons_dom() {
+								if (typeof document.getElementsByClassName('grid-item')[0] !== undefined) {
+									clearInterval(icons_interval);
+									add_items.icons();
+								}
+							}							
 							break;
 						case 'add_items.buttons':
-							add_items.buttons();
+							var buttons_interval = setInterval(add_buttons_dom, 1000);
+							function add_buttons_dom() {
+								if (typeof document.getElementsByClassName('action-buttons')[0] !== undefined) {
+									clearInterval(buttons_interval);
+									add_items.buttons();
+								}
+							}
 							break;
 						default:
 							break;
