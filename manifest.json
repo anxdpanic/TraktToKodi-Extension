@@ -24,7 +24,8 @@
 			"38": "/images/icon_38.png",
 			"19": "/images/icon_19.png"
 		},
-		"default_popup": "/html/settings.html"
+		"default_popup": "/html/settings.html",
+		"browser_style": false
 	},
 
 	"content_scripts": [{
