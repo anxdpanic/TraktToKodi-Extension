@@ -24,8 +24,7 @@ Uses Kodi JSON-RPC over web sockets to remotely execute the user provided add-on
 - Support
     -
 
-    Post an [Issue](https://github.com/anxdpanic/Trakt2KodiAddon-Extension/issues) , or visit [#the_projects on Snoonet](https://kiwiirc.com/client/irc.snoonet.org/The_Projects)
-
+    Post an [Issue](https://github.com/anxdpanic/Trakt2KodiAddon-Extension/issues)
 ---
 
 Special thanks to [@konsumer420](https://twitter.com/konsumer420) for the icons/artwork
