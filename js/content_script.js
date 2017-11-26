@@ -437,7 +437,6 @@ var output_params = function(params) {
 		case 'open_movie':
 			switch (format) {
 				case '1':
-				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
@@ -453,7 +452,6 @@ var output_params = function(params) {
 		case 'play_movie':
 			switch (format) {
 				case '1':
-				case '2':
 					outparams = {
 						mode: 'play',
 						video_type: video_type,
@@ -469,7 +467,6 @@ var output_params = function(params) {
 		case 'open_show':
 			switch (format) {
 				case '1':
-				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
@@ -485,7 +482,6 @@ var output_params = function(params) {
 		case 'open_season':
 			switch (format) {
 				case '1':
-				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
@@ -507,7 +503,6 @@ var output_params = function(params) {
 			var episode_data = params['json'][1];
 			switch (format) {
 				case '1':
-				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
@@ -532,7 +527,6 @@ var output_params = function(params) {
 			var episode_data = params['json'][1];
 			switch (format) {
 				case '1':
-				case '2':
 					outparams = {
 						mode: 'play',
 						video_type: video_type,
@@ -622,19 +616,13 @@ function execute_action(event_element, action, action_input) {
 			case 'get_settings':
 				if (msg.settings) {
 					settings.get = msg.settings;
-					var active_format = settings.get.profiles.active;
-					var format = settings.get.profiles[active_format].format;
-					var arg1 = settings.get.rpc_method;
-					if (format == 1) {
-						arg1 = 'library';
-					}
 					params = {
 						action: action,
-						format: format,
+						format: 1,
 						item: item,
 						loading_item: loading_item,
 						callback: kodi.rpc,
-						arg1: arg1 
+						arg1: settings.get.rpc_method 
 					}
 					get_output_params(params);
 					execute_port.disconnect();
@@ -650,7 +638,6 @@ function execute_action(event_element, action, action_input) {
 var kodi = {
 	rpc: function(action, params) {
 		switch (action) {
-			case 'library':
 			case 'player_open':
 			case 'execute_addon':
 			case 'activate_window':

@@ -67,18 +67,6 @@
 		"description": "English: 4",
 		"message": "4"
 	},
-	"settings_format_header": {
-		"description": "English: Output Format",
-		"message": "Output Format"
-	},
-	"format_1": {
-		"description": "English: Library",
-		"message": "Library"
-	},
-	"format_2": {
-		"description": "English: Add-on",
-		"message": "Add-on"
-	},
 	"play": {
 		"description": "English: Play",
 		"message": "Play"
