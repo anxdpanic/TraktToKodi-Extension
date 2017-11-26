@@ -1,11 +1,10 @@
-![Trakt2KodiAddon](https://raw.githubusercontent.com/anxdpanic/Trakt2KodiAddon-Extension/chrome/images/icon_128.png)
-# Trakt2KodiAddon (Google Chrome)
+![TraktToKodi](https://raw.githubusercontent.com/anxdpanic/TraktToKodi-Extension/chrome/images/icon_128.png)
+# TraktToKodi (Google Chrome)
 
 Open/Play content from trakt.tv in a Kodi add-on.
 
 - Adds 'Open' and 'Play' to content on trakt.tv
 - Up to 4 remote Kodi profiles
-- Multiple output formats
 
 Uses Kodi JSON-RPC over web sockets to remotely execute the user provided add-on id with trakt content identifiers
 
@@ -19,17 +18,17 @@ Uses Kodi JSON-RPC over web sockets to remotely execute the user provided add-on
 - Installation
     -
 
-    Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/trakt2kodiaddon/ibhhcpgcnpddmbpnidenoncilcjognga)
+    Install from <!-- [Chrome Web Store](https://chrome.google.com/webstore/detail/TraktToKodi/ibhhcpgcnpddmbpnidenoncilcjognga) -->
 
 - Support
     -
 
-    No add-on related support will be given. For support relating to this extension post an [Issue](https://github.com/anxdpanic/Trakt2KodiAddon-Extension/issues)
+    No add-on related support will be given. For support relating to this extension post an [Issue](https://github.com/anxdpanic/TraktToKodi-Extension/issues)
 
 - Additional Information
     -
 
-    [Add-on Endpoints](https://github.com/anxdpanic/Trakt2KodiAddon-Extension/wiki/Add-on-Endpoints)
+    <!-- [Add-on Endpoints](https://github.com/anxdpanic/TraktToKodi-Extension/wiki/Add-on-Endpoints) -->
 
 ---
 
