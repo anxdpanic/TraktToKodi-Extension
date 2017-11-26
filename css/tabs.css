@@ -24,14 +24,14 @@ h4 {
 .content {
 	background: #FFF;
 	color: #373737;
-	min-height: 245px;
-	max-height: 245px;
+	min-height: 185px;
+	max-height: 185px;
 }
 
 @-moz-document url-prefix() {
 	.content {
-		min-height: 255px;
-		max-height: 255px;
+		min-height: 195px;
+		max-height: 195px;
 	}
 }
 
