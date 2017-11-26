@@ -1,5 +1,5 @@
 var port = chrome.runtime.connect({
-	name: 'T2KASocket'
+	name: 'T2KSocket'
 });
 
 

@@ -9,7 +9,7 @@ function log(string) {
 
 
 var port = chrome.runtime.connect({
-	name: 'T2KASocket'
+	name: 'T2KSocket'
 });
 
 
@@ -910,7 +910,7 @@ function execute_action(event_element, action, action_input) {
 	}
 	loading(loading_item, true);
 	var execute_port = chrome.runtime.connect({
-		name: 'T2KASocket'
+		name: 'T2KSocket'
 	});
 	execute_port.postMessage({
 		action: 'get_settings'
