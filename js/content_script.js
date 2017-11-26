@@ -437,56 +437,11 @@ var output_params = function(params) {
 		case 'open_movie':
 			switch (format) {
 				case '1':
-					outparams = {
-						mode: 'get_sources',
-						video_type: Capitalize(video_type),
-						trakt_id: base_data['ids']['trakt'].toString(),
-						year: base_data['year'].toString(),
-						title: base_data['title']
-					};
-					break;
 				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
-						trakt_id: base_data['ids']['trakt'].toString()
-					};
-					break;
-				case '3':
-					var meta = {
-						year: base_data['year'].toString(),
-						title: base_data['title'],
-						premiered: base_data['released'],
-						poster: 'DefaultVideoCover.png',
-						fanart: 'DefaultVideo.png',
-						thumb: 'DefaultVideo.png',
-						banner: 'DefaultVideo.png'
-					};
-					outparams = {
-						action: 'sources',
-						imdb: base_data['ids']['imdb'].toString(),
-						year: base_data['year'].toString(),
-						title: base_data['title'],
-						premiered: base_data['released'],
-						meta: JSON.stringify(meta)
-					};
-					break;
-				case '4':
-					outparams = {
-						mode: 'findsource',
-						media: 'movies',
 						trakt_id: base_data['ids']['trakt'].toString(),
-						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						movie_title: base_data['title'],
-						thumb: 'DefaultVideoCover.png'
-					};
-					break;
-				case '5':
-					outparams = {
-						mode: 'get_movie_sources',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						tmdb_id: base_data['ids']['tmdb'].toString(),
-						imdb_id: base_data['ids']['imdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title']
 					};
@@ -498,57 +453,11 @@ var output_params = function(params) {
 		case 'play_movie':
 			switch (format) {
 				case '1':
-					outparams = {
-						mode: 'autoplay',
-						video_type: Capitalize(video_type),
-						trakt_id: base_data['ids']['trakt'].toString(),
-						year: base_data['year'].toString(),
-						title: base_data['title']
-					};
-					break;
 				case '2':
 					outparams = {
 						mode: 'play',
 						video_type: video_type,
 						trakt_id: base_data['ids']['trakt'].toString(),
-					};
-					break;
-				case '3':
-					var meta = {
-						title: base_data['title'],
-						premiered: base_data['released'],
-						poster: 'DefaultVideoCover.png'
-					};
-					var urlparams = {
-						action: 'play',
-						imdb: base_data['ids']['imdb'].toString(),
-						year: base_data['year'].toString(),
-						title: base_data['title'],
-						meta: JSON.stringify(meta)
-					};
-					var url = this.plugin_url(urlparams);
-					outparams = {
-						action: 'alterSources',
-						url: url
-					};
-					break;
-				case '4':
-					outparams = {
-						mode: 'findsource',
-						media: 'movies',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						movie_title: base_data['title'],
-						thumb: 'DefaultVideoCover.png'
-					};
-					break;
-				case '5':
-					outparams = {
-						mode: 'play_movie',
-						rand: Math.random().toString(),
-						trakt_id: base_data['ids']['trakt'].toString(),
-						tmdb_id: base_data['ids']['tmdb'].toString(),
-						imdb_id: base_data['ids']['imdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title']
 					};
@@ -560,48 +469,13 @@ var output_params = function(params) {
 		case 'open_show':
 			switch (format) {
 				case '1':
-					outparams = {
-						mode: 'seasons',
-						fanart: 'DefaultVideo.png',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						year: base_data['year'].toString(),
-						title: base_data['title']
-					};
-					break;
 				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
-						trakt_id: base_data['ids']['trakt'].toString()
-					};
-					break;
-				case '3':
-					outparams = {
-						action: 'seasons',
-						imdb: base_data['ids']['imdb'].toString(),
-						tvdb: base_data['ids']['tvdb'].toString(),
+						trakt_id: base_data['ids']['trakt'].toString(),
 						year: base_data['year'].toString(),
-						tvshowtitle: base_data['title']
-					};
-					break;
-				case '4':
-					outparams = {
-						mode: 'find_season',
-						media: 'shows',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						name: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						movie_title: base_data['title'],
-						thumb: 'DefaultVideoCover.png'
-					};
-					break;
-				case '5':
-					outparams = {
-						mode: 'season_list',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						tmdb_id: base_data['ids']['tmdb'].toString(),
-						imdb_id: base_data['ids']['imdb'].toString(),
-						slug: base_data['ids']['slug'].toString(),
-						fanart: 'DefaultVideo.png'
+						title: base_data['title']
 					};
 					break;
 				default:
@@ -611,49 +485,14 @@ var output_params = function(params) {
 		case 'open_season':
 			switch (format) {
 				case '1':
-					outparams = {
-						mode: 'episodes',
-						season: params['season'],
-						trakt_id: params['show_id'],
-					};
-					break;
 				case '2':
 					outparams = {
 						mode: 'open',
 						video_type: video_type,
 						season: params['season'],
-						trakt_id: params['season_id']
-					};
-					break;
-				case '3':
-					outparams = {
-						action: 'episodes',
-						imdb: base_data['ids']['imdb'].toString(),
-						tvdb: base_data['ids']['tvdb'].toString(),
+						trakt_id: params['season_id'],
 						year: base_data['year'].toString(),
-						season: params['season'],
-						tvshowtitle: base_data['title']
-					};
-					break;
-				case '4':
-					outparams = {
-						mode: 'find_episode',
-						media: 'shows',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						name: 'Season ' + params['season'],
-						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						thumb: 'DefaultVideoCover.png'
-					};
-					break;
-				case '5':
-					outparams = {
-						mode: 'episode_list',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						season_id: params['season_id'],
-						season: params['season'],
-						imdb_id: base_data['ids']['imdb'].toString(),
-						slug: base_data['ids']['slug'].toString(),
-						fanart: 'DefaultVideo.png'
+						title: base_data['title']
 					};
 					break;
 				default:
@@ -668,21 +507,6 @@ var output_params = function(params) {
 			var episode_data = params['json'][1];
 			switch (format) {
 				case '1':
-					if (episode_data['first_aired']) {
-						var airdate = episode_data['first_aired'].split('T')[0];
-						outparams = {
-							mode: 'get_sources',
-							video_type: Capitalize(video_type),
-							season: params['season'],
-							episode: params['episode'],
-							trakt_id: base_data['ids']['trakt'].toString(),
-							year: base_data['year'].toString(),
-							ep_airdate: airdate,
-							title: base_data['title'],
-							ep_title: episode_data['title']
-						};
-					}
-					break;
 				case '2':
 					outparams = {
 						mode: 'open',
@@ -690,62 +514,10 @@ var output_params = function(params) {
 						season: params['season'],
 						episode: params['episode'],
 						show_id: base_data['ids']['trakt'].toString(),
-						trakt_id: episode_data['ids']['trakt'].toString()
-					};
-					break;
-				case '3':
-					var meta = {
+						trakt_id: episode_data['ids']['trakt'].toString(),
 						year: base_data['year'].toString(),
-						tvshowtitle: base_data['title'],
-						title: episode_data['title'],
-						premiered: airdate,
-						episode: params['episode'],
-						season: params['season'],
-						poster: 'DefaultVideoCover.png',
-						fanart: 'DefaultVideo.png',
-						thumb: 'DefaultVideo.png',
-						banner: 'DefaultVideo.png'
-					};
-					outparams = {
-						action: 'sources',
-						imdb: base_data['ids']['imdb'].toString(),
-						tvdb: base_data['ids']['tvdb'].toString(),
-						year: base_data['year'].toString(),
-						tvshowtitle: base_data['title'],
-						episode: params['episode'],
-						season: params['season'],
-						meta: JSON.stringify(meta)
-					};
-					break;
-				case '4':
-					var season = params['season'];
-					var episode = params['episode'];
-					if (season.length < 2) {
-						season = '0' + season;
-					}
-					if (episode.length < 2) {
-						episode = '0' + episode;
-					}
-					outparams = {
-						mode: 'findsource',
-						media: 'shows',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
-						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						thumb: 'DefaultVideo.png'
-					};
-					break;
-				case '5':
-					outparams = {
-						mode: 'get_episode_sources',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						tmdb_id: base_data['ids']['tmdb'].toString(),
-						imdb_id: base_data['ids']['imdb'].toString(),
-						year: base_data['year'].toString(),
-						showtitle: base_data['title'],
-						season: params['season'],
-						episode: params['episode'],
-						display: params['season'] + '.' + params['episode'] + ' ' + episode_data['title']
+						title: base_data['title'],
+						ep_title: episode_data['title']
 					};
 					break;
 				default:
@@ -760,21 +532,6 @@ var output_params = function(params) {
 			var episode_data = params['json'][1];
 			switch (format) {
 				case '1':
-					if (episode_data['first_aired']) {
-						var airdate = episode_data['first_aired'].split('T')[0];
-						outparams = {
-							mode: 'autoplay',
-							video_type: Capitalize(video_type),
-							season: params['season'],
-							episode: params['episode'],
-							trakt_id: base_data['ids']['trakt'].toString(),
-							year: base_data['year'].toString(),
-							ep_airdate: airdate,
-							title: base_data['title'],
-							ep_title: episode_data['title']
-						};
-					}
-					break;
 				case '2':
 					outparams = {
 						mode: 'play',
@@ -782,65 +539,10 @@ var output_params = function(params) {
 						season: params['season'],
 						episode: params['episode'],
 						show_id: base_data['ids']['trakt'].toString(),
-						trakt_id: episode_data['ids']['trakt'].toString()
-					};
-					break;
-				case '3':
-					var meta = {
+						trakt_id: episode_data['ids']['trakt'].toString(),
 						year: base_data['year'].toString(),
-						tvshowtitle: base_data['title'],
-						title: episode_data['title'],
-						episode: params['episode'],
-						season: params['season'],
-						premiered: airdate,
-						thumb: 'DefaultVideo.png'
-					};
-					var urlparams = {
-						action: 'play',
-						imdb: base_data['ids']['imdb'].toString(),
-						tvdb: base_data['ids']['tvdb'].toString(),
-						year: base_data['year'].toString(),
-						tvshowtitle: base_data['title'],
-						episode: params['episode'],
-						season: params['season'],
-						meta: JSON.stringify(meta)
-					};
-					var url = this.plugin_url(urlparams);
-					outparams = {
-						action: 'alterSources',
-						url: url
-					};
-					break;
-				case '4':
-					var season = params['season'];
-					var episode = params['episode'];
-					if (season.length < 2) {
-						season = '0' + season;
-					}
-					if (episode.length < 2) {
-						episode = '0' + episode;
-					}
-					outparams = {
-						mode: 'findsource',
-						media: 'shows',
-						trakt_id: base_data['ids']['trakt'].toString(),
-						name: 'S' + season + 'E' + episode + '  ' + episode_data['title'],
-						movie_title: base_data['title'] + ' (' + base_data['year'].toString() + ')',
-						thumb: 'DefaultVideo.png'
-					};
-					break;
-				case '5':
-					outparams = {
-						mode: 'play_episode',
-						rand: Math.random().toString(),
-						trakt_id: base_data['ids']['trakt'].toString(),
-						tmdb_id: base_data['ids']['tmdb'].toString(),
-						imdb_id: base_data['ids']['imdb'].toString(),
-						year: base_data['year'].toString(),
-						showtitle: base_data['title'],
-						season: params['season'],
-						episode: params['episode'],
-						display: params['season'] + '.' + params['episode'] + ' ' + episode_data['title']
+						title: base_data['title'],
+						ep_title: episode_data['title']						
 					};
 					break;
 				default:
@@ -882,7 +584,7 @@ function get_output_params(params) {
 			params['season_id'] = traktDOM.id('season');
 			params['season'] = traktDOM.season();
 			params['images'] = false;
-			return trakt.request('summary', params, output_params);
+			trakt.request('summary', params, output_params);
 			break;
 		case 'episode':
 			params['show_id'] = traktDOM.id('show');
@@ -921,13 +623,18 @@ function execute_action(event_element, action, action_input) {
 				if (msg.settings) {
 					settings.get = msg.settings;
 					var active_format = settings.get.profiles.active;
+					var format = settings.get.profiles[active_format].format;
+					var arg1 = settings.get.rpc_method;
+					if (format == 1) {
+						arg1 = 'library';
+					}
 					params = {
 						action: action,
-						format: settings.get.profiles[active_format].format,
+						format: format,
 						item: item,
 						loading_item: loading_item,
 						callback: kodi.rpc,
-						arg1: settings.get.rpc_method
+						arg1: arg1 
 					}
 					get_output_params(params);
 					execute_port.disconnect();
@@ -943,6 +650,7 @@ function execute_action(event_element, action, action_input) {
 var kodi = {
 	rpc: function(action, params) {
 		switch (action) {
+			case 'library':
 			case 'player_open':
 			case 'execute_addon':
 			case 'activate_window':
