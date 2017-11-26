@@ -2,8 +2,8 @@
 	"manifest_version": 2,
 
 	"name": "TraktToKodi",
-	"description": "Open/Play content from trakt.tv in a Kodi add-on.",
-	"version": "0.2.2.0",
+	"description": "Open/Play content in your Kodi library, or an add-on",
+	"version": "0.0.0.1",
 	"default_locale": "en",
 
 	"icons": {
