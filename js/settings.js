@@ -29,14 +29,6 @@ var settings = {
 			document.querySelector('input[id="iphost_' + s + '"]').value = settings.get.profiles[s].iphost;
 			document.querySelector('input[id="port_' + s + '"]').value = settings.get.profiles[s].port;
 			document.querySelector('input[id="addonid_' + s + '"]').value = settings.get.profiles[s].addonid;
-			rads = document.querySelectorAll('input[name="formats_' + s + '"]');
-			_length = rads.length;
-			for (j = 0; j < _length; j++) {
-				if (rads[j].value === settings.get.profiles[s].format) {
-					rads[j].checked = true;
-					break;
-				}
-			}
 		}
 		document.querySelector('#movie-show-play').checked = settings.get.movie_show_play;
 		document.querySelector('#episode-show-play').checked = settings.get.episode_show_play;
@@ -58,25 +50,21 @@ var settings = {
 					iphost: document.querySelector('input[id="iphost_1"]').value,
 					port: document.querySelector('input[id="port_1"]').value,
 					addonid: document.querySelector('input[id="addonid_1"]').value,
-					format: document.querySelector('input[name="formats_1"]:checked').value
 				},
 				'2': {
 					iphost: document.querySelector('input[id="iphost_2"]').value,
 					port: document.querySelector('input[id="port_2"]').value,
 					addonid: document.querySelector('input[id="addonid_2"]').value,
-					format: document.querySelector('input[name="formats_2"]:checked').value
 				},
 				'3': {
 					iphost: document.querySelector('input[id="iphost_3"]').value,
 					port: document.querySelector('input[id="port_3"]').value,
 					addonid: document.querySelector('input[id="addonid_3"]').value,
-					format: document.querySelector('input[name="formats_3"]:checked').value
 				},
 				'4': {
 					iphost: document.querySelector('input[id="iphost_4"]').value,
 					port: document.querySelector('input[id="port_4"]').value,
 					addonid: document.querySelector('input[id="addonid_4"]').value,
-					format: document.querySelector('input[name="formats_4"]:checked').value
 				}
 			},
 			movie_show_play: document.querySelector('#movie-show-play').checked,

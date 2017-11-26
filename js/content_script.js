@@ -486,6 +486,7 @@ var output_params = function(params) {
 						mode: 'open',
 						video_type: video_type,
 						season: params['season'],
+						show_id: base_data['ids']['trakt'].toString(),
 						trakt_id: params['season_id'],
 						year: base_data['year'].toString(),
 						title: base_data['title']
@@ -618,7 +619,7 @@ function execute_action(event_element, action, action_input) {
 					settings.get = msg.settings;
 					params = {
 						action: action,
-						format: 1,
+						format: '1',
 						item: item,
 						loading_item: loading_item,
 						callback: kodi.rpc,
