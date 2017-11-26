@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 
 	"name": "TraktToKodi",
-	"description": "Open/Play content in your Kodi library, or an add-on",
+	"description": "Open/Play content with a Kodi add-on",
 	"version": "0.0.0.1",
 	"default_locale": "en",
 
