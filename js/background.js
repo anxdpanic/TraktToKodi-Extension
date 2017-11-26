@@ -117,7 +117,11 @@ function get_plugin_url(pparams) {
 var rpc = {
 	can_connect: function() {
 		var active = settings.get.profiles.active;
-		if ((settings.get.profiles[active].iphost !== '') && (settings.get.profiles[active].port) && (settings.get.profiles[active].addonid !== '')) {
+		if ((settings.get.profiles[active].iphost !== '') 
+			&& (settings.get.profiles[active].port) 
+			&& (((settings.get.profiles[active].addonid !== '') 
+				&& (settings.get.profiles[active].format == 2)) 
+				|| (settings.get.profiles[active].format == 1))) {
 			return true;
 		} else {
 			return false;
