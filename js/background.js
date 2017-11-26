@@ -66,7 +66,6 @@ var settings = {
 		movie_show_play: false,
 		episode_show_play: false,
 		episode_open_season: false,
-		sidebar_pagination: false,
 		rpc_method: "execute_addon"
 	},
 	get: (this.defaults),
