@@ -281,14 +281,14 @@ settings.load();
 
 
 chrome.runtime.onConnect.addListener(function(port) {
-	console.assert(port.name == 'T2KASocket');
+	console.assert(port.name == 'T2KSocket');
 	port.onMessage.addListener(function(msg) {
 		switch (msg.action) {
 			case 'save_settings':
 				if (msg.settings) {
 					settings.save(msg.settings);
 				} else {
-					log('T2KASocket: |' + msg.action + '| missing |settings|');
+					log('T2KSocket: |' + msg.action + '| missing |settings|');
 				}
 				break;
 			case 'player_open':
@@ -299,7 +299,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 						rpc.execute(msg.action, msg.params);
 					});
 				} else {
-					log('T2KASocket: |' + msg.action + '| missing |params|');
+					log('T2KSocket: |' + msg.action + '| missing |params|');
 				}
 				break;
 			case 'with_settings':
@@ -312,7 +312,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 						});
 					});
 				} else {
-					log('T2KASocket: |' + msg.action + '| missing |cb_functions|');
+					log('T2KSocket: |' + msg.action + '| missing |cb_functions|');
 				}
 				break;
 			case 'get_settings':
@@ -323,7 +323,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 				return true;
 				break;
 			default:
-				log('T2KASocket: No valid |action| provided');
+				log('T2KSocket: No valid |action| provided');
 				break;
 		}
 	});
