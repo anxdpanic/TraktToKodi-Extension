@@ -16,8 +16,8 @@
 		"message": "Port: "
 	},
 	"addonid_input": {
-		"description": "English: Addon ID :",
-		"message": "Addon ID: "
+		"description": "English: Add-on ID :",
+		"message": "Add-on ID: "
 	},
 	"save": {
 		"description": "English: Save",
@@ -72,24 +72,12 @@
 		"message": "Output Format"
 	},
 	"format_1": {
-		"description": "English: 1",
-		"message": "1"
+		"description": "English: Library",
+		"message": "Library"
 	},
 	"format_2": {
-		"description": "English: 2",
-		"message": "2"
-	},
-	"format_3": {
-		"description": "English: 3",
-		"message": "3"
-	},
-	"format_4": {
-		"description": "English: 4",
-		"message": "4"
-	},
-	"format_5": {
-		"description": "English: 5",
-		"message": "5"
+		"description": "English: Add-on",
+		"message": "Add-on"
 	},
 	"play": {
 		"description": "English: Play",
@@ -122,10 +110,6 @@
 	"settings_trakt_header": {
 		"description": "English: Trakt",
 		"message": "Trakt"
-	},
-	"sidebar_pagination": {
-		"description": "English: Additional sidebar pagination",
-		"message": "Additional sidebar pagination"
 	},
 	"settings_rpcmethod_header": {
 		"description": "English: RPC Method",
