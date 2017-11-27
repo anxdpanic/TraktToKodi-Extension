@@ -34,7 +34,7 @@ Uses Kodi JSON-RPC over web sockets to execute the user provided add-on id with 
 - Additional Information
     -
 
-    <!-- [Add-on Endpoints](https://github.com/anxdpanic/TraktToKodi-Extension/wiki/Add-on-Endpoints) -->
+    [Add-on Endpoints](https://github.com/anxdpanic/TraktToKodi-Extension/wiki/Addon-Endpoints)
 
 ---
 
