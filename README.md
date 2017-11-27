@@ -21,10 +21,15 @@ Uses Kodi JSON-RPC over web sockets to execute the user provided add-on id with 
 
     Install from <!-- [AMO Gallery](https://addons.mozilla.org/en-US/firefox/addon/trakttokodi/) -->
 
+- Compatible Add-ons
+	-
+
+	[TraktToKodi Library Connector](https://github.com/anxdpanic/script.trakttokodi.libconn#trakttokodi-library-connector)
+
 - Support
     -
 
-    No add-on related support will be given. For support relating to this extension post an [Issue](https://github.com/anxdpanic/TraktToKodi-Extension/issues)
+    For support relating to this extension post an [Issue](https://github.com/anxdpanic/TraktToKodi-Extension/issues)
 
 - Additional Information
     -
