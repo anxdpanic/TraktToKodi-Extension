@@ -669,24 +669,25 @@ port.onMessage.addListener(function(msg) {
 				var _length = msg.cb_functions.length;
 				for (var i = 0; i < _length; i++) {
 					switch (msg.cb_functions[i].fn) {
-						case 'add_items.icons':
-							var icons_interval = setInterval(add_icons_dom, 1000);
-							function add_icons_dom() {
-								if (typeof document.getElementsByClassName('grid-item')[0] !== undefined) {
-									clearInterval(icons_interval);
-									add_items.icons();
+						case 'add_items.dom':
+							var times = 10;
+							for(var i=0; i < times; i++){
+								var icons_interval = setInterval(add_icons_dom, 500);
+								function add_icons_dom() {
+									if (typeof document.getElementsByClassName('grid-item')[0] !== undefined) {
+										clearInterval(icons_interval);
+										add_items.icons();
+									}
 								}
-							}							
-							break;
-						case 'add_items.buttons':
-							var buttons_interval = setInterval(add_buttons_dom, 1000);
-							function add_buttons_dom() {
-								if (typeof document.getElementsByClassName('action-buttons')[0] !== undefined) {
-									clearInterval(buttons_interval);
-									add_items.buttons();
+								var buttons_interval = setInterval(add_buttons_dom, 500);
+								function add_buttons_dom() {
+									if (typeof document.getElementsByClassName('action-buttons')[0] !== undefined) {
+										clearInterval(buttons_interval);
+										add_items.buttons();
+									}
 								}
-							}
-							break;
+							};
+							break;				
 						default:
 							break;
 					}
@@ -700,7 +701,5 @@ port.onMessage.addListener(function(msg) {
 
 
 settings.load([{
-	fn: 'add_items.icons'
-}, {
-	fn: 'add_items.buttons'
+	fn: 'add_items.dom'
 }]);
