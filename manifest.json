@@ -3,7 +3,7 @@
 
 	"name": "TraktToKodi",
 	"description": "Open/Play content with a compatible Kodi add-on from trakt.tv in your browser.",
-	"version": "0.0.0.1",
+	"version": "0.1.0.0",
 	"default_locale": "en",
 
 	"icons": {
