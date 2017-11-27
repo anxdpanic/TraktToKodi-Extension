@@ -1,7 +1,7 @@
 ![TraktToKodi](https://raw.githubusercontent.com/anxdpanic/TraktToKodi-Extension/chrome/images/icon_128.png)
 # TraktToKodi (Google Chrome)
 
-Open/Play content from trakt.tv in your browser with a compatible Kodi add-on.
+Open/Play content with a compatible Kodi add-on from trakt.tv in your browser.
 
 - Adds 'Open' and 'Play' to content on trakt.tv
 - Up to 4 remote Kodi profiles
