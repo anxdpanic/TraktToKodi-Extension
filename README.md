@@ -13,7 +13,7 @@ Uses Kodi JSON-RPC over web sockets to execute the user provided add-on id with 
     -
     
     - Firefox 53.0a2+
-    - A Kodi add-on that supports this extensions Kodi JSON-RPC requests
+    - A Kodi add-on that supports this extensions Kodi JSON-RPC requests \(see [Compatible Add-ons](#compatible-add-ons)\)
     - Kodi setting: `Settings -> Services -> Remote Control -> Allow remote control by programs on other systems`
 
 - Installation
