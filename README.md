@@ -19,7 +19,7 @@ Uses Kodi JSON-RPC over web sockets to execute the user provided add-on id with 
 - Installation
     -
 
-    Install from <!-- [AMO Gallery](https://addons.mozilla.org/en-US/firefox/addon/trakttokodi/) -->
+    Install from [AMO Gallery](https://addons.mozilla.org/en-US/firefox/addon/trakttokodi/)
 
 - Compatible Add-ons
 	-
