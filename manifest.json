@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 
 	"name": "TraktToKodi",
-	"description": "Open/Play content from trakt.tv in your browser with a compatible Kodi add-on.",
+	"description": "Open/Play content with a compatible Kodi add-on from trakt.tv in your browser.",
 	"version": "0.0.0.1",
 	"default_locale": "en",
 
