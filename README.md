@@ -18,7 +18,7 @@ Uses Kodi JSON-RPC over web sockets to execute the user provided add-on id with 
 - Installation
     -
 
-    Install from <!-- [Chrome Web Store](https://chrome.google.com/webstore/detail/TraktToKodi/ibhhcpgcnpddmbpnidenoncilcjognga) -->
+    Install from [Chrome Web Store](https://chrome.google.com/webstore/detail/trakttokodi/jongfgkokmlpdekeljpegeldjofbageo)
 
 - Compatible Add-ons
 	-
