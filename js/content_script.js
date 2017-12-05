@@ -441,6 +441,8 @@ var output_params = function(params) {
 						mode: 'open',
 						video_type: video_type,
 						trakt_id: base_data['ids']['trakt'].toString(),
+						imdb_id: base_data['ids']['imdb'],
+						tmdb_id: base_data['ids']['tmdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title']
 					};
@@ -456,6 +458,8 @@ var output_params = function(params) {
 						mode: 'play',
 						video_type: video_type,
 						trakt_id: base_data['ids']['trakt'].toString(),
+						imdb_id: base_data['ids']['imdb'],
+						tmdb_id: base_data['ids']['tmdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title']
 					};
@@ -471,6 +475,9 @@ var output_params = function(params) {
 						mode: 'open',
 						video_type: video_type,
 						trakt_id: base_data['ids']['trakt'].toString(),
+						imdb_id: base_data['ids']['imdb'],
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						tvdb_id: base_data['ids']['tvdb'].toString(),						
 						year: base_data['year'].toString(),
 						title: base_data['title']
 					};
@@ -486,8 +493,11 @@ var output_params = function(params) {
 						mode: 'open',
 						video_type: video_type,
 						season: params['season'],
-						show_id: base_data['ids']['trakt'].toString(),
-						trakt_id: params['season_id'],
+						season_id: params['season_id'],
+						trakt_id: base_data['ids']['trakt'].toString(),
+						imdb_id: base_data['ids']['imdb'],
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						tvdb_id: base_data['ids']['tvdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title']
 					};
@@ -509,8 +519,11 @@ var output_params = function(params) {
 						video_type: video_type,
 						season: params['season'],
 						episode: params['episode'],
-						show_id: base_data['ids']['trakt'].toString(),
-						trakt_id: episode_data['ids']['trakt'].toString(),
+						episode_id: episode_data['ids']['trakt'].toString(),
+						trakt_id: base_data['ids']['trakt'].toString(),
+						imdb_id: base_data['ids']['imdb'],
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						tvdb_id: base_data['ids']['tvdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title'],
 						ep_title: episode_data['title']
@@ -533,11 +546,14 @@ var output_params = function(params) {
 						video_type: video_type,
 						season: params['season'],
 						episode: params['episode'],
-						show_id: base_data['ids']['trakt'].toString(),
-						trakt_id: episode_data['ids']['trakt'].toString(),
+						episode_id: episode_data['ids']['trakt'].toString(),
+						trakt_id: base_data['ids']['trakt'].toString(),
+						imdb_id: base_data['ids']['imdb'],
+						tmdb_id: base_data['ids']['tmdb'].toString(),
+						tvdb_id: base_data['ids']['tvdb'].toString(),
 						year: base_data['year'].toString(),
 						title: base_data['title'],
-						ep_title: episode_data['title']						
+						ep_title: episode_data['title']
 					};
 					break;
 				default:
