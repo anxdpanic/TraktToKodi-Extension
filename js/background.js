@@ -216,6 +216,9 @@ var rpc = {
 					} else if (params['meta']['fanart']) {
 						delete params['meta']['fanart'];
 						outparams = this.encode_keys(params);
+					} else if (params['ep_title']) {
+						params['ep_title'] = '';
+						outparams = this.encode_keys(params);
 					}
 				}
 			}
@@ -242,6 +245,9 @@ var rpc = {
 						addon_url = get_plugin_url(params);
 					} else if (params['meta']['fanart']) {
 						delete params['meta']['fanart'];
+						addon_url = get_plugin_url(params);
+					} else if (params['ep_title']) {
+						params['ep_title'] = '';
 						addon_url = get_plugin_url(params);
 					}
 				}
