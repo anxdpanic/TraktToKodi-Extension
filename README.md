@@ -23,7 +23,8 @@ Uses Kodi JSON-RPC over web sockets to execute the user provided add-on id with 
 - Compatible Add-ons
 	-
 
-	[TraktToKodi Library Connector](https://github.com/anxdpanic/script.trakttokodi.libconn#trakttokodi-library-connector)
+	* [TraktToKodi Library Connector](https://github.com/anxdpanic/script.trakttokodi.libconn#trakttokodi-library-connector)
+	* [TraktToKodi EmbyCon Connector](https://github.com/anxdpanic/script.trakttokodi.embycon#trakttokodi-embycon-connector)
 
 - Support
     -
