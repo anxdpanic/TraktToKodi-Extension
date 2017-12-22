@@ -1,4 +1,4 @@
-![TraktToKodi](https://raw.githubusercontent.com/anxdpanic/TraktToKodi-Extension/chrome/images/icon_128.png)
+![TraktToKodi](images/icon_128.png)
 # TraktToKodi (Google Chrome)
 
 Open/Play content with a compatible Kodi add-on from trakt.tv in your browser.
